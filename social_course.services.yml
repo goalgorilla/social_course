@@ -11,3 +11,7 @@ services:
   social_course.course_wrapper:
     class: Drupal\social_course\CourseWrapper
     arguments: ['@entity.manager', '@current_user']
+  social_course.overrider:
+    class: Drupal\social_course\SocialCourseOverrides
+    tags:
+      - { name: config.factory.override, priority: 5 }

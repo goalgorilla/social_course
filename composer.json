@@ -1,5 +1,16 @@
 {
     "name": "goalgorilla/social_course",
     "type": "drupal-module",
-    "require": {}
+    "require": {
+        "goalgorilla/social_paragraphs": "dev-master",
+        "drupal/inline_entity_form": "^1.0@beta",
+        "drupal/video_embed_field": "^1.5",
+        "drupal/weight": "^3.0"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@bitbucket.org:goalgorilla/social_paragraphs.git"
+        }
+    ]
 }

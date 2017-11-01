@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - social_course
+  theme:
+    - socialblue
+id: socialblue_course_material_navigation
+theme: socialblue
+region: complementary_top
+weight: 0
+provider: null
+plugin: course_material_navigation
+settings:
+  id: course_material_navigation
+  label: 'Course material navigation block'
+  provider: social_course
+  label_display: '0'
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      article: article
+      video: video
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

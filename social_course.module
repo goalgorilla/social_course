@@ -73,6 +73,15 @@ function social_course_theme($existing, $type, $theme, $path) {
         'parent_section' => NULL,
       ],
     ],
+    'node__section__teaser' => [
+      'base hook' => 'node',
+    ],
+    'node__article__full' => [
+      'base hook' => 'node',
+    ],
+    'node__video__full' => [
+      'base hook' => 'node',
+    ],
   ];
 }
 

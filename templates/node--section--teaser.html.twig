@@ -1,0 +1,184 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+     Only "getter" methods (method names starting with "get", "has", or "is")
+     and a few common methods such as "id" and "label" are available. Calling
+     other methods (such as node.delete) will result in an exception.
+ * - label: The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: Themed creation date field.
+ * - author_name: Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
+ *
+ * @ingroup themeable
+ */
+#}
+
+{{ attach_library('socialbase/teaser')}}
+
+{%
+  set classes = [
+    view_mode == 'teaser' ? 'card section-teaser',
+    node.isPromoted() ? 'promoted',
+    node.isSticky() ? 'sticky',
+    not node.isPublished() ? 'teaser--unpublished',
+  ]
+%}
+
+<article {{ attributes.addClass(classes) }}>
+  <div class="card__body">
+
+    {% if node_edit_url %}
+      <div class="hero-action-button">
+        <a href="{{ node_edit_url }}" title="{% trans %}Edit content{% endtrans %}" class="waves-effect waves-light btn btn-raised btn-default btn-floating">
+          <svg class="icon-gray icon-medium">
+            <use xlink:href="#icon-edit"></use>
+          </svg>
+        </a>
+      </div>
+    {% endif %}
+
+    <header class='section__header'>
+      <div class='section__number'>
+        {% trans %}Section {{ section_number }}{% endtrans %}
+      </div>
+
+      {% if node.isPublished() is empty %}
+        <span class="badge badge-danger teaser__badge badge--section-unpublished">
+            <span class="badge__container">
+              <svg class="badge__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g stroke="#636466" stroke-width="2.4">
+                    <path d="M4.4,4.4 L18.8,18.8" id="Line" stroke-linecap="square"></path>
+                    <circle id="Oval" cx="12" cy="12" r="10.8"></circle>
+                  </g>
+                </g>
+              </svg>
+            <span class="badge__label">{% trans %}Unpublished{% endtrans %}</span>
+          </span>
+        </span>
+      {% endif %}
+
+      <div class='section__status'>
+
+        {% if section_status == "not-started" %}
+          <span class="badge teaser__badge badge--section-not-started">
+            {% trans %}Not started{% endtrans %}
+          </span>
+
+        {% elseif section_status == "in-progress" %}
+          <span class="badge teaser__badge badge--section-in-progress">
+            <span class="badge__container">
+              <svg class="badge__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+              </svg>
+              <span class="badge__label">{% trans %}In progress{% endtrans %} </span>
+            </span>
+          </span>
+
+        {% elseif section_status == "finished" %}
+          <span class="badge teaser__badge badge--section-finished">
+            <span class="badge__container">
+              <svg class="badge__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0h24v24H0z" fill="none"/>
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              <span class="badge__label">{% trans %}Finished{% endtrans %} </span>
+            </span>
+          </span>
+        {% endif %}
+
+      </div>
+
+    </header>
+
+    {{ title_prefix }}
+    {% if not page %}
+      <h4{{ title_attributes }} class="section__title">
+        {% if not url %}
+          {{ label }}
+        {% else %}
+          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+        {% endif %}
+      </h4>
+    {% endif %}
+    {{ title_suffix }}
+
+    <div class='section__content'>
+
+      <div class="section__image">
+        {{ content.field_section_image }}
+      </div>
+      <div class="section__description">
+        {{ content.field_section_description }}
+      </div>
+
+      <div class="section__actionbar">
+        {% if section_status == "not-started" and allowed_start %}
+          <a href="{{ url('social_course.start_section', {'group': parent_group.id(), 'node': node.id()}) }}" class="btn waves-effect btn-accent">{% trans %}Start{% endtrans %}</a>
+        {% elseif section_status == "in-progress" %}
+          <a href="{{ url('entity.node.canonical', {'node': section_current}) }}" class="btn waves-effect btn-accent">{% trans %}Continue{% endtrans %}</a>
+        {% elseif section_status == "finished" %}
+          <a href="{{ url('entity.node.canonical', {'node': section_current}) }}" class="btn waves-effect btn-default">{% trans %}See parts{% endtrans %}</a>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+
+</article>

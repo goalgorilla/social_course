@@ -24,7 +24,6 @@ dependencies:
   - social_core
   - social_course
   - social_event
-  - social_geolocation
   - social_group
   - social_paragraphs
   - social_topic
