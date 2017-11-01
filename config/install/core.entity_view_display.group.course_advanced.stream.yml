@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.group.stream
+    - field.field.group.course_advanced.field_course_order
+    - field.field.group.course_advanced.field_group_description
+    - field.field.group.course_advanced.field_group_image
+    - group.type.course_advanced
+id: group.course_advanced.stream
+targetEntityType: group
+bundle: course_advanced
+mode: stream
+content: {  }
+hidden:
+  changed: true
+  created: true
+  field_course_order: true
+  field_group_description: true
+  field_group_image: true
+  label: true
+  langcode: true
+  uid: true

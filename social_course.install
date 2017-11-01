@@ -1,0 +1,254 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the social_course module.
+ */
+
+use Drupal\user\Entity\Role;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions related to the installation of social_course.
+ */
+function social_course_install() {
+  // Set some default permissions.
+  _social_course_set_permissions();
+  // Add All courses menu link.
+  _social_course_create_menu_links();
+  // Hide unnecessary blocks.
+  _social_course_course_blocks_fix();
+  // Publish all groups.
+  $storage = \Drupal::entityTypeManager()->getStorage('group');
+  foreach ($storage->loadMultiple() as $entity) {
+    if ($entity->hasField('status')) {
+      $entity->get('status')->setValue(TRUE);
+      $entity->save();
+    }
+  }
+}
+
+/**
+ * Function to set permissions.
+ */
+function _social_course_set_permissions() {
+  $roles = Role::loadMultiple();
+
+  /** @var \Drupal\user\Entity\Role $role */
+  foreach ($roles as $role) {
+    if ($role->id() === 'administrator') {
+      continue;
+    }
+
+    $permissions = _social_course_get_permissions($role->id());
+    user_role_grant_permissions($role->id(), $permissions);
+  }
+}
+
+/**
+ * @param $role
+ * @return array
+ */
+function _social_course_get_permissions($role) {
+  // Anonymous.
+  $permissions['anonymous'] = [];
+
+  // Authenticated.
+  $permissions['authenticated'] = array_merge($permissions['anonymous'], [
+    'use courses feature',
+  ]);
+
+  // Content manager.
+  $permissions['contentmanager'] = array_merge($permissions['authenticated'], [
+    'create course_advanced group',
+    'create course_basic group',
+    'create article content',
+    'delete own article content',
+    'edit own article content',
+    'override article published option',
+    'create video content',
+    'delete own video content',
+    'edit own video content',
+    'override video published option',
+    'create section content',
+    'delete own section content',
+    'edit own section content',
+    'override section published option',
+    'delete any article content',
+    'edit any article content',
+    'revert article revisions',
+    'delete article revisions',
+    'view article revisions',
+    'override article revision log entry',
+    'override article authored by option',
+    'override article authored on option',
+    'override article promote to front page option',
+    'override article revision option',
+    'override article sticky option',
+    'delete any video content',
+    'edit any video content',
+    'revert video revisions',
+    'delete video revisions',
+    'view video revisions',
+    'override video revision log entry',
+    'override video authored by option',
+    'override video authored on option',
+    'override video promote to front page option',
+    'override video revision option',
+    'override video sticky option',
+    'delete any section content',
+    'edit any section content',
+    'revert section revisions',
+    'delete section revisions',
+    'view section revisions',
+    'override section revision log entry',
+    'override section authored by option',
+    'override section authored on option',
+    'override section promote to front page option',
+    'override section revision option',
+    'override section sticky option',
+    'use text format text_only_html',
+    'view unpublished groups',
+  ]);
+
+  // Site manager.
+  $permissions['sitemanager'] = array_merge($permissions['contentmanager'], []);
+
+  return isset($permissions[$role]) ? $permissions[$role] : [];
+}
+
+/**
+ * Function to create menu items.
+ */
+function _social_course_create_menu_links() {
+  $menu_links = MenuLinkContent::loadMultiple();
+  $parent = NULL;
+  /** @var MenuLinkContent $menu_link */
+  foreach ($menu_links as $menu_link) {
+    if ($menu_link->label() === 'Explore' && $menu_link->isExpanded()) {
+      $parent = 'menu_link_content:' . $menu_link->uuid();
+    }
+  }
+
+  if (!is_null($parent)) {
+    MenuLinkContent::create([
+      'title' => t('All courses'),
+      'link' => ['uri' => 'internal:/all-courses'],
+      'menu_name' => 'main',
+      'expanded' => FALSE,
+      'weight' => 19,
+      'parent' => $parent,
+    ])->save();
+  }
+}
+
+/**
+ * Hide unnecessary blocks.
+ */
+function _social_course_course_blocks_fix() {
+  $storage = \Drupal::entityTypeManager()->getStorage('block');
+  $plugin_ids = [
+    'views_block:latest_topics-group_topics_block',
+    'views_block:upcoming_events-upcoming_events_group',
+  ];
+
+  foreach ($plugin_ids as $plugin_id) {
+    $blocks = $storage->loadByProperties([
+      'plugin' => $plugin_id,
+    ]);
+
+    if ($block = current($blocks)) {
+      $visibility = $block->get('visibility');
+      $visibility['group_type'] = [
+        'id' => 'group_type',
+        'group_types' => [
+          'course_advanced' => 'course_advanced',
+          'open_group' => 'open_group',
+          'closed_group' => 'closed_group',
+        ],
+        'negate' => FALSE,
+        'context_mapping' => [
+          'group' => '@group.group_route_context:group',
+        ],
+      ];
+      $block->set('visibility', $visibility);
+      $block->save();
+    }
+  }
+}
+
+/**
+ * Allow users to use courses.
+ */
+function social_course_update_8001() {
+  user_role_grant_permissions('authenticated', ['use courses feature']);
+}
+
+/**
+ * Add "Status" field to "group" entity type.
+ */
+function social_course_update_8002() {
+  $definition = BaseFieldDefinition::create('boolean')
+    ->setLabel(t('Published'))
+    ->setRevisionable(TRUE)
+    ->setTranslatable(TRUE)
+    ->setDefaultValue(TRUE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'type' => 'string',
+      'weight' => -5,
+    ])
+    ->setDisplayOptions('form', [
+      'type' => 'default_widget',
+      'weight' => -5,
+    ])
+    ->setDisplayConfigurable('form', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('status', 'group', 'group', $definition);
+}
+
+/**
+ * Publish all groups.
+ */
+function social_course_update_8003(&$sandbox) {
+  if (!isset($sandbox['progress'])) {
+    $sandbox['progress'] = 0;
+    $sandbox['current_id'] = 0;
+    $sandbox['max'] = \Drupal::database()
+        ->query('SELECT COUNT(id) FROM {groups_field_data}')
+        ->fetchField() - 1;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('group');
+  $ids = \Drupal::database()
+    ->select('groups_field_data', 'gfd')
+    ->fields('gfd', ['id'])
+    ->condition('gfd.id', $sandbox['current_id'], '>')
+    ->range(0, 10)
+    ->orderBy('gfd.id', 'ASC')
+    ->execute()
+    ->fetchCol();
+  $groups = $storage->loadMultiple($ids);
+
+  /** @var \Drupal\group\Entity\GroupInterface $group */
+  foreach ($groups as $group) {
+    $group->get('status')->setValue($group);
+    $group->save();
+
+    $sandbox['progress']++;
+    $sandbox['current_id'] = $group->id();
+  }
+
+  $sandbox['#finished'] = $sandbox['max'] < 1 ? 1 : ($sandbox['progress'] / $sandbox['max']);
+}
+
+/**
+ * Add permission to view unpublished groups for the content manager role.
+ */
+function social_course_update_8004() {
+  user_role_grant_permissions('contentmanager', ['view unpublished groups']);
+}

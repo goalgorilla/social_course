@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.group.small_teaser
+    - field.field.group.course_advanced.field_course_order
+    - field.field.group.course_advanced.field_group_description
+    - field.field.group.course_advanced.field_group_image
+    - group.type.course_advanced
+id: group.course_advanced.small_teaser
+targetEntityType: group
+bundle: course_advanced
+mode: small_teaser
+content:
+  label:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  changed: true
+  created: true
+  field_course_order: true
+  field_group_description: true
+  field_group_image: true
+  langcode: true
+  uid: true

@@ -1,0 +1,38 @@
+name: 'Social Course'
+description: 'Provides Course feature.'
+type: module
+core: 8.x
+dependencies:
+  - block
+  - content_translation
+  - entity_reference_revisions
+  - field
+  - field_group
+  - file
+  - gnode
+  - group
+  - image
+  - image_widget_crop
+  - inline_entity_form
+  - language
+  - link
+  - menu_ui
+  - node
+  - options
+  - paragraphs
+  - path
+  - social_core
+  - social_course
+  - social_event
+  - social_geolocation
+  - social_group
+  - social_paragraphs
+  - social_topic
+  - system
+  - text
+  - user
+  - video_embed_field
+  - views
+  - weight
+version: 8.x-1.0
+package: Social

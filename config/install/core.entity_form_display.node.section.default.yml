@@ -1,0 +1,89 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.section.field_section_content
+    - field.field.node.section.field_section_description
+    - field.field.node.section.field_section_image
+    - field.field.node.section.field_section_weight
+    - image.style.social_x_large
+    - node.type.section
+  module:
+    - field_group
+    - image_widget_crop
+    - inline_entity_form
+    - text
+third_party_settings:
+  field_group:
+    group_section_content:
+      children:
+        - title
+        - field_section_description
+        - field_section_image
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      format_settings:
+        label: Information
+        description: ''
+        required_fields: true
+        id: ''
+        classes: ''
+      label: Information
+id: node.section.default
+targetEntityType: node
+bundle: section
+mode: default
+content:
+  field_section_content:
+    weight: 1
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      match_operator: CONTAINS
+      allow_existing: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  field_section_description:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_section_image:
+    weight: 3
+    settings:
+      show_crop_area: true
+      show_default_crop: true
+      warn_multiple_usages: true
+      preview_image_style: social_x_large
+      crop_preview_image_style: crop_thumbnail
+      crop_list:
+        - hero
+        - teaser
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: image_widget_crop
+    region: content
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_section_weight: true
+  langcode: true
+  path: true
+  promote: true
+  sticky: true
+  uid: true

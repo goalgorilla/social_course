@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.course_basic
+id: course_basic-member
+label: Member
+weight: -100
+internal: true
+audience: member
+group_type: course_basic
+permissions_ui: true
+permissions:
+  0: 'update own group_membership content'
+  1: 'leave group'
+  2: 'view group'
+  3: 'view group_node:section entity'
+  8: 'view group_node:section content'

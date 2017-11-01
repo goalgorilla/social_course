@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.group.hero
+    - field.field.group.course_basic.field_course_order
+    - field.field.group.course_basic.field_group_description
+    - field.field.group.course_basic.field_group_image
+    - group.type.course_basic
+    - image.style.social_xx_large
+  module:
+    - image
+id: group.course_basic.hero
+targetEntityType: group
+bundle: course_basic
+mode: hero
+content:
+  field_group_image:
+    type: image
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      image_style: social_xx_large
+      image_link: ''
+    third_party_settings: {  }
+  label:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  changed: true
+  created: true
+  field_course_order: true
+  field_group_description: true
+  langcode: true
+  uid: true

@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.section
+id: node.section
+target_entity_type_id: node
+target_bundle: section
+default_langcode: site_default
+language_alterable: false

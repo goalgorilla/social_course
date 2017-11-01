@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - social_course
+  theme:
+    - socialbase
+id: course_material_pager
+theme: socialbase
+region: content
+weight: 0
+provider: null
+plugin: course_material_pager
+settings:
+  id: course_material_pager
+  label: 'Course material pager block'
+  provider: social_course
+  label_display: '0'
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      article: article
+      video: video
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

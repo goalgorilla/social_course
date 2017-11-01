@@ -1,0 +1,13 @@
+services:
+  social_course.route_subscriber:
+    class: Drupal\social_course\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  social_course.access_checker:
+    class: Drupal\social_course\Access\ContentAccessCheck
+    arguments: ['@entity.manager']
+    tags:
+      - { name: access_check, applies_to: _course_content_add_access }
+  social_course.course_wrapper:
+    class: Drupal\social_course\CourseWrapper
+    arguments: ['@entity.manager', '@current_user']

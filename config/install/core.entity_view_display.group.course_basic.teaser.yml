@@ -1,0 +1,55 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.group.teaser
+    - field.field.group.course_basic.field_course_order
+    - field.field.group.course_basic.field_group_description
+    - field.field.group.course_basic.field_group_image
+    - group.type.course_basic
+    - image.style.social_x_large
+  module:
+    - image
+    - options
+    - text
+id: group.course_basic.teaser
+targetEntityType: group
+bundle: course_basic
+mode: teaser
+content:
+  field_course_order:
+    type: list_default
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_group_description:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_group_image:
+    type: image
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      image_style: social_x_large
+      image_link: content
+    third_party_settings: {  }
+  label:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  changed: true
+  created: true
+  langcode: true
+  uid: true
