@@ -153,11 +153,15 @@ class CourseWrapper implements CourseWrapperInterface {
           return AccessResult::forbidden()->cachePerUser();
         }
 
+        if (!$this->getCourse()->get('field_course_opening_status')->value) {
+          return AccessResult::forbidden()->addCacheTags($this->getCourse()->getCacheTags());
+        }
+
         // Load all sections in course.
         $sections = $this->getSections();
         // Allow start first section if user has not started course yet.
         $section = current($sections);
-        $access = $access->orIf(AccessResult::allowedIf($section->id() == $node->id() && !$section->get('field_section_content')->isEmpty())) ;
+        $access = $access->orIf(AccessResult::allowedIf($section->id() == $node->id() && !$section->get('field_section_content')->isEmpty()));
         break;
 
       case 'bypass':
@@ -180,7 +184,7 @@ class CourseWrapper implements CourseWrapperInterface {
         $access = $access->orIf(AccessResult::allowedIf($node->getOwnerId() === $account->id()));
         $access = $access->orIf(AccessResult::allowedIf(!$this->courseIsSequential()));
 
-        if (!$node->isPublished()) {
+        if (!$node->isPublished() || !$this->getCourse()->get('field_course_opening_status')->value) {
           $has_permission = AccessResult::allowedIfHasPermission($account, 'administer nodes');
           $access = $access->andIf(
             AccessResult::allowedIf(
@@ -294,9 +298,8 @@ class CourseWrapper implements CourseWrapperInterface {
    */
   public function setCourseFromSection(NodeInterface $node) {
     $entities = GroupContent::loadByEntity($node);
-    $entity = current($entities);
 
-    if ($entity) {
+    if ($entity = current($entities)) {
       $group = $entity->getGroup();
       $this->setCourse($group);
     }
@@ -308,9 +311,7 @@ class CourseWrapper implements CourseWrapperInterface {
    * {@inheritdoc}
    */
   public function setCourseFromMaterial(NodeInterface $node) {
-    $entity = $this->getSectionFromMaterial($node);
-
-    if ($entity) {
+    if ($entity = $this->getSectionFromMaterial($node)) {
       $this->setCourseFromSection($entity);
     }
 

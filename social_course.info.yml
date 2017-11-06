@@ -5,6 +5,7 @@ core: 8.x
 dependencies:
   - block
   - content_translation
+  - datetime
   - entity_reference_revisions
   - field
   - field_group

@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.group.stream
     - field.field.group.course_advanced.field_course_order
+    - field.field.group.course_advanced.field_course_redirect_url
     - field.field.group.course_advanced.field_group_description
     - field.field.group.course_advanced.field_group_image
     - group.type.course_advanced
@@ -16,6 +17,7 @@ hidden:
   changed: true
   created: true
   field_course_order: true
+  field_course_redirect_url: true
   field_group_description: true
   field_group_image: true
   label: true
