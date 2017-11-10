@@ -1344,16 +1344,18 @@ function social_course_field_widget_form_alter(&$element, FormStateInterface $fo
  * Implements hook_ENTITY_TYPE_presave().
  */
 function social_course_group_presave(GroupInterface $entity) {
-  if ($date = $entity->get('field_course_opening_date')->value) {
-    $timezone = drupal_get_user_timezone();
-    $time = strtotime($date . ' ' . $timezone);
+  if ($entity->hasField('field_course_opening_date') && $entity->hasField('field_course_opening_status')) {
+    if ($date = $entity->get('field_course_opening_date')->value) {
+      $timezone = drupal_get_user_timezone();
+      $time = strtotime($date . ' ' . $timezone);
 
-    if (!$time) {
-      return;
+      if (!$time) {
+        return;
+      }
+
+      $status = $time <= \Drupal::time()->getCurrentTime();
+      $entity->get('field_course_opening_status')->value = $status;
     }
-
-    $status = $time <= \Drupal::time()->getCurrentTime();
-    $entity->get('field_course_opening_status')->value = $status;
   }
 }
 
