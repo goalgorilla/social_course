@@ -288,3 +288,10 @@ function social_course_update_8005(&$sandbox) {
 
   $sandbox['#finished'] = $sandbox['max'] < 1 ? 1 : ($sandbox['progress'] / $sandbox['max']);
 }
+
+/**
+ * Allow users to use courses.
+ */
+function social_course_update_8006() {
+  user_role_grant_permissions('authenticated', ['use courses feature']);
+}
