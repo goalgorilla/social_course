@@ -257,18 +257,25 @@ function social_course_update_8004() {
  * Open all courses.
  */
 function social_course_update_8005(&$sandbox) {
+  /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
+  $course_wrapper = \Drupal::service('social_course.course_wrapper');
+
   if (!isset($sandbox['progress'])) {
     $sandbox['progress'] = 0;
     $sandbox['current_id'] = 0;
-    $sandbox['max'] = \Drupal::database()
-        ->query('SELECT COUNT(id) FROM {groups_field_data}')
-        ->fetchField() - 1;
+    $query = \Drupal::database()
+      ->select('groups_field_data', 'gfd');
+    $query->addExpression('COUNT(id)');
+    $query->condition('gfd.type', $course_wrapper::getAvailableBundles(), 'IN');
+
+    $sandbox['max'] = $query->execute()->fetchField() - 1;
   }
 
   $storage = \Drupal::entityTypeManager()->getStorage('group');
   $ids = \Drupal::database()
     ->select('groups_field_data', 'gfd')
     ->fields('gfd', ['id'])
+    ->condition('gfd.type', $course_wrapper::getAvailableBundles(), 'IN')
     ->condition('gfd.id', $sandbox['current_id'], '>')
     ->range(0, 10)
     ->orderBy('gfd.id', 'ASC')
