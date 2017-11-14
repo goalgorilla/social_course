@@ -308,7 +308,7 @@ function social_course_block_view_account_header_block_pre_render(array $build) 
     $url = Url::fromRoute('view.courses_user.page', [
       'user' => $account->id(),
     ]);
-    $build['content']['#links']['account_box']['below']['my_courses'] = [
+    $my_courses = [
       'classes' => '',
       'link_attributes' => '',
       'link_classes' => '',
@@ -321,29 +321,21 @@ function social_course_block_view_account_header_block_pre_render(array $build) 
       'access' => $url->access(),
     ];
 
-    $account_box = [];
-    $order = [
-      'signed_in_as',
-      'divide_profile',
-      'my_profile',
-      'my_topics',
-      'my_events',
-      'my_groups',
-      'my_courses',
-      'divide_account',
-      'my_account',
-      'edit_profile',
-      'divide_logout',
-      'logout',
-    ];
+    $links = $build['content']['#links']['account_box']['below'];
 
-    foreach ($order as $key) {
-      if (isset($build['content']['#links']['account_box']['below'][$key])) {
-        $account_box[$key] = $build['content']['#links']['account_box']['below'][$key];
-      }
+    // Find our reference key.
+    $divider_idx = array_search('divide_content', array_keys($links));
+
+    // If we can't find it, we just guess at the position.
+    if ($divider_idx === FALSE) {
+      $divider_idx = 6;
     }
 
-    $build['content']['#links']['account_box']['below'] = $account_box;
+    $links = array_slice($links, 0, $divider_idx, TRUE) +
+      ['my_courses' => $my_courses] +
+      array_slice($links, $divider_idx, NULL, TRUE);
+
+    $build['content']['#links']['account_box']['below'] = $links;
   }
 
   return $build;
