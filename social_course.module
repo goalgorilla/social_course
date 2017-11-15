@@ -1346,14 +1346,15 @@ function social_course_field_widget_form_alter(&$element, FormStateInterface $fo
 function social_course_group_presave(GroupInterface $entity) {
   if ($entity->hasField('field_course_opening_date') && $entity->hasField('field_course_opening_status')) {
     if ($date = $entity->get('field_course_opening_date')->value) {
-      $timezone = drupal_get_user_timezone();
+      $timezone = social_course_get_user_timezone();
       $time = strtotime($date . ' ' . $timezone);
 
       if (!$time) {
         return;
       }
 
-      $status = $time <= \Drupal::time()->getCurrentTime();
+      $date_time = new DateTime('now', new DateTimeZone($timezone));
+      $status = $time <= $date_time->getTimestamp();
       $entity->get('field_course_opening_status')->value = $status;
     }
   }
@@ -1365,8 +1366,9 @@ function social_course_group_presave(GroupInterface $entity) {
 function social_course_cron() {
   /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
   $course_wrapper = \Drupal::service('social_course.course_wrapper');
-  $time = \Drupal::time()->getCurrentTime();
-  $date = \Drupal::service('date.formatter')->format($time, 'custom', "Y-m-d\TH:i:00");
+  $timezone = social_course_get_user_timezone();
+  $date_time = new DateTime('now', new DateTimeZone($timezone));
+  $date = \Drupal::service('date.formatter')->format($date_time->getTimestamp(), 'custom', "Y-m-d\TH:i:00");
   $query = \Drupal::entityQuery('group')
     ->condition('type', $course_wrapper::getAvailableBundles(), 'IN')
     ->condition('field_course_opening_status', FALSE)
@@ -1386,4 +1388,13 @@ function social_course_cron() {
       }
     }
   }
+}
+
+/**
+ * Returns the time zone of the current user.
+ */
+function social_course_get_user_timezone() {
+  $config = \Drupal::config('system.date');
+  $default_timezone = $config->get('timezone.default');
+  return $default_timezone ?: @date_default_timezone_get();
 }
