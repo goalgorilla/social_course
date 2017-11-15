@@ -252,3 +252,53 @@ function social_course_update_8003(&$sandbox) {
 function social_course_update_8004() {
   user_role_grant_permissions('contentmanager', ['view unpublished groups']);
 }
+
+/**
+ * Open all courses.
+ */
+function social_course_update_8005(&$sandbox) {
+  /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
+  $course_wrapper = \Drupal::service('social_course.course_wrapper');
+
+  if (!isset($sandbox['progress'])) {
+    $sandbox['progress'] = 0;
+    $sandbox['current_id'] = 0;
+    $query = \Drupal::database()
+      ->select('groups_field_data', 'gfd');
+    $query->addExpression('COUNT(id)');
+    $query->condition('gfd.type', $course_wrapper::getAvailableBundles(), 'IN');
+
+    $sandbox['max'] = $query->execute()->fetchField() - 1;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('group');
+  $ids = \Drupal::database()
+    ->select('groups_field_data', 'gfd')
+    ->fields('gfd', ['id'])
+    ->condition('gfd.type', $course_wrapper::getAvailableBundles(), 'IN')
+    ->condition('gfd.id', $sandbox['current_id'], '>')
+    ->range(0, 10)
+    ->orderBy('gfd.id', 'ASC')
+    ->execute()
+    ->fetchCol();
+  $groups = $storage->loadMultiple($ids);
+
+  /** @var \Drupal\group\Entity\GroupInterface $group */
+  foreach ($groups as $group) {
+    $time = \Drupal::time()->getCurrentTime();
+    $date = \Drupal::service('date.formatter')->format($time, 'custom', "Y-m-d\TH:i:00");
+    $group->get('field_course_opening_date')->value = $date;
+    $group->save();
+    $sandbox['progress']++;
+    $sandbox['current_id'] = $group->id();
+  }
+
+  $sandbox['#finished'] = $sandbox['max'] < 1 ? 1 : ($sandbox['progress'] / $sandbox['max']);
+}
+
+/**
+ * Allow users to use courses.
+ */
+function social_course_update_8006() {
+  user_role_grant_permissions('authenticated', ['use courses feature']);
+}

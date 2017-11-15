@@ -1339,3 +1339,42 @@ function social_course_field_widget_form_alter(&$element, FormStateInterface $fo
     }
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function social_course_group_presave(GroupInterface $entity) {
+  if ($entity->hasField('field_course_opening_date') && $entity->hasField('field_course_opening_status')) {
+    if ($date = $entity->get('field_course_opening_date')->value) {
+      $status = $date <= gmdate("Y-m-d\TH:i:00");
+      $entity->get('field_course_opening_status')->value = $status;
+    }
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function social_course_cron() {
+  /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
+  $course_wrapper = \Drupal::service('social_course.course_wrapper');
+  $query = \Drupal::entityQuery('group')
+    ->condition('type', $course_wrapper::getAvailableBundles(), 'IN')
+    ->condition('field_course_opening_status', FALSE)
+    ->condition('field_course_opening_date', gmdate("Y-m-d\TH:i:00"), '<=')
+    ->range(0, 20);
+
+  if ($results = $query->execute()) {
+    $storage = \Drupal::entityTypeManager()->getStorage('group');
+
+    if ($entities = $storage->loadMultiple($results)) {
+      foreach ($entities as $entity) {
+        if (!$entity->get('field_course_opening_status')->value) {
+          // todo: send notifications.
+        }
+
+        $entity->save();
+      }
+    }
+  }
+}

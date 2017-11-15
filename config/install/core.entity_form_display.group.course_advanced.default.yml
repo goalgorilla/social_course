@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.group.course_advanced.field_course_opening_date
+    - field.field.group.course_advanced.field_course_opening_status
     - field.field.group.course_advanced.field_course_order
     - field.field.group.course_advanced.field_course_redirect_url
     - field.field.group.course_advanced.field_group_description
@@ -9,6 +11,7 @@ dependencies:
     - group.type.course_advanced
     - image.style.social_x_large
   module:
+    - datetime
     - field_group
     - image_widget_crop
     - link
@@ -36,7 +39,7 @@ third_party_settings:
         - status
         - field_course_redirect_url
       parent_name: ''
-      weight: 1
+      weight: 2
       format_type: fieldset
       format_settings:
         id: ''
@@ -49,6 +52,12 @@ targetEntityType: group
 bundle: course_advanced
 mode: default
 content:
+  field_course_opening_date:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
   field_course_order:
     weight: 7
     settings: {  }
@@ -111,5 +120,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  field_course_opening_status: true
   langcode: true
   path: true
