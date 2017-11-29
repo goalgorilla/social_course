@@ -32,7 +32,9 @@ class CoursesController extends ControllerBase {
    */
   public function content() {
     $content = [];
-    $bundles = self::getCoursesBundles();
+    /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
+    $course_wrapper = \Drupal::service('social_course.course_wrapper');
+    $bundles = $course_wrapper::getAvailableBundles();
 
     foreach ($this->entityTypeManager()->getStorage('group_type')->loadMultiple() as $type) {
       if (in_array($type->id(), $bundles)) {
@@ -59,7 +61,9 @@ class CoursesController extends ControllerBase {
    * @return \Drupal\Core\Access\AccessResultInterface
    */
   public static function access(AccountInterface $account) {
-    $bundles = self::getCoursesBundles();
+    /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
+    $course_wrapper = \Drupal::service('social_course.course_wrapper');
+    $bundles = $course_wrapper::getAvailableBundles();
 
     foreach ($bundles as $bundle) {
       if ($account->hasPermission("create {$bundle} group")) {
@@ -68,13 +72,6 @@ class CoursesController extends ControllerBase {
     }
 
     return AccessResult::forbidden();
-  }
-
-  /**
-   * Returns list of courses bundles.
-   */
-  protected static function getCoursesBundles() {
-    return ['course_basic', 'course_advanced'];
   }
 
   /**

@@ -289,19 +289,18 @@ function social_course_block_view_account_header_block_pre_render(array $build) 
   $account = \Drupal::currentUser();
 
   // Add Courses link.
-  if (CoursesController::access($account)->isAllowed()) {
-    $build['content']['#links']['add']['below']['add_course'] = [
-      'classes' => '',
-      'link_attributes' => '',
-      'link_classes' => '',
-      'icon_classes' => '',
-      'icon_label' => '',
-      'title' => t('Create New Course'),
-      'label' => t('New course'),
-      'title_classes' => '',
-      'url' => Url::fromRoute('social_course.course_add'),
-    ];
-  }
+  $build['content']['#links']['add']['below']['add_course'] = [
+    'classes' => '',
+    'link_attributes' => '',
+    'link_classes' => '',
+    'icon_classes' => '',
+    'icon_label' => '',
+    'title' => t('Create New Course'),
+    'label' => t('New course'),
+    'title_classes' => '',
+    'url' => Url::fromRoute('social_course.course_add'),
+    'access' => CoursesController::access($account)->isAllowed(),
+  ];
 
   // My Courses link.
   if (isset($build['content']['#links']['account_box']['below'])) {

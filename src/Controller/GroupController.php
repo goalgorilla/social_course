@@ -5,6 +5,8 @@ namespace Drupal\social_course\Controller;
 use Drupal\Core\Entity\Controller\EntityController;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Url;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class GroupController extends EntityController {
 
@@ -12,18 +14,20 @@ class GroupController extends EntityController {
    * Callback function of group page.
    */
   public function canonical(GroupInterface $group) {
-    $bundles = ['course_basic', 'course_advanced'];
+    /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
+    $course_wrapper = \Drupal::service('social_course.course_wrapper');
+    $bundles = $course_wrapper::getAvailableBundles();
+    $url = Url::fromRoute('social_course.group_stream', [
+      'group' => $group->id(),
+    ]);
 
-    if (in_array($group->bundle(), $bundles)) {
-      return $this->redirect('view.group_information.page_group_about', [
-        'group' => $group->id(),
-      ]);
+    if (!in_array($group->bundle(), $bundles) && $url->access()) {
+      return new RedirectResponse($url);
     }
-    else {
-      return $this->redirect('social_course.group_stream', [
-        'group' => $group->id(),
-      ]);
-    }
+
+    return $this->redirect('view.group_information.page_group_about', [
+      'group' => $group->id(),
+    ]);
   }
 
   /**
