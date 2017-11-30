@@ -22,7 +22,7 @@ class GroupController extends EntityController {
     ]);
 
     if (!in_array($group->bundle(), $bundles) && $url->access()) {
-      return new RedirectResponse($url);
+      return new RedirectResponse($url->toString());
     }
 
     return $this->redirect('view.group_information.page_group_about', [
