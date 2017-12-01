@@ -1258,7 +1258,7 @@ function social_course_entity_base_field_info(EntityTypeInterface $entity_type) 
       ->setDefaultValue(TRUE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'type' => 'string',
+        'type' => 'hidden',
         'weight' => -5,
       ])
       ->setDisplayOptions('form', [
