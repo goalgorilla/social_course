@@ -797,7 +797,7 @@ function social_course_menu_local_tasks_alter(&$data, $route_name) {
     }
 
     if (isset($data['tabs'][0]['social_group.about'])) {
-      $data['tabs'][0]['social_group.about']['#link']['title'] = t('Parts');
+      $data['tabs'][0]['social_group.about']['#link']['title'] = t('Sections');
     }
 
     if (isset($data['tabs'][0]['group.view'])) {
