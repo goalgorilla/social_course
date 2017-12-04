@@ -289,19 +289,18 @@ function social_course_block_view_account_header_block_pre_render(array $build) 
   $account = \Drupal::currentUser();
 
   // Add Courses link.
-  if (CoursesController::access($account)->isAllowed()) {
-    $build['content']['#links']['add']['below']['add_course'] = [
-      'classes' => '',
-      'link_attributes' => '',
-      'link_classes' => '',
-      'icon_classes' => '',
-      'icon_label' => '',
-      'title' => t('Create New Course'),
-      'label' => t('New course'),
-      'title_classes' => '',
-      'url' => Url::fromRoute('social_course.course_add'),
-    ];
-  }
+  $build['content']['#links']['add']['below']['add_course'] = [
+    'classes' => '',
+    'link_attributes' => '',
+    'link_classes' => '',
+    'icon_classes' => '',
+    'icon_label' => '',
+    'title' => t('Create New Course'),
+    'label' => t('New course'),
+    'title_classes' => '',
+    'url' => Url::fromRoute('social_course.course_add'),
+    'access' => CoursesController::access($account)->isAllowed(),
+  ];
 
   // My Courses link.
   if (isset($build['content']['#links']['account_box']['below'])) {
@@ -781,15 +780,23 @@ function social_course_menu_local_tasks_alter(&$data, $route_name) {
   $group = _social_group_get_current_group();
 
   if ($group instanceof GroupInterface) {
+    /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
+    $course_wrapper = \Drupal::service('social_course.course_wrapper');
+    $bundles = $course_wrapper::getAvailableBundles();
+
+    if (!in_array($group->bundle(), $bundles)) {
+      return;
+    }
+
     if ($group->bundle() == 'course_basic') {
       foreach (['social_group.events', 'social_group.topics', 'social_course.group_stream', 'social_group.members'] as $key) {
-        if (isset($data['tabs'][0][ $key ])) {
-          $data['tabs'][0][ $key ]['#access'] = AccessResult::forbidden();
+        if (isset($data['tabs'][0][$key])) {
+          $data['tabs'][0][$key]['#access'] = AccessResult::forbidden();
         }
       }
     }
 
-    if (in_array($group->bundle(), ['course_basic', 'course_advanced']) && isset($data['tabs'][0]['social_group.about'])) {
+    if (isset($data['tabs'][0]['social_group.about'])) {
       $data['tabs'][0]['social_group.about']['#link']['title'] = t('Parts');
     }
 
@@ -1190,7 +1197,7 @@ function social_course_entity_delete(EntityInterface $entity) {
  * Implements hook_entity_view().
  */
 function social_course_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->getEntityTypeId() == 'node' && $view_mode == 'full') {
+  if ($entity->id() && $entity->getEntityTypeId() == 'node' && $view_mode == 'full') {
     /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $account = \Drupal::currentUser();
