@@ -2,9 +2,12 @@
 
 namespace Drupal\social_course\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\group\Entity\GroupInterface;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
  * Provides a 'CourseMaterialPagerBlock' block.
@@ -78,6 +81,21 @@ class CourseMaterialPagerBlock extends BlockBase {
     }
 
     return $tags;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    if ($node = $this->getContextValue('node')) {
+      $group = \Drupal::service('social_course.course_wrapper')
+        ->setCourseFromMaterial($node)
+        ->getCourse();
+
+      return AccessResult::allowedIf($group instanceof GroupInterface);
+    }
+
+    return parent::blockAccess($account);
   }
 
 }
