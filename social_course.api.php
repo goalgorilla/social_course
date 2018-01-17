@@ -25,5 +25,17 @@ function hook_social_course_material_types_alter(&$content_types) {
 }
 
 /**
+ * Provide a method to alter node IDs in the course section.
+ *
+ * @param array $node_ids
+ *   List of node IDs of course section.
+ *
+ * @ingroup social_course_api
+ */
+function hook_social_course_materials_alter(&$node_ids) {
+  $node_ids = array_diff($node_ids, [5, 7]);
+}
+
+/**
  * @} End of "addtogroup hooks".
  */

@@ -287,6 +287,12 @@ class CourseWrapper implements CourseWrapperInterface {
       return [];
     }
 
+    \Drupal::moduleHandler()->alter('social_course_materials', $ids);
+
+    if (!$ids) {
+      return [];
+    }
+
     $storage = $this->entityTypeManager->getStorage('node');
     $materials = $storage->loadMultiple($ids);
 
