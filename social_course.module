@@ -105,6 +105,8 @@ function template_preprocess_course_material_hero(&$variables) {
     'video',
   ];
 
+  \Drupal::moduleHandler()->alter('social_course_material_types', $type);
+
   // Get current user.
   $account = \Drupal::currentUser();
 
@@ -163,6 +165,8 @@ function template_preprocess_course_material_pager(&$variables) {
     'article',
     'video',
   ];
+
+  \Drupal::moduleHandler()->alter('social_course_material_types', $type);
 
   // Get current node object or node id.
   $node = \Drupal::routeMatch()->getParameter('node');
@@ -1052,6 +1056,8 @@ function social_course_block_access(Block $block, $operation, AccountInterface $
     'article',
     'video',
   ];
+
+  \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
 
   // Disable block for video and article node view pages.
   if ($operation == 'view' && $block->getPluginId() == 'social_page_title_block') {
