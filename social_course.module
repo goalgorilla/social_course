@@ -998,6 +998,15 @@ function social_course_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function social_course_preprocess_group__course__hero(&$variables) {
+  if ($variables['group']->field_course_opening_status->value) {
+    unset($variables['group_operations_url']);
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  */
 function social_course_views_pre_render(ViewExecutable $view) {
