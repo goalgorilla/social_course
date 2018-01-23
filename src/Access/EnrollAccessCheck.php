@@ -26,12 +26,14 @@ class EnrollAccessCheck implements AccessInterface {
   public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
     $group = $route_match->getParameter('group');
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
+    $bundles = $course_wrapper::getAvailableBundles();
+    $is_course = in_array($group->bundle(), $bundles);
 
-    if (in_array($group->bundle(), $course_wrapper::getAvailableBundles())) {
-      return AccessResult::allowedIf(!$group->field_course_opening_status->value);
+    if ($is_course && $group->field_course_opening_status->value) {
+      return AccessResult::forbidden();
     }
 
-    return AccessResult::neutral();
+    return AccessResult::allowed();
   }
 
 }
