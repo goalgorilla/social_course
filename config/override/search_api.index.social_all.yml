@@ -1,0 +1,7 @@
+datasource_settings:
+  'entity:node':
+    bundles:
+      selected:
+        - article
+        - section
+        - video
