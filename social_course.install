@@ -302,10 +302,3 @@ function social_course_update_8005(&$sandbox) {
 function social_course_update_8006() {
   user_role_grant_permissions('authenticated', ['use courses feature']);
 }
-
-/**
- * Install "Config Override" module.
- */
-function social_course_update_8007() {
-  \Drupal::service('module_installer')->install(['config_override']);
-}
