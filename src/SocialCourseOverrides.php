@@ -428,6 +428,29 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
       ];
     }
 
+    $config_names = [
+      'search_api.index.social_all',
+      'search_api.index.social_content',
+    ];
+
+    foreach ($names as $name) {
+      if (in_array($name, $config_names)) {
+        $overrides[$name] = [
+          'datasource_settings' => [
+            'entity:node' => [
+              'bundles' => [
+                'selected' => [
+                  'article',
+                  'section',
+                  'video',
+                ],
+              ],
+            ],
+          ],
+        ];
+      }
+    }
+
     return $overrides;
   }
 
