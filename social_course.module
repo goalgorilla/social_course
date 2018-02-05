@@ -1009,6 +1009,15 @@ function social_course_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function social_course_preprocess_group__course__hero(&$variables) {
+  if (!$variables['group_operations_url']->access()) {
+    unset($variables['group_operations_url']);
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  */
 function social_course_views_pre_render(ViewExecutable $view) {
@@ -1230,7 +1239,11 @@ function social_course_entity_delete(EntityInterface $entity) {
  * Implements hook_entity_view().
  */
 function social_course_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->id() && $entity->getEntityTypeId() == 'node' && $view_mode == 'full') {
+  if (!($entity->id() && $entity->getEntityTypeId() == 'node')) {
+    return;
+  }
+
+  if ($view_mode == 'full') {
     /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $account = \Drupal::currentUser();
@@ -1283,6 +1296,9 @@ function social_course_entity_view(array &$build, EntityInterface $entity, Entit
         }
       }
     }
+  }
+  elseif ($view_mode == 'teaser' && $entity->bundle() == 'section') {
+    $build['#cache']['contexts'][] = 'user';
   }
 }
 

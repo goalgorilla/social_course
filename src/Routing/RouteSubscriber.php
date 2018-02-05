@@ -45,6 +45,10 @@ class RouteSubscriber extends RouteSubscriberBase {
         $route->setRequirement('_custom_access', '\Drupal\social_course\Controller\GroupController::access');
       }
     }
+
+    if ($route = $collection->get('entity.group.join')) {
+      $route->setRequirement('_course_enroll_access', 'TRUE');
+    }
   }
 
   /**
