@@ -1,0 +1,4 @@
+social_course:
+  css:
+    component:
+      assets/css/social_course.css: { }
