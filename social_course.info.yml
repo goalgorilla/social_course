@@ -23,7 +23,6 @@ dependencies:
   - paragraphs
   - path
   - social_core
-  - social_course
   - social_event
   - social_group
   - social_paragraphs
