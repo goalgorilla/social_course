@@ -89,6 +89,12 @@ not node.isPublished() ? 'node--unpublished',
       <div class="node--unpublished__label">{% trans %} unpublished {% endtrans %}</div>
     {% endif %}
 
+    {% if parent_course.label %}
+      <div class="parent-course">
+        <a href="{{ parent_course.url }}">{{ parent_course.label }}</a>
+      </div>
+    {% endif %}
+
     {% block nodefull_body %}
       {{ content }}
     {% endblock %}

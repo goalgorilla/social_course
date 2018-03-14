@@ -57,6 +57,7 @@ function social_course_theme($existing, $type, $theme, $path) {
         'node_type' => NULL,
         'section_class' => NULL,
         'parent_course' => NULL,
+        'parent_course_type' => NULL,
         'parent_section' => NULL,
         'material' => NULL,
       ],
@@ -73,13 +74,25 @@ function social_course_theme($existing, $type, $theme, $path) {
         'parent_section' => NULL,
       ],
     ],
+    'course_section_navigation' => [
+      'variables' => [
+        'items' => [],
+      ],
+    ],
     'node__section__teaser' => [
       'base hook' => 'node',
     ],
     'node__article__full' => [
+      'variables' => [
+        'parent_course' => NULL,
+      ],
       'base hook' => 'node',
     ],
     'node__video__full' => [
+
+      'variables' => [
+        'parent_course' => NULL,
+      ],
       'base hook' => 'node',
     ],
   ];
@@ -1169,6 +1182,19 @@ function social_course_preprocess_node(&$variables) {
       }
     }
 
+  }
+
+  if ($node->bundle() == 'article' || $node->bundle() == 'video') {
+    // Load parent group (course).
+    $course_wrapper = \Drupal::service('social_course.course_wrapper');
+    $course_wrapper->setCourseFromMaterial($node);
+    $course = $course_wrapper->getCourse();
+    if (!$course) {
+      return;
+    }
+
+    $variables['parent_course']['label'] = $course->label();
+    $variables['parent_course']['url'] = $course->toUrl();
   }
 }
 

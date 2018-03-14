@@ -33,6 +33,8 @@
 
   <div class="cover-wrap">
 
+    {{ parent_course_type }}
+
     {{ title_prefix }}
 
     {% if title %}
@@ -40,38 +42,6 @@
     {% endif %}
 
     {{ title_suffix }}
-
-    <div class="hero-footer">
-
-        <div class="hero-footer__item">
-          {% trans %}Course{% endtrans %}<br />
-          <a href="{{ parent_course.url }}">{{ parent_course.label }}</a>
-        </div>
-
-        <div class="hero-footer__item">
-          {% trans %}Section{% endtrans %} {{ parent_section.number }}<br />
-          <a href="{{ parent_section.url }}">{{ parent_section.title }}</a>
-        </div>
-
-        <div class="hero-footer__item">
-          {% spaceless %}
-            {% if node_type == 'video' %}
-            <svg class="hero-footer__item-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
-            {% elseif node_type == 'article' %}
-              <svg class="hero-footer__item-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-            {% endif %}
-          {% endspaceless %}
-          {% trans %}Part{% endtrans %} {{ material.number }}  <br />
-          <strong>
-              {% if material.count == 1 %}
-                {% trans %}1 part{% endtrans %}
-              {% else %}
-                {{ '%count% parts'|trans({'%count%': material.count}) }}
-              {% endif %}
-          </strong>
-        </div>
-
-    </div>
 
   </div>
 

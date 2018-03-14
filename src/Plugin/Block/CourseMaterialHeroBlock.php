@@ -2,6 +2,7 @@
 
 namespace Drupal\social_course\Plugin\Block;
 
+use Drupal\taxonomy\Entity\Term;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Drupal\Core\Block\Plugin\Block\PageTitleBlock;
 
@@ -33,13 +34,19 @@ class CourseMaterialHeroBlock extends PageTitleBlock {
       }
 
       $title = $node->getTitle();
-      $group_link = NULL;
 
+      /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
+      $course_wrapper = \Drupal::service('social_course.course_wrapper');
+      $course_wrapper->setCourseFromMaterial($node);
+      if (!$course_wrapper->getCourse()->get('field_course_type')->isEmpty()) {
+        $parent_course_type = Term::load($course_wrapper->getCourse()->field_course_type->target_id)->getName();
+      }
       return [
         '#theme' => 'course_material_hero',
         '#title' => $title,
         '#node' => $node,
         '#section_class' => 'page-title',
+        '#parent_course_type' => $parent_course_type,
       ];
     }
     else {
@@ -61,4 +68,5 @@ class CourseMaterialHeroBlock extends PageTitleBlock {
       }
     }
   }
+
 }

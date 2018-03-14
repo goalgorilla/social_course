@@ -1,0 +1,17 @@
+{% for item in items %}
+    {% if item.url == false %}
+        <span class="list-item unavailable">
+    {% else %}
+        <span class="list-item">
+    {% endif %}
+        <span class="list-item__text">
+            {% if item.url %}
+                <a href="{{ item.url }}">
+            {% endif %}
+            {{ item.label }}
+            {% if item.url %}
+                </a>
+            {% endif %}
+        </span>
+    </span>
+{% endfor %}

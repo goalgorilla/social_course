@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - social_course
+  theme:
+    - socialblue
+id: socialblue_course_section_navigation
+theme: socialblue
+region: complementary_top
+weight: 0
+provider: null
+plugin: course_section_navigation
+settings:
+  id: course_section_navigation
+  label: 'Other sections'
+  provider: social_course
+  label_display: visible
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      article: article
+      video: video
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
