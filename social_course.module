@@ -16,6 +16,7 @@ use Drupal\group\Entity\GroupContent;
 use Drupal\social_course\Controller\CoursesController;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
 use Drupal\node\Entity\Node;
 use Drupal\social_course\CourseEnrollmentInterface;
@@ -46,6 +47,9 @@ function social_course_theme($existing, $type, $theme, $path) {
       ],
     ],
     'group__course__hero' => [
+      'variables' => [
+        'course_type' => NULL,
+      ],
       'render element' => 'elements',
       'base hook' => 'group',
     ],
@@ -80,6 +84,9 @@ function social_course_theme($existing, $type, $theme, $path) {
       ],
     ],
     'node__section__teaser' => [
+      'variables' => [
+        'parts_count' => NULL,
+      ],
       'base hook' => 'node',
     ],
     'node__article__full' => [
@@ -110,7 +117,7 @@ function social_course_theme($existing, $type, $theme, $path) {
  *   - section_class: Class based on type of node
  *   - parent_section: Information about parent section
  *   - material: Information about materials parent section
- *   - parent_course: Information about parent course
+ *   - parent_course: Information about parent course.
  */
 function template_preprocess_course_material_hero(&$variables) {
   $type = [
@@ -136,7 +143,7 @@ function template_preprocess_course_material_hero(&$variables) {
     // Get the current route name to check if the user is on the edit or delete page.
     $route = \Drupal::routeMatch()->getRouteName();
 
-    if (!in_array($route, array('entity.node.edit_form','entity.node.delete_form'))) {
+    if (!in_array($route, array('entity.node.edit_form', 'entity.node.delete_form'))) {
       if ($node->access('update', $account)) {
         $variables['node_edit_url'] = $node->toUrl('edit-form')->toString();
       }
@@ -1028,6 +1035,10 @@ function social_course_preprocess_group__course__hero(&$variables) {
   if (!$variables['group_operations_url']->access()) {
     unset($variables['group_operations_url']);
   }
+  if (!$variables['group']->get('field_course_type')->isEmpty()) {
+    $course_type = Term::load($variables['group']->field_course_type->target_id)->getName();
+  }
+  $variables['course_type'] = $course_type;
 }
 
 /**
@@ -1180,6 +1191,8 @@ function social_course_preprocess_node(&$variables) {
       if ($node->access('update', $account)) {
         $variables['node_edit_url'] = $node->toUrl('edit-form')->toString();
       }
+
+      $variables['parts_count'] = count($course_wrapper->getMaterials($node));
     }
 
   }
