@@ -207,6 +207,7 @@ display:
           entity_field: gid
           plugin_id: group_id
       display_extenders: {  }
+      css_class: 'card card__body'
     cache_metadata:
       max-age: -1
       contexts:
