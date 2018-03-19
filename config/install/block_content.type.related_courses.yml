@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: related_courses
+label: 'Related courses'
+revision: 0
+description: ''

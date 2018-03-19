@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.related_courses
+    - field.storage.block_content.field_related_courses_link
+    - group.type.course_advanced
+    - group.type.course_basic
+id: block_content.related_courses.field_related_courses_link
+field_name: field_related_courses_link
+entity_type: block_content
+bundle: related_courses
+label: 'Related course'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:group'
+  handler_settings:
+    target_bundles:
+      course_advanced: course_advanced
+      course_basic: course_basic
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: course_advanced
+field_type: entity_reference

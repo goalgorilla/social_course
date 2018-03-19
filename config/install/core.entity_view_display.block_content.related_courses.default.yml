@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.related_courses
+    - field.field.block_content.related_courses.field_related_courses_link
+id: block_content.related_courses.default
+targetEntityType: block_content
+bundle: related_courses
+mode: default
+content:
+  field_related_courses_link:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden:
+  langcode: true

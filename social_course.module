@@ -102,6 +102,9 @@ function social_course_theme($existing, $type, $theme, $path) {
       ],
       'base hook' => 'node',
     ],
+    'field__block_content__field_related_courses_link__related_courses' => [
+      'base hook' => 'field',
+    ],
   ];
 }
 
