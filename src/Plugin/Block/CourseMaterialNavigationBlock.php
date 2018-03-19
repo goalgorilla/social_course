@@ -7,6 +7,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\group\Entity\GroupInterface;
+use Drupal\social_course\CourseEnrollmentInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
@@ -60,10 +61,22 @@ class CourseMaterialNavigationBlock extends BlockBase {
           'type' => $material->bundle(),
           'active' => FALSE,
           'number' => $course_wrapper->getMaterialNumber($material) + 1,
+          'finished' => FALSE,
         ];
 
         if ($material->id() === $node->id()) {
           $item['active'] = TRUE;
+        }
+
+        $material_enrollment = $storage->loadByProperties([
+          'gid' => $course_wrapper->getCourse()->id(),
+          'sid' => $section->id(),
+          'mid' => $material->id(),
+          'uid' => \Drupal::currentUser()->id(),
+        ]);
+        $material_enrollment = current($material_enrollment);
+        if ($material_enrollment && $material_enrollment->getStatus() === CourseEnrollmentInterface::FINISHED) {
+          $item['finished'] = TRUE;
         }
 
         if ($course_wrapper->materialAccess($material, \Drupal::currentUser(), 'view')->isAllowed()) {
