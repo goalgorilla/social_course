@@ -50,10 +50,11 @@ class CourseMaterialNavigationBlock extends BlockBase {
       ]);
 
       foreach ($course_enrollments as $key => $course_enrollment) {
-        unset($course_enrollments[ $key ]);
-        $course_enrollments[ $course_enrollment->get('mid')->target_id ] = $course_enrollment;
+        unset($course_enrollments[$key]);
+        $course_enrollments[$course_enrollment->get('mid')->target_id] = $course_enrollment;
       }
 
+      /** @var \Drupal\node\NodeInterface $material */
       foreach ($course_wrapper->getMaterials($section) as $material) {
         $item = [
           'label' => $material->label(),
@@ -68,14 +69,9 @@ class CourseMaterialNavigationBlock extends BlockBase {
           $item['active'] = TRUE;
         }
 
-        $material_enrollment = $storage->loadByProperties([
-          'gid' => $course_wrapper->getCourse()->id(),
-          'sid' => $section->id(),
-          'mid' => $material->id(),
-          'uid' => \Drupal::currentUser()->id(),
-        ]);
-        $material_enrollment = current($material_enrollment);
-        if ($material_enrollment && $material_enrollment->getStatus() === CourseEnrollmentInterface::FINISHED) {
+        /** @var \Drupal\social_course\CourseEnrollmentInterface $material_wrapper */
+        $material_wrapper = $course_enrollments[$material->id()];
+        if ($material_wrapper && $material_wrapper->getStatus() === CourseEnrollmentInterface::FINISHED) {
           $item['finished'] = TRUE;
         }
 
