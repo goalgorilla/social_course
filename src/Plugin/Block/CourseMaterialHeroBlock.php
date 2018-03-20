@@ -23,6 +23,7 @@ class CourseMaterialHeroBlock extends PageTitleBlock {
    * {@inheritdoc}
    */
   public function build() {
+    $parent_course_type = NULL;
     $node = $this->getContextValue('node');
 
     if ($node) {

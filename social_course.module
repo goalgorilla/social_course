@@ -1040,8 +1040,8 @@ function social_course_preprocess_group__course__hero(&$variables) {
   }
   if (!$variables['group']->get('field_course_type')->isEmpty()) {
     $course_type = Term::load($variables['group']->field_course_type->target_id)->getName();
+    $variables['course_type'] = $course_type;
   }
-  $variables['course_type'] = $course_type;
 }
 
 /**
