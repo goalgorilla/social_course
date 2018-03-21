@@ -83,6 +83,11 @@ function social_course_theme($existing, $type, $theme, $path) {
         'items' => [],
       ],
     ],
+    'course_related_courses' => [
+      'variables' => [
+        'items' => [],
+      ],
+    ],
     'node__section__teaser' => [
       'variables' => [
         'parts_count' => NULL,

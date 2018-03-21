@@ -6,6 +6,7 @@ dependencies:
     - field.field.group.course_basic.field_course_opening_status
     - field.field.group.course_basic.field_course_order
     - field.field.group.course_basic.field_course_redirect_url
+    - field.field.group.course_basic.field_course_related_courses
     - field.field.group.course_basic.field_course_type
     - field.field.group.course_basic.field_group_description
     - field.field.group.course_basic.field_group_image
@@ -51,6 +52,19 @@ third_party_settings:
         required_fields: true
       label: Settings
       region: content
+    group_related_courses:
+      children:
+        - field_course_related_courses
+      parent_name: ''
+      weight: 3
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: 'Related courses'
+      region: content
 id: group.course_basic.default
 targetEntityType: group
 bundle: course_basic
@@ -75,6 +89,15 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
+  field_course_related_courses:
+    weight: 4
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_course_type:
     weight: 4
