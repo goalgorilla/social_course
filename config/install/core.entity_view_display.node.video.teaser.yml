@@ -17,5 +17,4 @@ hidden:
   field_video_description: true
   field_video_video: true
   flag_follow_content: true
-  langcode: true
   links: true

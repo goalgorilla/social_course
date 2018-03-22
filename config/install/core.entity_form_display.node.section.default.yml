@@ -90,7 +90,6 @@ content:
 hidden:
   created: true
   field_section_weight: true
-  langcode: true
   path: true
   promote: true
   sticky: true

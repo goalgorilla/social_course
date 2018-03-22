@@ -43,7 +43,6 @@ content:
 hidden:
   created: true
   groups: true
-  langcode: true
   path: true
   promote: true
   sticky: true

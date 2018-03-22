@@ -25,5 +25,4 @@ hidden:
   field_group_description: true
   field_group_image: true
   label: true
-  langcode: true
   uid: true

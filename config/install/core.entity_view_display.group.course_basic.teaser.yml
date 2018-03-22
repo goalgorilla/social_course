@@ -61,5 +61,4 @@ hidden:
   field_course_redirect_url: true
   field_course_related_courses: true
   field_course_type: true
-  langcode: true
   uid: true

@@ -36,5 +36,4 @@ hidden:
   field_course_type: true
   field_group_image: true
   label: true
-  langcode: true
   uid: true

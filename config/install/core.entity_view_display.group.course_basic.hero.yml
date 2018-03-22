@@ -45,5 +45,4 @@ hidden:
   field_course_redirect_url: true
   field_course_related_courses: true
   field_group_description: true
-  langcode: true
   uid: true
