@@ -739,6 +739,9 @@ function social_course_preprocess_group(&$variables) {
   if (in_array($group->bundle(), $bundles)) {
     $course_wrapper->setCourse($group);
 
+    // attach library
+    $variables['#attached']['library'][] = 'social_course/social_course';
+
     // Count number of course sections.
     $sections = $course_wrapper->getSections();
     $variables['course_sections'] = count($sections);
@@ -1166,6 +1169,9 @@ function social_course_preprocess_node(&$variables) {
   if ($node->bundle() == 'section') {
     // Load parent group (course).
     $group_content = GroupContent::loadByEntity($node);
+
+    // attach library
+    $variables['#attached']['library'][] = 'social_course/social_course';
 
     if (!$group_content) {
       return;

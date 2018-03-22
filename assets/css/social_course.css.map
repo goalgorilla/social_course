@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,IAAK;EACH,UAAU,EAAE,KAAK",
+"sources": ["social_course.scss"],
+"names": [],
+"file": "social_course.css"
+}
