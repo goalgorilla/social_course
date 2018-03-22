@@ -154,5 +154,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_course_opening_status: true
-  langcode: true
   path: true

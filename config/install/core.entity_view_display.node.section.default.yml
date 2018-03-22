@@ -44,5 +44,4 @@ content:
 hidden:
   field_section_weight: true
   flag_follow_content: true
-  langcode: true
   links: true

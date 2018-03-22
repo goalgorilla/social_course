@@ -27,6 +27,13 @@ content:
     third_party_settings: {  }
     type: video_embed_field_textfield
     region: content
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 3
+    region: content
+    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 0
@@ -37,7 +44,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  langcode: true
+  groups: true
   path: true
   promote: true
   sticky: true

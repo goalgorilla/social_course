@@ -4,7 +4,6 @@ type: module
 core: 8.x
 dependencies:
   - block
-  - content_translation
   - datetime
   - entity_reference_revisions
   - field
@@ -15,7 +14,6 @@ dependencies:
   - image
   - image_widget_crop
   - inline_entity_form
-  - language
   - link
   - menu_ui
   - node
@@ -28,6 +26,7 @@ dependencies:
   - social_paragraphs
   - social_topic
   - system
+  - taxonomy
   - text
   - user
   - video_embed_field
