@@ -6,22 +6,22 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\flag_test_plugins\Plugin\Flag\AccessDenied;
 use Drupal\group\Entity\GroupInterface;
-use Drupal\social_course\CourseEnrollmentInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
- * Provides a 'CourseMaterialNavigationBlock' block.
+ * Provides a 'CourseSectionNavigationBlock' block.
  *
  * @Block(
- *   id = "course_material_navigation",
- *   admin_label = @Translation("Course material navigation block"),
+ *   id = "course_section_navigation",
+ *   admin_label = @Translation("Course section navigation block"),
  *   context = {
  *     "node" = @ContextDefinition("entity:node", required = FALSE)
  *   }
  * )
  */
-class CourseMaterialNavigationBlock extends BlockBase {
+class CourseSectionNavigationBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
@@ -40,57 +40,27 @@ class CourseMaterialNavigationBlock extends BlockBase {
       /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
       $course_wrapper = \Drupal::service('social_course.course_wrapper');
       $course_wrapper->setCourseFromMaterial($node);
-      $section = $course_wrapper->getSectionFromMaterial($node);
+      $parent_section = $course_wrapper->getSectionFromMaterial($node);
       $items = [];
-      $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
-      $course_enrollments = $storage->loadByProperties([
-        'sid' => $section->id(),
-        'uid' => \Drupal::currentUser()->id(),
-        'gid' => $course_wrapper->getCourse()->id(),
-      ]);
 
-      foreach ($course_enrollments as $key => $course_enrollment) {
-        unset($course_enrollments[$key]);
-        $course_enrollments[$course_enrollment->get('mid')->target_id] = $course_enrollment;
-      }
-
-      /** @var \Drupal\node\NodeInterface $material */
-      foreach ($course_wrapper->getMaterials($section) as $material) {
+      foreach ($course_wrapper->getSections() as $section) {
         $item = [
-          'label' => $material->label(),
+          'label' => $section->label(),
           'url' => FALSE,
-          'type' => $material->bundle(),
-          'active' => FALSE,
-          'number' => $course_wrapper->getMaterialNumber($material) + 1,
-          'finished' => FALSE,
         ];
 
-        if ($material->id() === $node->id()) {
-          $item['active'] = TRUE;
+        if ($course_wrapper->sectionAccess($section, \Drupal::currentUser(), 'view')->isAllowed()) {
+          $item['url'] = $section->toUrl();
         }
 
-        if (isset($course_enrollments[$material->id()]) && $course_enrollments[$material->id()]->getStatus() === CourseEnrollmentInterface::FINISHED) {
-          $item['finished'] = TRUE;
+        if ($section->id() !== $parent_section->id()) {
+          $items[] = $item;
         }
-
-        if ($course_wrapper->materialAccess($material, \Drupal::currentUser(), 'view')->isAllowed()) {
-          $item['url'] = $material->toUrl();
-        }
-
-        $items[] = $item;
       }
 
       return [
-        '#theme' => 'course_material_navigation',
+        '#theme' => 'course_section_navigation',
         '#items' => $items,
-        '#parent_course' => [
-          'label' => $course_wrapper->getCourse()->label(),
-          'url' => $course_wrapper->getCourse()->toUrl(),
-        ],
-        '#parent_section' => [
-          'label' => $section->label(),
-          'url' => $section->toUrl(),
-        ],
       ];
     }
     else {
@@ -139,7 +109,15 @@ class CourseMaterialNavigationBlock extends BlockBase {
         ->setCourseFromMaterial($node)
         ->getCourse();
 
-      return AccessResult::allowedIf($group instanceof GroupInterface);
+      /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
+      $course_wrapper = \Drupal::service('social_course.course_wrapper');
+      $course_wrapper->setCourseFromMaterial($node);
+      if (count($course_wrapper->getSections()) > 1) {
+        return AccessResult::allowedIf($group instanceof GroupInterface);
+      }
+      else {
+        return AccessResult::forbidden();
+      }
     }
 
     return parent::blockAccess($account);

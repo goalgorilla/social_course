@@ -136,7 +136,7 @@ class CourseWrapper implements CourseWrapperInterface {
       case 'start':
       case 'continue':
         // Do not allow to author start a course.
-        if ($node->id() == $account->id() || $this->getCourse()->getOwnerId() == $account->id() || !$this->getCourse()->getMember($account)) {
+        if ($node->getOwnerId() == $account->id() || $this->getCourse()->getOwnerId() == $account->id() || !$this->getCourse()->getMember($account)) {
           return AccessResult::forbidden()->cachePerUser();
         }
 
