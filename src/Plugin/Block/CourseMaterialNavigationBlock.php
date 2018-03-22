@@ -69,9 +69,7 @@ class CourseMaterialNavigationBlock extends BlockBase {
           $item['active'] = TRUE;
         }
 
-        /** @var \Drupal\social_course\CourseEnrollmentInterface $material_wrapper */
-        $material_wrapper = $course_enrollments[$material->id()];
-        if ($material_wrapper && $material_wrapper->getStatus() === CourseEnrollmentInterface::FINISHED) {
+        if (isset($course_enrollments[$material->id()]) && $course_enrollments[$material->id()]->getStatus() === CourseEnrollmentInterface::FINISHED) {
           $item['finished'] = TRUE;
         }
 
