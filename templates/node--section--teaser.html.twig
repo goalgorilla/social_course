@@ -70,7 +70,8 @@
 
 {%
   set classes = [
-    view_mode == 'teaser' ? 'card section-teaser',
+    'teaser--course',
+    view_mode == 'teaser' ? 'section-teaser',
     node.isPromoted() ? 'promoted',
     node.isSticky() ? 'sticky',
     not node.isPublished() ? 'teaser--unpublished',

@@ -101,11 +101,13 @@ function social_course_theme($existing, $type, $theme, $path) {
       'base hook' => 'node',
     ],
     'node__video__full' => [
-
       'variables' => [
         'parent_course' => NULL,
       ],
       'base hook' => 'node',
+    ],
+   'block__course_material_navigation' => [
+      'base hook' => 'block',
     ],
   ];
 }
