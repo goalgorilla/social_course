@@ -2,3 +2,7 @@ social_course:
   css:
     component:
       assets/css/social_course.css: { }
+admin:
+  css:
+    theme:
+      assets/css/social_course_admin.css: {}

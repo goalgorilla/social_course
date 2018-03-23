@@ -437,6 +437,9 @@ function social_course_preprocess_menu(&$variables) {
  */
 function social_course_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Add and edit forms.
+  if ('node_section_edit_form' || 'node_section_form' === $form_id) {
+    $form['#attached']['library'][] = 'social_course/admin';
+  }
   $course_forms = [
     'group_course_basic_add_form',
     'group_course_basic_edit_form',
@@ -445,6 +448,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
   ];
 
   if (in_array($form_id, $course_forms)) {
+
     $form['uid']['widget'][0]['target_id']['#title'] = t('Author');
     $form['actions']['submit']['#submit'][] = '_social_course_group_form_submit';
 
