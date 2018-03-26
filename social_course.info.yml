@@ -32,5 +32,6 @@ dependencies:
   - video_embed_field
   - views
   - weight
+
 version: 8.x-1.0
 package: Social

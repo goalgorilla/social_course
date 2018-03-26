@@ -101,11 +101,13 @@ function social_course_theme($existing, $type, $theme, $path) {
       'base hook' => 'node',
     ],
     'node__video__full' => [
-
       'variables' => [
         'parent_course' => NULL,
       ],
       'base hook' => 'node',
+    ],
+   'block__course_material_navigation' => [
+      'base hook' => 'block',
     ],
   ];
 }
@@ -435,6 +437,9 @@ function social_course_preprocess_menu(&$variables) {
  */
 function social_course_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Add and edit forms.
+  if ('node_section_edit_form' || 'node_section_form' === $form_id) {
+    $form['#attached']['library'][] = 'social_course/admin';
+  }
   $course_forms = [
     'group_course_basic_add_form',
     'group_course_basic_edit_form',
@@ -443,6 +448,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
   ];
 
   if (in_array($form_id, $course_forms)) {
+
     $form['uid']['widget'][0]['target_id']['#title'] = t('Author');
     $form['actions']['submit']['#submit'][] = '_social_course_group_form_submit';
 
@@ -738,6 +744,9 @@ function social_course_preprocess_group(&$variables) {
 
   if (in_array($group->bundle(), $bundles)) {
     $course_wrapper->setCourse($group);
+
+    // attach library
+    $variables['#attached']['library'][] = 'social_course/social_course';
 
     // Count number of course sections.
     $sections = $course_wrapper->getSections();
@@ -1166,6 +1175,9 @@ function social_course_preprocess_node(&$variables) {
   if ($node->bundle() == 'section') {
     // Load parent group (course).
     $group_content = GroupContent::loadByEntity($node);
+
+    // attach library
+    $variables['#attached']['library'][] = 'social_course/social_course';
 
     if (!$group_content) {
       return;

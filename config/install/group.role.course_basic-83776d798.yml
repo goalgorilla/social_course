@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.course_basic
+  enforced:
+    config:
+      - user.role.contentmanager
+id: course_basic-83776d798
+label: 'Content manager'
+weight: 3
+internal: true
+audience: outsider
+group_type: course_basic
+permissions_ui: false
+permissions:
+  0: 'access content overview'
+  1: 'administer group'
+  2: 'delete group'
+  3: 'edit group'
+  4: 'administer members'
+  5: 'join group'
+  6: 'view group_membership content'
+  7: 'view group'
+  8: 'administer comments'
+  9: 'edit own comments'
+  10: 'post comments'
+  11: 'access comments'
+  12: 'access group_node overview'
+  15: 'create group_node:section entity'
+  16: 'delete any group_node:section entity'
+  17: 'delete own group_node:section entity'
+  18: 'update any group_node:section entity'
+  19: 'update own group_node:section entity'
+  20: 'view group_node:section entity'
+  21: 'view unpublished group_node:section entity'
+  22: 'create group_node:section content'
+  23: 'delete any group_node:section content'
+  24: 'delete own group_node:section content'
+  25: 'update any group_node:section content'
+  26: 'update own group_node:section content'
+  27: 'view group_node:section content'
