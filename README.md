@@ -1,12 +1,6 @@
-# social_course module
+# Social Course
 
 Enables CM+ to create courses
-by Goal Gorilla ECI team
-
-Initial styles match socialBlue palette
-
-Repo: https://bitbucket.org/goalgorilla/social_course
-
 
 ### Features
 
@@ -17,19 +11,18 @@ Repo: https://bitbucket.org/goalgorilla/social_course
 - Uses https://www.drupal.org/project/paragraphs for image, text and file content within course
 - 'Add Section' button added in sidebar of a course
 - Course overview shows status of sections (enrolled, started, finished)
+- Initial styles match socialblue palette
 
 More info to be added here about permissions
 
-
-
-### Installing
+### Installation
 
 In your project's composer.json:
 
 ```
 "require": {
   ...
-  "goalgorilla/social_course": "dev-master",
+  "goalgorilla/social_course": "^1.0",
   ...
 }
 ```
@@ -52,7 +45,6 @@ WIP
 
 WIP
 
+### Documentation
 
-### Intended Results
-
-Update once https://jira.goalgorilla.com/browse/CBI-270 is completed
+Update once https://jira.goalgorilla.com/browse/ECI-676 is completed
