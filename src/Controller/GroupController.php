@@ -17,7 +17,7 @@ class GroupController extends EntityController {
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $bundles = $course_wrapper::getAvailableBundles();
-    $url = Url::fromRoute('social_course.group_stream', [
+    $url = Url::fromRoute('social_group.stream', [
       'group' => $group->id(),
     ]);
 
@@ -62,16 +62,6 @@ class GroupController extends EntityController {
       ->cachePerUser();
   }
 
-  /**
-   * Callback of "/stream" page.
-   *
-   * @return array
-   */
-  public function stream() {
-    return [
-      '#markup' => '',
-    ];
-  }
 
   /**
    * Access callback of "/stream" page.

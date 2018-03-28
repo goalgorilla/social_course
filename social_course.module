@@ -873,7 +873,7 @@ function social_course_menu_local_tasks_alter(&$data, $route_name) {
     }
 
     if ($group->bundle() == 'course_basic') {
-      foreach (['social_group.events', 'social_group.topics', 'social_course.group_stream', 'social_group.members'] as $key) {
+      foreach (['social_group.events', 'social_group.topics', 'social_group.stream', 'social_group.members'] as $key) {
         if (isset($data['tabs'][0][$key])) {
           $data['tabs'][0][$key]['#access'] = AccessResult::forbidden();
         }

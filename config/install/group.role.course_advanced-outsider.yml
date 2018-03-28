@@ -22,4 +22,4 @@ permissions:
   - 'view group_node:topic entity'
   - 'view group_node:topic content'
   - 'access comments'
-  - 'view stream page group'
+  - 'view group stream page'

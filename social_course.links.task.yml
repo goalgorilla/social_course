@@ -2,8 +2,3 @@ social_course.courses:
   route_name: view.courses_user.page
   base_route: entity.user.canonical
   title: Courses
-social_course.group_stream:
-  route_name: social_course.group_stream
-  base_route: entity.group.canonical
-  title: Stream
-  weight: -1

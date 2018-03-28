@@ -70,4 +70,4 @@ permissions:
   - 'update any group_node:section content'
   - 'update own group_node:section content'
   - 'view group_node:section content'
-  - 'view stream page group'
+  - 'view group stream page'
