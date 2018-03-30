@@ -129,6 +129,31 @@ class CourseWrapper implements CourseWrapperInterface {
   /**
    * {@inheritdoc}
    */
+  public function getSectionStatus(NodeInterface $node, AccountInterface $account) {
+    $storage = $this->entityTypeManager->getStorage('course_enrollment');
+    $entities = $storage->loadByProperties([
+      'uid' => $account->id(),
+      'gid' => $this->getCourse()->id(),
+      'sid' => $node->id(),
+    ]);
+
+    if (!$entities) {
+      return CourseEnrollmentInterface::NOT_STARTED;
+    }
+
+    foreach ($entities as $entity) {
+      /** @var CourseEnrollmentInterface $entity */
+      if ($entity->getStatus() === CourseEnrollmentInterface::IN_PROGRESS) {
+        return CourseEnrollmentInterface::IN_PROGRESS;
+      }
+    }
+
+    return CourseEnrollmentInterface::FINISHED;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function sectionAccess(NodeInterface $node, AccountInterface $account, $op) {
     $access = AccessResult::neutral();
 
