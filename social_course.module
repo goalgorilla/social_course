@@ -106,8 +106,11 @@ function social_course_theme($existing, $type, $theme, $path) {
       ],
       'base hook' => 'node',
     ],
-   'block__course_material_navigation' => [
+    'block__course_material_navigation' => [
       'base hook' => 'block',
+    ],
+    'field__group__field_course_opening_date' => [
+      'base hook' => 'field',
     ],
   ];
 }
