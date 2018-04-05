@@ -1475,6 +1475,9 @@ function social_course_group_presave(GroupInterface $entity) {
       $status = $date <= gmdate("Y-m-d\TH:i:00");
       $entity->get('field_course_opening_status')->value = $status;
     }
+    else {
+      $entity->get('field_course_opening_status')->value = TRUE;
+    }
   }
 }
 
