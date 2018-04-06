@@ -1009,7 +1009,7 @@ function social_course_preprocess_page_title(&$variables) {
 
   switch (\Drupal::routeMatch()->getRouteName()) {
     case 'view.group_information.page_group_about':
-      $variables['title'] = t('About course');
+      $variables['title'] = t('About');
       break;
 
     case 'entity.group.join':
