@@ -32,6 +32,16 @@ content:
       timezone_override: ''
       date_format: 'j M H:i'
     third_party_settings: {  }
+  field_course_opening_status:
+    type: boolean
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
   field_course_order:
     type: list_default
     weight: 3
@@ -66,7 +76,6 @@ content:
 hidden:
   changed: true
   created: true
-  field_course_opening_status: true
   field_course_redirect_url: true
   field_course_related_courses: true
   field_course_type: true

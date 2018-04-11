@@ -47,9 +47,11 @@ group_hero_styled_image_url ? 'cover-img cover-img-gradient',
         <div class="hero-footer">
           <div class="hero-footer__text">
             {% if content.field_course_opening_date|render %}
-              <span class="badge-default badge--large badge">
+              {% if content.field_course_opening_status.0['#markup'] == 'Closed' %}
+                <span class="badge-default badge--large badge">
                 {% trans %}Starts at{% endtrans %} {{ content.field_course_opening_date }}
-              </span>
+                </span>
+              {% endif %}
             {% endif %}
           </div>
             {% if group_operations_url %}
