@@ -45,7 +45,15 @@ group_hero_styled_image_url ? 'cover-img cover-img-gradient',
 
         <h1 class="page-title"> {{ content.label }}</h1>
         <div class="hero-footer">
-            <div class="hero-footer__text"></div>
+          <div class="hero-footer__text">
+            {% if content.field_course_opening_date|render %}
+              {% if content.field_course_opening_status.0['#markup'] == 'Closed' %}
+                <span class="badge-default badge--large badge">
+                {% trans %}Starts at{% endtrans %} {{ content.field_course_opening_date }}
+                </span>
+              {% endif %}
+            {% endif %}
+          </div>
             {% if group_operations_url %}
                 <div class="hero-footer__cta">
                     <div class="btn-group">
@@ -57,6 +65,12 @@ group_hero_styled_image_url ? 'cover-img cover-img-gradient',
                         {% else %}
                             <a href="{{ group_operations_url }}" class="btn btn-accent btn-lg btn-raised dropdown-toggle brand-bg-accent" title="Join">{% trans %}Enroll{% endtrans %}</a>
                         {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="hero-footer__cta">
+                    <div class="btn-group">
+                        <div class="btn btn-accent btn-lg btn-raised is-disabled dropdown-toggle brand-bg-accent" disabled="disabled"  title="Enrollment is closed">{% trans %}Enrollment is closed{% endtrans %}</div>
                     </div>
                 </div>
             {% endif %}

@@ -106,8 +106,11 @@ function social_course_theme($existing, $type, $theme, $path) {
       ],
       'base hook' => 'node',
     ],
-   'block__course_material_navigation' => [
+    'block__course_material_navigation' => [
       'base hook' => 'block',
+    ],
+    'field__group__field_course_opening_date' => [
+      'base hook' => 'field',
     ],
   ];
 }
@@ -1006,7 +1009,7 @@ function social_course_preprocess_page_title(&$variables) {
 
   switch (\Drupal::routeMatch()->getRouteName()) {
     case 'view.group_information.page_group_about':
-      $variables['title'] = t('About course');
+      $variables['title'] = t('About');
       break;
 
     case 'entity.group.join':
@@ -1471,6 +1474,9 @@ function social_course_group_presave(GroupInterface $entity) {
     if ($date = $entity->get('field_course_opening_date')->value) {
       $status = $date <= gmdate("Y-m-d\TH:i:00");
       $entity->get('field_course_opening_status')->value = $status;
+    }
+    else {
+      $entity->get('field_course_opening_status')->value = TRUE;
     }
   }
 }

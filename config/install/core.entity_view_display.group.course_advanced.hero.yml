@@ -13,12 +13,32 @@ dependencies:
     - group.type.course_advanced
     - image.style.social_xx_large
   module:
+    - datetime
     - image
 id: group.course_advanced.hero
 targetEntityType: group
 bundle: course_advanced
 mode: hero
 content:
+  field_course_opening_date:
+    type: datetime_custom
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      timezone_override: ''
+      date_format: 'j M H:i'
+    third_party_settings: {  }
+  field_course_opening_status:
+    type: boolean
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings: {  }
   field_group_image:
     type: image
     weight: 1
@@ -39,8 +59,6 @@ content:
 hidden:
   changed: true
   created: true
-  field_course_opening_date: true
-  field_course_opening_status: true
   field_course_order: true
   field_course_redirect_url: true
   field_course_related_courses: true

@@ -66,11 +66,7 @@
 
     {{ title_prefix }}
     <header{{ title_attributes.addClass('complementary-title') }}>
-      <h4 class="card__title">{% trans %}Section Title{% endtrans %}
-        <div class="card__subtitle">
-          {{ "Section %number%"|trans({"%number%": section_number}) }}
-        </div>
-      </h4>
+      <h4 class="card__title">{% trans %}In this section{% endtrans %}</h4>
     </header>
     {{ title_suffix }}
 {% endif %}
@@ -81,7 +77,7 @@
       </div>
 
       <footer class="card__actionbar">
-          <a class="btn btn-flat" href="{{ course_url }}">{% trans %}Back to the course{% endtrans %}</a>
+          <a class="btn btn-flat" href="{{ course_url }}">{% trans %}Go back{% endtrans %}</a>
       </footer>
     {% endblock %}
 
