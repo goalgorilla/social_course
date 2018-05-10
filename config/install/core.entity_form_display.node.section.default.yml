@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.section.field_section_content
     - field.field.node.section.field_section_description
     - field.field.node.section.field_section_image
+    - field.field.node.section.field_section_redirect_url
     - field.field.node.section.field_section_weight
     - image.style.social_x_large
     - node.type.section
@@ -12,6 +13,7 @@ dependencies:
     - field_group
     - image
     - inline_entity_form
+    - link
     - social_group
     - text
 third_party_settings:
@@ -66,6 +68,14 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: image_image
+    region: content
+  field_section_redirect_url:
+    weight: 26
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   groups:
     type: social_group_selector_widget

@@ -159,6 +159,7 @@ class CoursesController extends ControllerBase {
       }
     }
 
+    // Redirect after finishing course.
     if (!$group->get('field_course_redirect_url')->isEmpty()) {
       $uri = $group->get('field_course_redirect_url')->uri;
       $parsed_url = parse_url($uri);
@@ -199,7 +200,28 @@ class CoursesController extends ControllerBase {
           ]));
         }
 
-        $response = self::nextMaterial($group, $next_section);
+        // Redirect after finishing section.
+        $current_section = $course_wrapper->getSection($node, 0);
+        if (!$current_section->get('field_section_redirect_url')->isEmpty()) {
+          $uri = $current_section->get('field_section_redirect_url')->uri;
+          $parsed_url = parse_url($uri);
+
+          if (isset($parsed_url['host'])) {
+            $response = new TrustedRedirectResponse($uri);
+          }
+          else {
+            try {
+              $url = Url::fromUri($uri);
+            } catch (\InvalidArgumentException $exception) {
+              $url = Url::fromUserInput($uri);
+            }
+            $response = new RedirectResponse($url->toString());
+          }
+        }
+        else {
+          $response = self::nextMaterial($group, $next_section);
+        }
+
       }
     }
     else {

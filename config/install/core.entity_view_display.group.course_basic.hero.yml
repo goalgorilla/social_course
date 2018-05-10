@@ -8,6 +8,7 @@ dependencies:
     - field.field.group.course_basic.field_course_order
     - field.field.group.course_basic.field_course_redirect_url
     - field.field.group.course_basic.field_course_related_courses
+    - field.field.group.course_basic.field_course_type
     - field.field.group.course_basic.field_group_description
     - field.field.group.course_basic.field_group_image
     - group.type.course_basic
@@ -62,5 +63,6 @@ hidden:
   field_course_order: true
   field_course_redirect_url: true
   field_course_related_courses: true
+  field_course_type: true
   field_group_description: true
   uid: true
