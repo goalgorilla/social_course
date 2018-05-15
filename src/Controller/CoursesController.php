@@ -166,6 +166,7 @@ class CoursesController extends ControllerBase {
 
       if (isset($parsed_url['host'])) {
         $response = new TrustedRedirectResponse($uri);
+        $response->addCacheableDependency($uri);
       }
       else {
         try {
@@ -208,6 +209,7 @@ class CoursesController extends ControllerBase {
 
           if (isset($parsed_url['host'])) {
             $response = new TrustedRedirectResponse($uri);
+            $response->addCacheableDependency($uri);
           }
           else {
             try {
