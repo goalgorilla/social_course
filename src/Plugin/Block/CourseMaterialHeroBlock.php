@@ -39,7 +39,8 @@ class CourseMaterialHeroBlock extends PageTitleBlock {
       /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
       $course_wrapper = \Drupal::service('social_course.course_wrapper');
       $course_wrapper->setCourseFromMaterial($node);
-      if ($course = $course_wrapper->getCourse() && !$course->get('field_course_type')->isEmpty()) {
+      $course = $course_wrapper->getCourse();
+      if ($course instanceof GroupInterface && !$course->get('field_course_type')->isEmpty()) {
         $parent_course_type = Term::load($course->field_course_type->target_id)->getName();
       }
       return [
