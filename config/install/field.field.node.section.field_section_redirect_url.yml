@@ -11,7 +11,7 @@ field_name: field_section_redirect_url
 entity_type: node
 bundle: section
 label: 'Redirect URL'
-description: ''
+description: "Redirect people to this URL after they finished a section. Text of the next button may be customized.\r\nWorks only for non-sequential courses."
 required: false
 translatable: false
 default_value: {  }
