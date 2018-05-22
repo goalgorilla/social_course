@@ -15,6 +15,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\group\Entity\GroupContent;
 use Drupal\social_course\Controller\CoursesController;
 use Drupal\group\Entity\GroupInterface;
+use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
@@ -1009,7 +1010,7 @@ function social_course_preprocess_page_title(&$variables) {
 
   switch (\Drupal::routeMatch()->getRouteName()) {
     case 'view.group_information.page_group_about':
-      $variables['title'] = t('About');
+      $variables['title'] = t('About course');
       break;
 
     case 'entity.group.join':
@@ -1161,6 +1162,17 @@ function social_course_block_access(Block $block, $operation, AccountInterface $
       'entity.node.edit_form',
     ];
     if (in_array($route_name, $excluded_routes)) {
+      return AccessResult::forbidden();
+    }
+  }
+
+  // Exclude breadcrumb for course pages.
+  if ($operation == 'view' && $block->getPluginId() == 'system_breadcrumb_block') {
+    $course_types = ['course_basic', 'course_advanced'];
+    $group_type = \Drupal::routeMatch()->getParameter('group_type');
+    $group = _social_group_get_current_group();
+    if (($group instanceof GroupInterface && in_array($group->bundle(), $course_types))
+      || $group_type instanceof GroupTypeInterface && in_array($group_type->id(), $course_types)) {
       return AccessResult::forbidden();
     }
   }
