@@ -6,4 +6,5 @@ label: 'Advanced Course'
 description: 'Besides basic course information, the activity stream, events, topics and members will be available.'
 creator_membership: false
 creator_wizard: false
-creator_roles: {  }
+creator_roles:
+  - course_advanced-course_manager

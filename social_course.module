@@ -625,7 +625,16 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
   if (in_array($form_id, $membership_forms)) {
     // Change titles on membership forms.
     $form['entity_id']['widget'][0]['target_id']['#title'] = t('Select a member');
-    $form['group_roles']['widget']['#title'] = t('Group roles');
+    $form['group_roles']['widget']['#title'] = t('Course roles');
+
+    // Remove the 'group_admin' role in a generic way
+    // for all (future) group types.
+    foreach ($form['group_roles']['widget']['#options'] as $key => $value) {
+      // Hide the submission for the Group Admin role.
+      if (strpos($key, 'course_admin') != FALSE) {
+        unset($form['group_roles']['widget']['#options'][$key]);
+      }
+    }
 
     if ('group_content_course_basic-group_membership_edit_form' == $form_id) {
       // Remove the user selection autocomplete on editing group membership.
