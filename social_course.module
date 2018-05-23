@@ -1136,31 +1136,34 @@ function social_course_block_access(Block $block, $operation, AccountInterface $
     'article',
     'video',
   ];
-
   \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
+
+  $edit_routes = [
+    'entity.node.edit_form',
+    'entity.node.delete_form',
+  ];
+  $current_route = \Drupal::routeMatch()->getRouteName();
 
   // Disable block for video and article node view pages.
   if ($operation == 'view' && $block->getPluginId() == 'social_page_title_block') {
-    $nid = \Drupal::routeMatch()->getRawParameter('node');
-    if (!empty($nid) && ($node = Node::load($nid))) {
-      if (in_array($node->getType(), $material_types)) {
-        return AccessResult::forbidden();
+    if (!in_array($current_route, $edit_routes)) {
+      $nid = \Drupal::routeMatch()->getRawParameter('node');
+      if (!empty($nid) && ($node = Node::load($nid))) {
+        if (in_array($node->getType(), $material_types)) {
+          return AccessResult::forbidden();
+        }
       }
     }
   }
 
   // Exclude Course navigation blocks form Add and Edit node pages.
   $course_blocks = [
+    'course_material_hero',
     'course_material_navigation',
     'course_material_pager',
   ];
   if ($operation == 'view' && in_array($block->getPluginId(), $course_blocks)) {
-    $route_name = \Drupal::routeMatch()->getRouteName();
-    $excluded_routes = [
-      'node.add',
-      'entity.node.edit_form',
-    ];
-    if (in_array($route_name, $excluded_routes)) {
+    if (in_array($current_route, $edit_routes)) {
       return AccessResult::forbidden();
     }
   }
