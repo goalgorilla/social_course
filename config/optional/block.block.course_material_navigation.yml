@@ -4,6 +4,7 @@ dependencies:
   module:
     - node
     - social_course
+    - system
   theme:
     - socialbase
 id: course_material_navigation

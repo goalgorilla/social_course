@@ -2,34 +2,17 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.node.course
     - field.field.node.video.field_video_description
     - field.field.node.video.field_video_video
     - node.type.video
   module:
-    - field_group
     - text
     - video_embed_field
-third_party_settings:
-  field_group:
-    group_content:
-      children:
-        - title
-        - field_video_description
-        - field_video_video
-      parent_name: ''
-      weight: 0
-      format_type: fieldset
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        required_fields: true
-      label: Content
-      region: content
-id: node.video.default
+id: node.video.course
 targetEntityType: node
 bundle: video
-mode: default
+mode: course
 content:
   field_video_description:
     weight: 2
