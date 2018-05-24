@@ -3,9 +3,9 @@ status: true
 dependencies:
   config:
     - group.type.course_advanced
-id: course_advanced-course_manager
-label: 'Course Maintainer'
-weight: -99
+id: course_advanced-group_admin
+label: 'Course Admin'
+weight: 5
 internal: false
 audience: member
 group_type: course_advanced

@@ -631,7 +631,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     // for all (future) group types.
     foreach ($form['group_roles']['widget']['#options'] as $key => $value) {
       // Hide the submission for the Group Admin role.
-      if (strpos($key, 'course_admin') != FALSE) {
+      if (strpos($key, 'group_admin') != FALSE) {
         unset($form['group_roles']['widget']['#options'][$key]);
       }
     }
