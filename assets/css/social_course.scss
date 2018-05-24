@@ -95,8 +95,9 @@ $gray-lighter: #e6e6e6;
   }
 }
 
-.list-item__text {
-  .active & {
+.list-item {
+  &.active {
     color: #29abe2;
+    fill: #29abe2;
   }
 }

@@ -70,7 +70,8 @@
       margin-bottom: 2.5rem;
       padding-left: 2.2rem; } }
 
-.active .list-item__text {
-  color: #29abe2; }
+.list-item.active {
+  color: #29abe2;
+  fill: #29abe2; }
 
 /*# sourceMappingURL=social_course.css.map */
