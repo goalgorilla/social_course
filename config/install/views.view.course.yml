@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - node.type.section
+    - node.type.course_section
   module:
     - group
     - node

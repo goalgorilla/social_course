@@ -3,13 +3,13 @@ status: true
 dependencies:
   module:
     - node
-    - course_video_embed_field
-id: node.field_course_video_course_video
-field_name: field_course_video_course_video
+    - video_embed_field
+id: node.field_course_video_video
+field_name: field_course_video_video
 entity_type: node
-type: course_video_embed_field
+type: video_embed_field
 settings: {  }
-module: course_video_embed_field
+module: video_embed_field
 locked: false
 cardinality: 1
 translatable: true
