@@ -11,8 +11,8 @@ audience: member
 group_type: course_basic
 permissions_ui: true
 permissions:
-  0: 'update own group_membership content'
-  1: 'leave group'
-  2: 'view group'
-  3: 'view group_node:section entity'
-  8: 'view group_node:section content'
+  - 'update own group_membership content'
+  - 'leave group'
+  - 'view group'
+  - 'view group_node:section entity'
+  - 'view group_node:section content'

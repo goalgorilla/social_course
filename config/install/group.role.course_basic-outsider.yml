@@ -11,7 +11,7 @@ audience: outsider
 group_type: course_basic
 permissions_ui: true
 permissions:
-  0: 'join group'
-  1: 'view group'
-  2: 'view group_node:section entity'
-  6: 'view group_node:section content'
+  - 'join group'
+  - 'view group'
+  - 'view group_node:section entity'
+  - 'view group_node:section content'
