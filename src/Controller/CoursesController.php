@@ -79,7 +79,7 @@ class CoursesController extends ControllerBase {
    */
   public function startSection(GroupInterface $group, NodeInterface $node) {
     // Get first material.
-    $material = $node->get('field_section_content')->get(0)->entity;
+    $material = $node->get('field_course_section_content')->get(0)->entity;
 
     // Join user to course.
     $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
@@ -117,7 +117,7 @@ class CoursesController extends ControllerBase {
    */
   public function nextMaterial(GroupInterface $group, NodeInterface $node) {
     $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
-    $field = $node->get('field_section_content');
+    $field = $node->get('field_course_section_content');
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $course_wrapper->setCourse($group);
@@ -237,7 +237,7 @@ class CoursesController extends ControllerBase {
     }
 
     // Forbid if section does not contain materials.
-    $field = $node->get('field_section_content');
+    $field = $node->get('field_course_section_content');
 
     if ($field->isEmpty()) {
       return AccessResult::forbidden();

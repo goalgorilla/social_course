@@ -19,8 +19,8 @@
  * @ingroup social_course_api
  */
 function hook_social_course_material_types_alter(&$content_types) {
-  if (in_array('video', $content_types) && !in_array('audio', $content_types)) {
-    $content_types[] = 'audio';
+  if (in_array('course_video', $content_types) && !in_array('course_audio', $content_types)) {
+    $content_types[] = 'course_audio';
   }
 }
 

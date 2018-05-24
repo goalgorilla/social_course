@@ -18,7 +18,7 @@ class ContentAccessCheck extends NodeAddAccessCheck {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account, NodeTypeInterface $node_type = NULL) {
-    $forbidden = ['article', 'section', 'video'];
+    $forbidden = ['course_article', 'course_section', 'course_video'];
 
     if (in_array($node_type->id(), $forbidden)) {
       return AccessResult::forbidden();

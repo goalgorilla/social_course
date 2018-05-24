@@ -440,9 +440,9 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
             'entity:node' => [
               'bundles' => [
                 'selected' => [
-                  'article',
-                  'section',
-                  'video',
+                  'course_article',
+                  'course_section',
+                  'course_video',
                 ],
               ],
             ],

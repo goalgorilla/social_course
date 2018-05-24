@@ -135,10 +135,10 @@ display:
           entity_field: type
           plugin_id: bundle
       sorts:
-        field_section_weight_value:
-          id: field_section_weight_value
-          table: node__field_section_weight
-          field: field_section_weight_value
+        field_course_section_weight_value:
+          id: field_course_section_weight_value
+          table: node__field_course_section_weight
+          field: field_course_section_weight_value
           relationship: none
           group_type: group
           admin_label: ''
@@ -161,12 +161,12 @@ display:
           admin_label: 'Content group content'
           required: false
           group_content_plugins:
-            'group_node:section': 'group_node:section'
-            'group_node:article': '0'
+            'group_node:course_section': 'group_node:course_section'
+            'group_node:course_article': '0'
             'group_node:event': '0'
             'group_node:page': '0'
             'group_node:topic': '0'
-            'group_node:video': '0'
+            'group_node:course_video': '0'
           entity_type: node
           plugin_id: group_content_to_entity_reverse
       arguments:
