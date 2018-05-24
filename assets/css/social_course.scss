@@ -1,7 +1,5 @@
 $gray-light: lighten(#000, 46.7%);
-$gray-lighter:           #e6e6e6;
-
-
+$gray-lighter: #e6e6e6;
 
 .teaser--course {
   padding: 1rem 0;
@@ -94,5 +92,12 @@ $gray-lighter:           #e6e6e6;
     margin-right: -2.5rem;
     margin-bottom: 2.5rem;
     padding-left: 2.2rem;
+  }
+}
+
+.list-item {
+  &.active {
+    color: #29abe2;
+    fill: #29abe2;
   }
 }
