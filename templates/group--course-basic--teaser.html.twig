@@ -3,6 +3,12 @@
 <div class="card teaser">
   <div class='teaser__image'>
     {{ content.field_group_image }}
+    <div class="teaser__teaser-type">
+      <svg class="teaser__teaser-type-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+      </svg>
+    </div>
   </div>
   <div class='teaser__body'>
     <div class="teaser__content">
@@ -14,7 +20,11 @@
       {% endif %}
       {{ title_suffix }}
       <div class="teaser__content-line">
-        <span>{{ finished_sections }} / {{ course_sections }} {% trans %}sections completed{% endtrans %}</span>
+        <svg class="teaser__content-type-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+          <path fill="none" d="M0 0h24v24H0z"/>
+        </svg>
+        <div class="teaser__content-text">{{ finished_sections }} / {{ course_sections }} {% trans %}sections completed{% endtrans %}</div>
       </div>
 
       {% if content.field_course_type|render is not empty %}
@@ -27,6 +37,11 @@
     </div>
 
     <div class="card__actionbar">
+        <div class="badge teaser__badge" title="{% trans %}The visibility of this content is set to {% endtrans %} {{ visibility_label }}">
+          <svg class="badge__icon">
+            <use xlink:href="#icon-public"></use>
+          </svg>
+        </div>
       {% if course_status == 'enrolled' %}
         <span class="badge badge-start teaser__badge badge--section-not-started">
             {% trans %}You enrolled{% endtrans %}

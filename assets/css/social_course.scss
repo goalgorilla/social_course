@@ -20,25 +20,6 @@ $gray-lighter: #e6e6e6;
   &:not(:last-child) {
     border-bottom: 1px solid $gray-lighter;
   }
-  .badge-start {
-    background-color: #fff;
-    color: $gray-light;
-    transition: 0.3s;
-
-    &[href] {
-      &:hover,
-      &:focus {
-        background-color: darken(#fff, 10%);
-      }
-    }
-    border: 1px solid $gray-light;
-  }
-  .badge-warning,
-  .badge-success {
-    .badge__icon {
-      fill: #fff;
-    }
-  }
   .exist-parts {
     display: inline-block;
     font-size: 0.75rem;
@@ -57,6 +38,28 @@ $gray-lighter: #e6e6e6;
           display: block;
         }
       }
+    }
+  }
+}
+.teaser,
+.teaser--course {
+  .badge-start {
+    background-color: #fff;
+    color: $gray-light;
+    transition: 0.3s;
+
+    &[href] {
+      &:hover,
+      &:focus {
+        background-color: darken(#fff, 10%);
+      }
+    }
+    border: 1px solid $gray-light;
+  }
+  .badge-warning,
+  .badge-success {
+    .badge__icon {
+      fill: #fff;
     }
   }
 }
