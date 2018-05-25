@@ -1,0 +1,54 @@
+{{ attach_library('socialbase/teaser') }}
+
+<div class="card teaser">
+  <div class='teaser__image'>
+    {{ content.field_group_image }}
+  </div>
+  <div class='teaser__body'>
+    <div class="teaser__content">
+      {{ title_prefix }}
+      {% if not page %}
+        <h4{{ title_attributes }} class="teaser__title">
+          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+        </h4>
+      {% endif %}
+      {{ title_suffix }}
+      <div class="teaser__content-line">
+        <span>{{ finished_sections }} / {{ course_sections }} {% trans %}sections completed{% endtrans %}</span>
+      </div>
+
+      {% if content.field_course_type|render is not empty %}
+        {% embed "node--teaser__field.html.twig" %}
+          {%- block field_icon -%} label {%- endblock -%}
+          {%- block field_value -%} {{ content.field_course_type }} {%- endblock -%}
+        {% endembed %}
+      {% endif %}
+
+    </div>
+
+    <div class="card__actionbar">
+      {% if course_status == 'enrolled' %}
+        <span class="badge badge-start teaser__badge badge--section-not-started">
+            {% trans %}You enrolled{% endtrans %}
+        </span>
+      {% elseif course_status == 'started' %}
+        <span class="badge teaser__badge badge-warning">
+          <span class="badge__container">
+            <span class="badge__label">{% trans %}You started{% endtrans %} </span>
+          </span>
+        </span>
+      {% elseif course_status == 'finished' %}
+        <span class="badge teaser__badge badge-success">
+            <span class="badge__container">
+              <span class="badge__label">{% trans %}You finished{% endtrans %} </span>
+            </span>
+          </span>
+      {% endif %}
+
+      <a href="{{ url }}" class="card__link" title="{{ label }}">
+        {% trans %}Read more{% endtrans %}
+      </a>
+    </div>
+
+  </div>
+</div>
