@@ -147,7 +147,7 @@ display:
           expose:
             label: ''
           plugin_id: standard
-      title: Course
+      title: Sections
       header: {  }
       footer: {  }
       empty: {  }

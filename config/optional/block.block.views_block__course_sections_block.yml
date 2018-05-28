@@ -8,9 +8,9 @@ dependencies:
     - system
     - views
   theme:
-    - socialblue
-id: socialblue_views_block__course_course_sections_block
-theme: socialblue
+    - socialbase
+id: views_block__course_sections_block
+theme: socialbase
 region: content
 weight: 0
 provider: null
@@ -19,7 +19,7 @@ settings:
   id: 'views_block:course-course_sections_block'
   label: ''
   provider: views
-  label_display: '0'
+  label_display: visible
   views_label: ''
   items_per_page: none
   context_mapping: {  }

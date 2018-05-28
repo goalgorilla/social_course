@@ -17,7 +17,6 @@ use Drupal\social_course\Controller\CoursesController;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
 use Drupal\node\Entity\Node;
 use Drupal\social_course\CourseEnrollmentInterface;
@@ -1087,6 +1086,12 @@ function social_course_preprocess_block(&$variables) {
           $variables['course_url'] = $course_wrapper->getCourse()->toUrl();
           $variables['section_number'] = $course_wrapper->getSectionNumber($section) + 1;
         }
+      }
+      break;
+    case 'views_block:group_managers-block_list_managers':
+      $group = _social_group_get_current_group();
+      if ($group instanceof GroupInterface && in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+        $variables['label']['#markup'] = t('Course Leaders');
       }
       break;
   }
