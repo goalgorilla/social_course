@@ -793,22 +793,22 @@ function social_course_preprocess_group(&$variables) {
       $variables['status_label'] = t('Unpublished');
     }
 
-//    if ($group->getMember($account)) {
-    $course_wrapper->setCourse($group);
-    switch ($course_wrapper->getCourseStatus($account)) {
-      case CourseEnrollmentInterface::NOT_STARTED:
-        $variables['course_status'] = SOCIAL_COURSE_STATUS_ENROLLED;
-        break;
+    if ($group->getMember($account)) {
+      $course_wrapper->setCourse($group);
+      switch ($course_wrapper->getCourseStatus($account)) {
+        case CourseEnrollmentInterface::NOT_STARTED:
+          $variables['course_status'] = SOCIAL_COURSE_STATUS_ENROLLED;
+          break;
 
-      case CourseEnrollmentInterface::IN_PROGRESS:
-        $variables['course_status'] = SOCIAL_COURSE_STATUS_STARTED;
-        break;
+        case CourseEnrollmentInterface::IN_PROGRESS:
+          $variables['course_status'] = SOCIAL_COURSE_STATUS_STARTED;
+          break;
 
-      case CourseEnrollmentInterface::FINISHED:
-        $variables['course_status'] = SOCIAL_COURSE_STATUS_FINISHED;
-        break;
+        case CourseEnrollmentInterface::FINISHED:
+          $variables['course_status'] = SOCIAL_COURSE_STATUS_FINISHED;
+          break;
+      }
     }
-//    }
   }
 }
 
