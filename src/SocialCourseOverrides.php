@@ -451,6 +451,41 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
       }
     }
 
+    $config_name = 'views.view.group_managers';
+
+    if (in_array($config_name, $names)) {
+      $overrides[$config_name] = [
+        'display' => [
+          'default' => [
+            'display_options' => [
+              'filters' => [
+                'group_roles_target_id' => [
+                  'operator' => 'ends',
+                  'value' => 'group_manager',
+                ],
+              ],
+            ],
+          ],
+        ],
+      ];
+    }
+
+    $config_name = 'block.block.views_block__group_managers_block_list_managers';
+
+    if (in_array($config_name, $names)) {
+      $config = \Drupal::service('config.factory')->getEditable($config_name);
+      $group_types = $config->get('visibility.group_type.group_types');
+      $group_types['course_basic'] = 'course_basic';
+      $group_types['course_advanced'] = 'course_advanced';
+      $overrides[$config_name] = [
+        'visibility' => [
+          'group_type' => [
+            'group_types' => $group_types,
+          ],
+        ],
+      ];
+    }
+
     return $overrides;
   }
 
