@@ -14,16 +14,6 @@
         max-width: 75%; } }
   .teaser--course:not(:last-child) {
     border-bottom: 1px solid #e6e6e6; }
-  .teaser--course .badge-start {
-    background-color: #fff;
-    color: #777777;
-    transition: 0.3s;
-    border: 1px solid #777777; }
-    .teaser--course .badge-start[href]:hover, .teaser--course .badge-start[href]:focus {
-      background-color: #e6e6e6; }
-  .teaser--course .badge-warning .badge__icon,
-  .teaser--course .badge-success .badge__icon {
-    fill: #fff; }
   .teaser--course .exist-parts {
     display: inline-block;
     font-size: 0.75rem;
@@ -39,6 +29,22 @@
           width: 18px;
           height: 18px;
           display: block; } }
+
+.teaser .badge-start,
+.teaser--course .badge-start {
+  background-color: #fff;
+  color: #777777;
+  transition: 0.3s;
+  border: 1px solid #777777; }
+  .teaser .badge-start[href]:hover, .teaser .badge-start[href]:focus,
+  .teaser--course .badge-start[href]:hover,
+  .teaser--course .badge-start[href]:focus {
+    background-color: #e6e6e6; }
+.teaser .badge-warning .badge__icon,
+.teaser .badge-success .badge__icon,
+.teaser--course .badge-warning .badge__icon,
+.teaser--course .badge-success .badge__icon {
+  fill: #fff; }
 
 .card--body {
   position: relative;
