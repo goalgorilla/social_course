@@ -148,7 +148,20 @@ display:
             label: ''
           plugin_id: standard
       title: Sections
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<div class="view-header">Sections</div>'
+            format: full_html
+          plugin_id: text
       footer: {  }
       empty: {  }
       relationships:
