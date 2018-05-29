@@ -125,4 +125,8 @@ $gray-lighter: #e6e6e6;
     color: #29abe2;
     fill: #29abe2;
   }
+  &.not-allowed {
+    color: #e0e0e0;
+    fill: #e0e0e0;
+  }
 }

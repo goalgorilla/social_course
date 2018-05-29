@@ -94,5 +94,8 @@
 .list-item.active {
   color: #29abe2;
   fill: #29abe2; }
+.list-item.not-allowed {
+  color: #e0e0e0;
+  fill: #e0e0e0; }
 
 /*# sourceMappingURL=social_course.css.map */
