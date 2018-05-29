@@ -14,7 +14,7 @@
 <article {{ attributes.addClass(classes) }}>
     <div class='section__status'>
 
-      {% if section_status == "not-started" %}
+      {% if section_status == "not-started" and allowed_start  %}
         <span class="badge badge-start teaser__badge badge--section-not-started">
             {% trans %}Not started{% endtrans %}
           </span>
