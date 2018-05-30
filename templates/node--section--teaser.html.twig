@@ -3,7 +3,7 @@
 {%
   set classes = [
     'teaser--course',
-    not allowed_start ? 'not-allowed',
+    not allowed_start and section_status == 'not-started' ? 'not-allowed',
     view_mode == 'teaser' ? 'section-teaser',
     node.isPromoted() ? 'promoted',
     node.isSticky() ? 'sticky',
@@ -14,7 +14,7 @@
 <article {{ attributes.addClass(classes) }}>
     <div class='section__status'>
 
-      {% if section_status == "not-started" %}
+      {% if section_status == "not-started" and allowed_start  %}
         <span class="badge badge-start teaser__badge badge--section-not-started">
             {% trans %}Not started{% endtrans %}
           </span>
@@ -91,5 +91,6 @@
 
     <span class="exist-parts"> {% trans %}1 part{% plural parts_count %}@count parts{% endtrans %}</span>
 
+    {{ content.field_section_description }}
 
 </article>

@@ -2,7 +2,7 @@
     {% if item.active %}
         <span class="list-item active" title="{{ 'Current page'|t }}">
     {% elseif item.url == false %}
-        <span class="list-item unavailable">
+        <span class="list-item not-allowed">
     {% else %}
         <span class="list-item">
     {% endif %}

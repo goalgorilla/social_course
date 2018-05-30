@@ -8,9 +8,9 @@ dependencies:
     - system
     - views
   theme:
-    - socialbase
-id: views_block__course_course_sections_block
-theme: socialbase
+    - socialblue
+id: socialblue_views_block__course_sections_block
+theme: socialblue
 region: content
 weight: 0
 provider: null
