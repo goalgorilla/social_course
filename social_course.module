@@ -556,6 +556,8 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
       ];
 
       $form['#group_children']['field_course_opening_date_status'] = 'group_date_and_time';
+      // Remove extra fieldset from datetime field.
+      unset($form['field_course_opening_date']['widget'][0]['#theme_wrappers']);
     }
 
   }
