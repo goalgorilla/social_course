@@ -600,7 +600,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 
         $form['help'] = [
           '#type' => 'item',
-          '#markup' => t('By enrolling you will be able to follow this course.'),
+          '#markup' => t('You will be able to follow this course by enrolling.'),
         ];
         break;
 

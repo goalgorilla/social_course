@@ -66,7 +66,7 @@ class GroupController extends EntityController {
       drupal_set_message($message, 'warning');
     }
     elseif (in_array($group->bundle(), $bundles) && !$group->getMember($account)) {
-      $message = $this->t('Course sections and other information can only be accessed after enrolling the course.');
+      $message = $this->t('Course sections and other information can only be accessed after enrolling for this course.');
       drupal_set_message($message, 'warning');
     }
 
