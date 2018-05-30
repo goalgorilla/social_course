@@ -41,6 +41,7 @@ $gray-lighter: #e6e6e6;
     }
   }
   &.not-allowed {
+    p,
     .exist-parts,
     .section__title {
       color: #e0e0e0;
@@ -74,14 +75,14 @@ $gray-lighter: #e6e6e6;
 .view-course {
   .view-header {
     text-align: center;
-    font-size: 1.2rem;
-    line-height: 1.1;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+    line-height: 1;
+    font-size: 0.875rem;
     color: #777;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-top: -5px;
     @media (min-width: 900px) {
-      font-size: 1.25rem;
-      margin-top: -15px;
+      margin-top: -25px;
     }
   }
 }

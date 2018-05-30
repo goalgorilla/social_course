@@ -159,7 +159,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<div class="view-header">Sections</div>'
+            value: 'Sections'
             format: full_html
           plugin_id: text
       footer: {  }
