@@ -40,7 +40,14 @@ $gray-lighter: #e6e6e6;
       }
     }
   }
+  &.not-allowed {
+    .exist-parts,
+    .section__title {
+      color: #e0e0e0;
+    }
+  }
 }
+
 .teaser,
 .teaser--course {
   .badge-start {
@@ -60,6 +67,21 @@ $gray-lighter: #e6e6e6;
   .badge-success {
     .badge__icon {
       fill: #fff;
+    }
+  }
+}
+
+.view-course {
+  .view-header {
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.1;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #777;
+    @media (min-width: 900px) {
+      font-size: 1.25rem;
+      margin-top: -15px;
     }
   }
 }
@@ -102,5 +124,9 @@ $gray-lighter: #e6e6e6;
   &.active {
     color: #29abe2;
     fill: #29abe2;
+  }
+  &.not-allowed {
+    color: #e0e0e0;
+    fill: #e0e0e0;
   }
 }
