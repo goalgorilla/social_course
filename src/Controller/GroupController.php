@@ -62,7 +62,7 @@ class GroupController extends EntityController {
 
     $field = 'field_course_opening_status';
     if ($group->hasField($field) && !$group->get($field)->isEmpty() && !$group->get($field)->value) {
-      $message = $this->t('Course sections can only be accessed after the course starts. This course can only be enrolled before the course has started.');
+      $message = $this->t('Course sections can only be accessed after the course starts. You can only enrol in this course before the course has started.');
       drupal_set_message($message, 'warning');
     }
     elseif (in_array($group->bundle(), $bundles) && !$group->getMember($account)) {
