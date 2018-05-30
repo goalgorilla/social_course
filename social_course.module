@@ -537,6 +537,27 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     $widget = &$form['field_course_redirect_url']['widget'][0];
     $widget['uri']['#description'] = $widget['#description'];
     $widget['uri']['#type'] = 'textfield';
+
+    // Add a checkbox for users to easily enable/disable course date and time.
+    if (isset($form['field_course_opening_date'])) {
+      $form['field_course_opening_date_status'] = [
+        '#type' => 'checkbox',
+        '#weight' => -1,
+        '#title' => t('Enable open date and time'),
+        '#description' => t("When enabled, course sections and other information can only be accessed by members after the course starts. Enrolment can only take place before the course has started.
+<br>When not enabled, course sections and other information can be accessed right after enrolment."),
+        '#default_value' => !empty($form['field_course_opening_date']['widget'][0]['value']['#default_value']),
+      ];
+
+      $form['field_course_opening_date']['widget'][0]['value']['#states'] = [
+        'visible' => [
+          'input[name="field_course_opening_date_status"]' => ['checked' => TRUE],
+        ],
+      ];
+
+      $form['#group_children']['field_course_opening_date_status'] = 'group_date_and_time';
+    }
+
   }
 
   // Action forms.
@@ -926,7 +947,6 @@ function social_course_menu_local_tasks_alter(&$data, $route_name) {
 function _social_course_group_form_submit($form, FormStateInterface $form_state) {
   /** @var \Drupal\group\Entity\GroupInterface $group */
   $group = $form_state->getFormObject()->getEntity();
-
   if ($group instanceof Group) {
     $form_state->setRedirect('view.group_information.page_group_about', [
       'group' => $group->id(),
@@ -934,7 +954,6 @@ function _social_course_group_form_submit($form, FormStateInterface $form_state)
   }
 
   $sections_list = $form_state->getValue(['sections', 'list'], []);
-
   if (is_array($sections_list)) {
     foreach ($sections_list as $nid => $value) {
       if ($node = Node::load($nid)) {
@@ -942,6 +961,11 @@ function _social_course_group_form_submit($form, FormStateInterface $form_state)
         $node->save();
       }
     }
+  }
+
+  if(empty($form_state->getValue('field_course_opening_date_status'))){
+    $group->get('field_course_opening_date')->setValue( NULL);
+    $group->save();
   }
 }
 
