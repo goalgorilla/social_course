@@ -1282,6 +1282,7 @@ function social_course_preprocess_node(&$variables) {
       }
 
       $variables['parts_count'] = count($course_wrapper->getMaterials($node));
+      $variables['parts_finished'] = count($course_wrapper->getFinishedMaterials($node, $account));
     }
 
   }
