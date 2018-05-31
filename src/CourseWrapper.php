@@ -406,4 +406,18 @@ class CourseWrapper implements CourseWrapperInterface {
     return $number;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getFinishedMaterials(NodeInterface $node, AccountInterface $account) {
+    $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
+    $materials = $storage->loadByProperties([
+      'gid' => $this->group->id(),
+      'sid' => $node->id(),
+      'uid' => $account->id(),
+      'status' => CourseEnrollmentInterface::FINISHED,
+    ]);
+    return $materials;
+  }
+
 }
