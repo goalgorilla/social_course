@@ -181,7 +181,7 @@ class CourseWrapper implements CourseWrapperInterface {
         $sections = $this->getSections();
         // Allow start first section if user has not started course yet.
         $section = current($sections);
-        $access = $access->orIf(AccessResult::allowedIf($section->id() == $node->id() && !$section->get('field_section_content')->isEmpty()));
+        $access = $access->orIf(AccessResult::allowedIf($section->id() == $node->id() && !$section->get('field_course_section_content')->isEmpty()));
         break;
 
       case 'bypass':
@@ -254,7 +254,7 @@ class CourseWrapper implements CourseWrapperInterface {
    * {@inheritdoc}
    */
   public function getSections() {
-    $sections = $this->group->getContentEntities('group_node:section');
+    $sections = $this->group->getContentEntities('group_node:course_section');
 
     if (!$sections) {
       return [];
@@ -271,11 +271,11 @@ class CourseWrapper implements CourseWrapperInterface {
 
     // Sort sections by weight to get first section.
     uasort($sections, function ($a, $b) {
-      if ($a->get('field_section_weight')->value == $b->get('field_section_weight')->value) {
+      if ($a->get('field_course_section_weight')->value == $b->get('field_course_section_weight')->value) {
         return 0;
       }
 
-      return $a->get('field_section_weight')->value > $b->get('field_section_weight')->value ? 1 : -1;
+      return $a->get('field_course_section_weight')->value > $b->get('field_course_section_weight')->value ? 1 : -1;
     });
 
     return $sections;
@@ -298,7 +298,7 @@ class CourseWrapper implements CourseWrapperInterface {
     $ids = [];
 
     foreach ($nodes as $node) {
-      foreach ($node->get('field_section_content')->getValue() as $item) {
+      foreach ($node->get('field_course_section_content')->getValue() as $item) {
         $ids[] = $item['target_id'];
       }
     }
@@ -350,8 +350,8 @@ class CourseWrapper implements CourseWrapperInterface {
   public function getSectionFromMaterial(NodeInterface $node) {
     $storage = $this->entityTypeManager->getStorage('node');
     $entitites = $storage->loadByProperties([
-      'type' => 'section',
-      'field_section_content' => $node->id(),
+      'type' => 'course_section',
+      'field_course_section_content' => $node->id(),
     ]);
 
     return current($entitites);

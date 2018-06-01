@@ -79,7 +79,7 @@ class CoursesController extends ControllerBase {
    */
   public function startSection(GroupInterface $group, NodeInterface $node) {
     // Get first material.
-    $material = $node->get('field_section_content')->get(0)->entity;
+    $material = $node->get('field_course_section_content')->get(0)->entity;
 
     // Join user to course.
     $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
@@ -117,7 +117,7 @@ class CoursesController extends ControllerBase {
    */
   public function nextMaterial(GroupInterface $group, NodeInterface $node) {
     $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
-    $field = $node->get('field_section_content');
+    $field = $node->get('field_course_section_content');
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $course_wrapper->setCourse($group);
@@ -203,8 +203,8 @@ class CoursesController extends ControllerBase {
 
         // Redirect after finishing section.
         $current_section = $course_wrapper->getSection($node, 0);
-        if (!$course_wrapper->courseIsSequential() && !$current_section->get('field_section_redirect_url')->isEmpty()) {
-          $uri = $current_section->get('field_section_redirect_url')->uri;
+        if (!$course_wrapper->courseIsSequential() && !$current_section->get('field_course_section_redirect')->isEmpty()) {
+          $uri = $current_section->get('field_course_section_redirect')->uri;
           $parsed_url = parse_url($uri);
 
           if (isset($parsed_url['host'])) {
@@ -261,7 +261,7 @@ class CoursesController extends ControllerBase {
     }
 
     // Forbid if section does not contain materials.
-    $field = $node->get('field_section_content');
+    $field = $node->get('field_course_section_content');
 
     if ($field->isEmpty()) {
       return AccessResult::forbidden();

@@ -14,5 +14,5 @@ permissions:
   - 'update own group_membership content'
   - 'leave group'
   - 'view group'
-  - 'view group_node:section entity'
-  - 'view group_node:section content'
+  - 'view group_node:course_section entity'
+  - 'view group_node:course_section content'

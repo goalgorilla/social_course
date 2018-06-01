@@ -73,7 +73,7 @@ class RouteSubscriber extends RouteSubscriberBase {
     }
 
     // Only redirect a certain content type.
-    if ($request->attributes->get('node')->getType() !== 'section') {
+    if ($request->attributes->get('node')->getType() !== 'course_section') {
       return;
     }
 

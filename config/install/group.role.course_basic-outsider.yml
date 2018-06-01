@@ -13,5 +13,5 @@ permissions_ui: true
 permissions:
   - 'join group'
   - 'view group'
-  - 'view group_node:section entity'
-  - 'view group_node:section content'
+  - 'view group_node:course_section entity'
+  - 'view group_node:course_section content'

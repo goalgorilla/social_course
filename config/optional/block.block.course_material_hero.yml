@@ -23,8 +23,8 @@ visibility:
   node_type:
     id: node_type
     bundles:
-      article: article
-      video: video
+      course_article: course_article
+      course_video: course_video
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
