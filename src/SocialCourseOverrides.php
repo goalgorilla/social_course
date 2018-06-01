@@ -451,6 +451,34 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
       }
     }
 
+    // Set view mode "Teaser" for "Course" groups in Search All.
+    $config_name = 'views.view.search_all';
+
+    if (in_array($config_name, $names)) {
+      $config = \Drupal::service('config.factory')->getEditable($config_name);
+      $bundles = $config->get('display.default.display_options.row.options.view_modes.entity:group');
+      $bundles['course_basic'] = 'teaser';
+      $bundles['course_advanced'] = 'teaser';
+
+      if (in_array($config_name, $names)) {
+        $overrides[$config_name] = [
+          'display' => [
+            'default' => [
+              'display_options' => [
+                'row' => [
+                  'options' => [
+                    'view_modes' => [
+                      'entity:group' => $bundles
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ];
+      }
+    }
+
     $config_name = 'views.view.group_managers';
 
     if (in_array($config_name, $names)) {
@@ -481,6 +509,22 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
         'visibility' => [
           'group_type' => [
             'group_types' => $group_types,
+          ],
+        ],
+      ];
+    }
+
+    // Show profile hero block on My Courses page.
+    $config_name = 'block.block.socialblue_profile_hero_block';
+
+    if (in_array($config_name, $names)) {
+      $config = \Drupal::service('config.factory')->getEditable($config_name);
+      $pages = $config->get('visibility.request_path.pages');
+      $pages .= "\r\n/user/*/courses";
+      $overrides[$config_name] = [
+        'visibility' => [
+          'request_path' => [
+            'pages' => $pages,
           ],
         ],
       ];
