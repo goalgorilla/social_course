@@ -530,6 +530,27 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
       ];
     }
 
+    // Add Basic and Advanced Courses to related courses field settings.
+    $config_names = [
+      'field.field.group.course_advanced.field_course_related_courses',
+      'field.field.group.course_basic.field_course_related_courses',
+    ];
+
+    foreach ($names as $name) {
+      if (in_array($name, $config_names)) {
+        $overrides[$name] = [
+          'settings' => [
+            'handler_settings' => [
+              'target_bundles' => [
+                'course_advanced',
+                'course_basic',
+              ],
+            ],
+          ],
+        ];
+      }
+    }
+
     return $overrides;
   }
 
