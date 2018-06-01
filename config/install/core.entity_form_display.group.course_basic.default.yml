@@ -26,7 +26,6 @@ third_party_settings:
         - label
         - field_group_description
         - field_group_image
-        - uid
       parent_name: ''
       weight: 0
       format_type: fieldset
@@ -43,7 +42,7 @@ third_party_settings:
         - status
         - field_course_redirect_url
       parent_name: ''
-      weight: 2
+      weight: 3
       format_type: fieldset
       format_settings:
         id: ''
@@ -56,7 +55,7 @@ third_party_settings:
       children:
         - field_course_related_courses
       parent_name: ''
-      weight: 3
+      weight: 4
       format_type: fieldset
       format_settings:
         id: ''
@@ -65,6 +64,19 @@ third_party_settings:
         required_fields: true
       label: 'Related courses'
       region: content
+    group_date_and_time:
+      children:
+        - field_course_opening_date
+      parent_name: ''
+      weight: 1
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: 'Date and Time'
+      region: content
 id: group.course_basic.default
 targetEntityType: group
 bundle: course_basic
@@ -72,7 +84,7 @@ mode: default
 content:
   field_course_opening_date:
     type: datetime_default
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -143,15 +155,7 @@ content:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
-  uid:
-    type: entity_reference_autocomplete
-    weight: 8
-    region: content
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
 hidden:
   field_course_opening_status: true
   path: true
+  uid: true

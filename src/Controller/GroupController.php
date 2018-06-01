@@ -37,6 +37,9 @@ class GroupController extends EntityController {
     $account = \Drupal::currentUser();
     $access = AccessResult::forbidden();
 
+    $course_wrapper = \Drupal::service('social_course.course_wrapper');
+    $bundles = $course_wrapper::getAvailableBundles();
+
     // Allow if group does not have field that regulates access or it is published.
     if (!$group->hasField('status') || $group->get('status')->value) {
       $access = AccessResult::allowed();
@@ -45,7 +48,7 @@ class GroupController extends EntityController {
     elseif ($account->hasPermission('bypass group access')) {
       $access = AccessResult::allowed();
     }
-    // Allow if user has access to all unpublushed groups.
+    // Allow if user has access to all unpublished groups.
     elseif ($account->hasPermission('view unpublished groups')) {
       $access = AccessResult::allowed();
     }
@@ -57,6 +60,16 @@ class GroupController extends EntityController {
       }
     }
 
+    $field = 'field_course_opening_status';
+    if ($group->hasField($field) && !$group->get($field)->isEmpty() && !$group->get($field)->value) {
+      $message = $this->t('Course sections can only be accessed after the course starts. You can only enrol in this course before the course has started.');
+      drupal_set_message($message, 'warning');
+    }
+    elseif (in_array($group->bundle(), $bundles) && !$group->getMember($account)) {
+      $message = $this->t('Course sections and other information can only be accessed after enrolling for this course.');
+      drupal_set_message($message, 'warning');
+    }
+
     return $access
       ->cachePerPermissions()
       ->cachePerUser();
@@ -64,8 +77,6 @@ class GroupController extends EntityController {
 
   /**
    * Callback of "/stream" page.
-   *
-   * @return array
    */
   public function stream() {
     return [
@@ -75,8 +86,6 @@ class GroupController extends EntityController {
 
   /**
    * Access callback of "/stream" page.
-   *
-   * @return array
    */
   public function streamAccess(GroupInterface $group) {
     return AccessResult::allowedIf($group->bundle() !== 'course_basic');

@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.group.teaser
+    - core.entity_view_mode.group.featured
     - field.field.group.course_basic.field_course_opening_date
     - field.field.group.course_basic.field_course_opening_status
     - field.field.group.course_basic.field_course_order
@@ -12,13 +12,13 @@ dependencies:
     - field.field.group.course_basic.field_group_description
     - field.field.group.course_basic.field_group_image
     - group.type.course_basic
-    - image.style.social_x_large
+    - image.style.social_featured
   module:
     - image
-id: group.course_basic.teaser
+id: group.course_basic.featured
 targetEntityType: group
 bundle: course_basic
-mode: teaser
+mode: featured
 content:
   field_course_type:
     type: entity_reference_label
@@ -34,7 +34,7 @@ content:
     region: content
     label: hidden
     settings:
-      image_style: social_x_large
+      image_style: social_featured
       image_link: content
     third_party_settings: {  }
   label:

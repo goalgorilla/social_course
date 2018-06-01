@@ -40,6 +40,14 @@ content:
       format_custom_true: ''
       format_custom_false: ''
     third_party_settings: {  }
+  field_course_type:
+    type: entity_reference_label
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
   field_group_image:
     type: image
     weight: 1

@@ -4,6 +4,7 @@ dependencies:
   module:
     - node
     - social_course
+    - system
   theme:
     - socialblue
 id: socialblue_course_section_navigation

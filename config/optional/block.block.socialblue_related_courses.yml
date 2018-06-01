@@ -6,9 +6,9 @@ dependencies:
     - social_course
     - system
   theme:
-    - socialbase
-id: related_courses
-theme: socialbase
+    - socialblue
+id: socialblue_related_courses
+theme: socialblue
 region: complementary_top
 weight: 0
 provider: null
