@@ -203,8 +203,8 @@ class CoursesController extends ControllerBase {
 
         // Redirect after finishing section.
         $current_section = $course_wrapper->getSection($node, 0);
-        if (!$course_wrapper->courseIsSequential() && !$current_section->get('field_course_section_redirect_url')->isEmpty()) {
-          $uri = $current_section->get('field_course_section_redirect_url')->uri;
+        if (!$course_wrapper->courseIsSequential() && !$current_section->get('field_course_section_redirect')->isEmpty()) {
+          $uri = $current_section->get('field_course_section_redirect')->uri;
           $parsed_url = parse_url($uri);
 
           if (isset($parsed_url['host'])) {

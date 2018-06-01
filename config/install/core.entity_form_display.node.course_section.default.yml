@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.course_section.field_course_section_content
     - field.field.node.course_section.field_course_section_description
     - field.field.node.course_section.field_course_section_image
-    - field.field.node.course_section.field_course_section_redirect_url
+    - field.field.node.course_section.field_course_section_redirect
     - field.field.node.course_section.field_course_section_weight
     - image.style.social_x_large
     - node.type.course_section
@@ -70,7 +70,7 @@ content:
     third_party_settings: {  }
     type: image_image
     region: content
-  field_course_section_redirect_url:
+  field_course_section_redirect:
     weight: 26
     settings:
       placeholder_url: ''

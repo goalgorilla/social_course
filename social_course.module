@@ -312,7 +312,7 @@ function template_preprocess_course_material_pager(&$variables) {
 
       if ($section_number < count($course_wrapper->getSections())) {
         // Set next button title from section url redirect if it exists.
-        $title = empty($section->get('field_course_section_redirect_url')->title) ? t('Finish section') : $section->get('field_course_section_redirect_url')->title;
+        $title = empty($section->get('field_course_section_redirect')->title) ? t('Finish section') : $section->get('field_course_section_redirect')->title;
       }
       else {
         $title = t('Finish course');

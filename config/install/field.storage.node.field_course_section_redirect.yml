@@ -5,8 +5,8 @@ dependencies:
   module:
     - link
     - node
-id: node.field_course_section_redirect_url
-field_name: field_course_section_redirect_url
+id: node.field_course_section_redirect
+field_name: field_course_section_redirect
 entity_type: node
 type: link
 settings: {  }
