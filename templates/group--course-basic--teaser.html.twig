@@ -37,11 +37,11 @@
     </div>
 
     <div class="card__actionbar">
-        <div class="badge teaser__badge" title="{% trans %}The visibility of this content is set to {% endtrans %} {{ visibility_label }}">
-          <svg class="badge__icon">
-            <use xlink:href="#icon-public"></use>
-          </svg>
-        </div>
+      <div class="badge teaser__badge" title="{% trans %}The visibility of this content is set to community {% endtrans %}">
+        <svg class="badge__icon">
+          <use xlink:href="#icon-community"></use>
+        </svg>
+      </div>
       {% if course_status == 'enrolled' %}
         <span class="badge badge-start teaser__badge badge--section-not-started">
             {% trans %}You've enrolled{% endtrans %}

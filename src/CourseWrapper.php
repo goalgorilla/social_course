@@ -160,11 +160,6 @@ class CourseWrapper implements CourseWrapperInterface {
     switch ($op) {
       case 'start':
       case 'continue':
-        // Do not allow to author start a course.
-        if ($node->getOwnerId() == $account->id() || $this->getCourse()->getOwnerId() == $account->id() || !$this->getCourse()->getMember($account)) {
-          return AccessResult::forbidden()->cachePerUser();
-        }
-
         /** @var \Drupal\Core\Entity\EntityStorageInterface $course_enrollment_storage */
         $course_enrollment_storage = $this->entityTypeManager->getStorage('course_enrollment');
         $entities = $course_enrollment_storage->loadByProperties([
