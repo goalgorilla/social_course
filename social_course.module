@@ -309,9 +309,18 @@ function template_preprocess_course_material_pager(&$variables) {
       ]);
 
       $section_number = $course_wrapper->getSectionNumber($section) + 1;
-      $title = $section_number < count($course_wrapper->getSections()) ? t('Finish section') : t('Finish course');
+
+      if ($section_number < count($course_wrapper->getSections())) {
+        // Set next button title from section url redirect if it exists.
+        $title = empty($section->get('field_section_redirect_url')->title) ? t('Finish section') : $section->get('field_section_redirect_url')->title;
+      }
+      else {
+        $title = t('Finish course');
+      }
+
       $variables['material']['next'] = Link::fromTextAndUrl($title, $next_url)
         ->toRenderable();
+
     }
   }
 }

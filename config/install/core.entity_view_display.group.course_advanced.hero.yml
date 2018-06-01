@@ -71,5 +71,6 @@ hidden:
   field_course_order: true
   field_course_redirect_url: true
   field_course_related_courses: true
+  field_course_type: true
   field_group_description: true
   uid: true
