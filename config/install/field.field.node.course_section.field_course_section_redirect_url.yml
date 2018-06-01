@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_course_section_redirect_url
-    - node.type.section
+    - node.type.course_section
   module:
     - link
-id: node.section.field_course_section_redirect_url
+id: node.course_section.field_course_section_redirect_url
 field_name: field_course_section_redirect_url
 entity_type: node
-bundle: section
+bundle: course_section
 label: 'Redirect URL'
 description: "Redirect people to this URL after they finished a section. Text of the next button may be customized.\r\nWorks only for non-sequential courses."
 required: false

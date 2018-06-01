@@ -130,7 +130,7 @@ display:
           table: node_field_data
           field: type
           value:
-            section: section
+            course_section: course_section
           entity_type: node
           entity_field: type
           plugin_id: bundle
