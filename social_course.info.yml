@@ -1,5 +1,5 @@
 name: 'Social Course'
-description: 'Provides Course feature.'
+description: 'Provides course feature.'
 type: module
 core: 8.x
 dependencies:
@@ -32,6 +32,5 @@ dependencies:
   - video_embed_field
   - views
   - weight
-
-version: 8.x-1.0
 package: Social
+hidden: true

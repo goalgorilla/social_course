@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.storage.group.field_course_related_courses
     - group.type.course_advanced
-    - group.type.course_basic
 id: group.course_advanced.field_course_related_courses
 field_name: field_course_related_courses
 entity_type: group
@@ -20,7 +19,6 @@ settings:
   handler_settings:
     target_bundles:
       course_advanced: course_advanced
-      course_basic: course_basic
     sort:
       field: _none
     auto_create: false

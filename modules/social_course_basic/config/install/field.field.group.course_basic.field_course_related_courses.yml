@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.storage.group.field_course_related_courses
-    - group.type.course_advanced
     - group.type.course_basic
 id: group.course_basic.field_course_related_courses
 field_name: field_course_related_courses
@@ -19,7 +18,6 @@ settings:
   handler: 'default:group'
   handler_settings:
     target_bundles:
-      course_advanced: course_advanced
       course_basic: course_basic
     sort:
       field: _none
