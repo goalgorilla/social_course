@@ -20,6 +20,37 @@ $gray-lighter: #e6e6e6;
   &:not(:last-child) {
     border-bottom: 1px solid $gray-lighter;
   }
+  .exist-parts {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: $gray-light;
+  }
+  .hero-action-button {
+    @media (min-width: 900px) {
+      right: auto;
+      left: -35px;
+      .btn-floating {
+        width: 30px;
+        height: 30px;
+        .icon-medium {
+          width: 18px;
+          height: 18px;
+          display: block;
+        }
+      }
+    }
+  }
+  &.not-allowed {
+    p,
+    .exist-parts,
+    .section__title {
+      color: #e0e0e0;
+    }
+  }
+}
+
+.teaser,
+.teaser--course {
   .badge-start {
     background-color: #fff;
     color: $gray-light;
@@ -39,24 +70,19 @@ $gray-lighter: #e6e6e6;
       fill: #fff;
     }
   }
-  .exist-parts {
-    display: inline-block;
-    font-size: 0.75rem;
-    color: $gray-light;
-  }
-  .hero-action-button {
+}
+
+.view-course {
+  .view-header {
+    text-align: center;
+    line-height: 1;
+    font-size: 0.875rem;
+    color: #777;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-top: -5px;
     @media (min-width: 900px) {
-      right: auto;
-      left: -35px;
-      .btn-floating {
-        width: 30px;
-        height: 30px;
-        .icon-medium {
-          width: 18px;
-          height: 18px;
-          display: block;
-        }
-      }
+      margin-top: -25px;
     }
   }
 }
@@ -99,5 +125,9 @@ $gray-lighter: #e6e6e6;
   &.active {
     color: #29abe2;
     fill: #29abe2;
+  }
+  &.not-allowed {
+    color: #e0e0e0;
+    fill: #e0e0e0;
   }
 }

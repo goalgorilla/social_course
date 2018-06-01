@@ -4,7 +4,7 @@ dependencies:
   config:
     - group.type.course_basic
 id: course_basic-group_manager
-label: 'Course Maintainer'
+label: 'Course Leader'
 weight: -99
 internal: false
 audience: member

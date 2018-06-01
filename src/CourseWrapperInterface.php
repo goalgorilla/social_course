@@ -118,6 +118,19 @@ interface CourseWrapperInterface {
   public function getMaterials(NodeInterface $node = NULL);
 
   /**
+   * Get all finished materials within a section.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   An instance of a node type of "section".
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   An account instance.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   Array with node entities.
+   */
+  public function getFinishedMaterials(NodeInterface $node, AccountInterface $account);
+
+  /**
    * Load course and set it as handleable (to self::$course).
    *
    * @param \Drupal\node\NodeInterface $node
