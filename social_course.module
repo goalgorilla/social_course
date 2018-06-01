@@ -569,6 +569,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
       unset($form['field_course_opening_date']['widget'][0]['#theme_wrappers']);
     }
 
+    $form['actions']['submit']['#value'] = t('Save');
   }
 
   // Action forms.
@@ -685,18 +686,6 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
       // Add redirect to Group Membership page.
       $form['actions']['submit']['#submit'][] = '_social_group_membership_edit_form_submit';
     }
-  }
-
-  // Open an Closed group Add and edit forms.
-  $group_forms = [
-    'group_open_group_add_form',
-    'group_open_group_edit_form',
-    'group_closed_group_add_form',
-    'group_closed_group_edit_form',
-  ];
-
-  if (in_array($form_id, $group_forms)) {
-    $form['actions']['submit']['#value'] = t('Save');
   }
 
   // Remove Courses from Social Group add form
