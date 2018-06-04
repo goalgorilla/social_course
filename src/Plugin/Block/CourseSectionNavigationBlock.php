@@ -6,7 +6,6 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\flag_test_plugins\Plugin\Flag\AccessDenied;
 use Drupal\group\Entity\GroupInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 

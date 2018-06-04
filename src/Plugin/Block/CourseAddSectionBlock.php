@@ -26,7 +26,7 @@ class CourseAddSectionBlock extends BlockBase {
    *
    * Custom access logic to display the block.
    */
-  function blockAccess(AccountInterface $account) {
+  protected function blockAccess(AccountInterface $account) {
     $group = $this->getContextValue('group');
 
     if ($group->hasPermission('create group_node:course_section entity', $account)) {

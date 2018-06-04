@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\social_course\Controller\CoursesController.
- */
-
 namespace Drupal\social_course\Controller;
 
 use Drupal\Core\Cache\Cache;
@@ -20,7 +15,7 @@ use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Courses controller.
+ * Class CoursesController.
  */
 class CoursesController extends ControllerBase {
 
@@ -171,7 +166,8 @@ class CoursesController extends ControllerBase {
       else {
         try {
           $url = Url::fromUri($uri);
-        } catch (\InvalidArgumentException $exception) {
+        }
+        catch (\InvalidArgumentException $exception) {
           $url = Url::fromUserInput($uri);
         }
         $response = new RedirectResponse($url->toString());
@@ -214,7 +210,8 @@ class CoursesController extends ControllerBase {
           else {
             try {
               $url = Url::fromUri($uri);
-            } catch (\InvalidArgumentException $exception) {
+            }
+            catch (\InvalidArgumentException $exception) {
               $url = Url::fromUserInput($uri);
             }
             $response = new RedirectResponse($url->toString());

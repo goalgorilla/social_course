@@ -11,7 +11,7 @@ use Drupal\user\UserInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
- * Class CourseEnrollment
+ * Class CourseEnrollment.
  *
  * @package Drupal\social_course\Entity
  *

@@ -5,6 +5,9 @@ namespace Drupal\social_course;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 
+/**
+ * Class SocialCourseServiceProvider.
+ */
 class SocialCourseServiceProvider extends ServiceProviderBase {
 
   /**

@@ -8,6 +8,9 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Class GroupController.
+ */
 class GroupController extends EntityController {
 
   /**

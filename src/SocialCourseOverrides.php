@@ -6,6 +6,9 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
 use Drupal\Core\Config\StorageInterface;
 
+/**
+ * Class SocialCourseOverrides.
+ */
 class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
 
   /**
@@ -468,7 +471,7 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
                 'row' => [
                   'options' => [
                     'view_modes' => [
-                      'entity:group' => $bundles
+                      'entity:group' => $bundles,
                     ],
                   ],
                 ],

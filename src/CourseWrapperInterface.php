@@ -7,7 +7,7 @@ use Drupal\node\NodeInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**
- * Interface CourseWrapperInterface
+ * Interface CourseWrapperInterface.
  *
  * @package Drupal\social_course
  */
@@ -107,7 +107,7 @@ interface CourseWrapperInterface {
   /**
    * Get all materials within a section or a course.
    *
-   * @param \Drupal\node\NodeInterface|NULL $node
+   * @param \Drupal\node\NodeInterface|null $node
    *   Optional parameter. If NULL, method will return all materials of a course.
    *   If not null, it should be an instance of a node type of "section".
    *   In this case method will return only materials that attached to a section.

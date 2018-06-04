@@ -11,7 +11,7 @@ use Drupal\group\Entity\GroupContent;
 use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
- * Class CourseWrapper
+ * Class CourseWrapper.
  *
  * @package Drupal\social_course
  */
@@ -262,10 +262,10 @@ class CourseWrapper implements CourseWrapperInterface {
 
     // Set id of section as key of array.
     foreach ($sections as $key => $section) {
-      unset($sections[ $key ]);
+      unset($sections[$key]);
 
       if ($section instanceof NodeInterface) {
-        $sections[ $section->id() ] = $section;
+        $sections[$section->id()] = $section;
       }
     }
 
@@ -291,7 +291,7 @@ class CourseWrapper implements CourseWrapperInterface {
     if (!$node) {
       $nodes = $sections;
     }
-    elseif (isset($sections[ $node->id() ])) {
+    elseif (isset($sections[$node->id()])) {
       $nodes = [$node];
     }
 
