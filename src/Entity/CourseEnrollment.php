@@ -6,12 +6,11 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\social_course\CourseEnrollmentInterface;
 use Drupal\user\UserInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
- * Class CourseEnrollment
+ * Class CourseEnrollment.
  *
  * @package Drupal\social_course\Entity
  *

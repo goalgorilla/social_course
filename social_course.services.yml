@@ -14,7 +14,7 @@ services:
       - { name: access_check, applies_to: _course_enroll_access }
   social_course.course_wrapper:
     class: Drupal\social_course\CourseWrapper
-    arguments: ['@entity.manager', '@current_user']
+    arguments: ['@entity.manager', '@current_user', '@module_handler']
   social_course.overrider:
     class: Drupal\social_course\SocialCourseOverrides
     tags:

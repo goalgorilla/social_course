@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\social_course\Controller\CoursesController.
- */
-
 namespace Drupal\social_course\Controller;
 
 use Drupal\Core\Cache\Cache;
@@ -20,7 +15,7 @@ use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Courses controller.
+ * Class CoursesController.
  */
 class CoursesController extends ControllerBase {
 
@@ -57,8 +52,10 @@ class CoursesController extends ControllerBase {
    * Determines if user has access to course creation page.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
+   *   Run access checks for this account.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
    */
   public static function access(AccountInterface $account) {
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
@@ -171,7 +168,8 @@ class CoursesController extends ControllerBase {
       else {
         try {
           $url = Url::fromUri($uri);
-        } catch (\InvalidArgumentException $exception) {
+        }
+        catch (\InvalidArgumentException $exception) {
           $url = Url::fromUserInput($uri);
         }
         $response = new RedirectResponse($url->toString());
@@ -214,7 +212,8 @@ class CoursesController extends ControllerBase {
           else {
             try {
               $url = Url::fromUri($uri);
-            } catch (\InvalidArgumentException $exception) {
+            }
+            catch (\InvalidArgumentException $exception) {
               $url = Url::fromUserInput($uri);
             }
             $response = new RedirectResponse($url->toString());

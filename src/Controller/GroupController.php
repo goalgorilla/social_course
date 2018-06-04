@@ -8,6 +8,9 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Class GroupController.
+ */
 class GroupController extends EntityController {
 
   /**
@@ -40,7 +43,7 @@ class GroupController extends EntityController {
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $bundles = $course_wrapper::getAvailableBundles();
 
-    // Allow if group does not have field that regulates access or it is published.
+    // Allow if group doesn't have field that regulates access or is published.
     if (!$group->hasField('status') || $group->get('status')->value) {
       $access = AccessResult::allowed();
     }

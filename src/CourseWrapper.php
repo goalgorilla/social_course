@@ -8,29 +8,22 @@ use Drupal\group\Entity\GroupInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\group\Entity\GroupContent;
+use Drupal\Core\Extension\ModuleHandler;
 use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
- * Class CourseWrapper
+ * Class CourseWrapper.
  *
  * @package Drupal\social_course
  */
 class CourseWrapper implements CourseWrapperInterface {
 
   /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
+   * The group entity.
+   *
    * @var \Drupal\group\Entity\GroupInterface
    */
   protected $group;
-
-  /**
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $currentUser;
 
   /**
    * List of available to handle bundles.
@@ -40,14 +33,40 @@ class CourseWrapper implements CourseWrapperInterface {
   protected static $bundles = ['course_basic', 'course_advanced'];
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandler
+   */
+  protected $moduleHandler;
+
+  /**
    * CourseWrapper constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
+   * @param \Drupal\Core\Extension\ModuleHandler $moduleHandler
+   *   The module handler.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user, ModuleHandler $moduleHandler) {
     $this->entityTypeManager = $entity_type_manager;
     $this->currentUser = $current_user;
+    $this->moduleHandler = $moduleHandler;
   }
 
   /**
@@ -167,8 +186,8 @@ class CourseWrapper implements CourseWrapperInterface {
           'sid' => $node->id(),
         ]);
 
-        // If user has already started or finished section, forbid starting a section
-        // because it should be automatically after finishing previous section.
+        // If user has already started or finished section, forbid starting a
+        // section because it should be automatically after finishing previous.
         if ($entities) {
           return AccessResult::forbidden()->cachePerUser();
         }
@@ -262,10 +281,10 @@ class CourseWrapper implements CourseWrapperInterface {
 
     // Set id of section as key of array.
     foreach ($sections as $key => $section) {
-      unset($sections[ $key ]);
+      unset($sections[$key]);
 
       if ($section instanceof NodeInterface) {
-        $sections[ $section->id() ] = $section;
+        $sections[$section->id()] = $section;
       }
     }
 
@@ -291,7 +310,7 @@ class CourseWrapper implements CourseWrapperInterface {
     if (!$node) {
       $nodes = $sections;
     }
-    elseif (isset($sections[ $node->id() ])) {
+    elseif (isset($sections[$node->id()])) {
       $nodes = [$node];
     }
 
@@ -307,7 +326,7 @@ class CourseWrapper implements CourseWrapperInterface {
       return [];
     }
 
-    \Drupal::moduleHandler()->alter('social_course_materials', $ids);
+    $this->moduleHandler->alter('social_course_materials', $ids);
 
     if (!$ids) {
       return [];
@@ -405,7 +424,7 @@ class CourseWrapper implements CourseWrapperInterface {
    * {@inheritdoc}
    */
   public function getFinishedMaterials(NodeInterface $node, AccountInterface $account) {
-    $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
+    $storage = $this->entityTypeManager->getStorage('course_enrollment');
     $materials = $storage->loadByProperties([
       'gid' => $this->group->id(),
       'sid' => $node->id(),
