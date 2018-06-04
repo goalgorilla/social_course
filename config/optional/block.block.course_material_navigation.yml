@@ -4,6 +4,7 @@ dependencies:
   module:
     - node
     - social_course
+    - system
   theme:
     - socialbase
 id: course_material_navigation
@@ -23,8 +24,8 @@ visibility:
   node_type:
     id: node_type
     bundles:
-      article: article
-      video: video
+      course_article: course_article
+      course_video: course_video
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'

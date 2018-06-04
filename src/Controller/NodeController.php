@@ -4,6 +4,9 @@ namespace Drupal\social_course\Controller;
 
 use Drupal\node\Controller\NodeController as NodeControllerBase;
 
+/**
+ * Class NodeController.
+ */
 class NodeController extends NodeControllerBase {
 
   /**

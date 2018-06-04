@@ -15,11 +15,11 @@ use Drupal\Core\Cache\Cache;
 use Drupal\group\Entity\GroupContent;
 use Drupal\social_course\Controller\CoursesController;
 use Drupal\group\Entity\GroupInterface;
+use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
 use Drupal\node\Entity\Node;
-use Drupal\social_course\CourseEnrollmentInterface;
+use Drupal\social_course\Entity\CourseEnrollmentInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -46,11 +46,22 @@ function social_course_theme($existing, $type, $theme, $path) {
         'content' => NULL,
       ],
     ],
-    'group__course__hero' => [
-      'variables' => [
-        'course_type' => NULL,
-      ],
-      'render element' => 'elements',
+    'group__course_basic__teaser' => [
+      'base hook' => 'group',
+    ],
+    'group__course_basic__featured' => [
+      'base hook' => 'group',
+    ],
+    'group__course_basic__hero' => [
+      'base hook' => 'group',
+    ],
+    'group__course_advanced__teaser' => [
+      'base hook' => 'group',
+    ],
+    'group__course_advanced__featured' => [
+      'base hook' => 'group',
+    ],
+    'group__course_advanced__hero' => [
       'base hook' => 'group',
     ],
     'course_material_hero' => [
@@ -88,19 +99,19 @@ function social_course_theme($existing, $type, $theme, $path) {
         'items' => [],
       ],
     ],
-    'node__section__teaser' => [
+    'node__course_section__teaser' => [
       'variables' => [
         'parts_count' => NULL,
       ],
       'base hook' => 'node',
     ],
-    'node__article__full' => [
+    'node__course_article__full' => [
       'variables' => [
         'parent_course' => NULL,
       ],
       'base hook' => 'node',
     ],
-    'node__video__full' => [
+    'node__course_video__full' => [
       'variables' => [
         'parent_course' => NULL,
       ],
@@ -129,10 +140,10 @@ function social_course_theme($existing, $type, $theme, $path) {
  *   - material: Information about materials parent section
  *   - parent_course: Information about parent course.
  */
-function template_preprocess_course_material_hero(&$variables) {
+function template_preprocess_course_material_hero(array &$variables) {
   $type = [
-    'article',
-    'video',
+    'course_article',
+    'course_video',
   ];
 
   \Drupal::moduleHandler()->alter('social_course_material_types', $type);
@@ -150,10 +161,10 @@ function template_preprocess_course_material_hero(&$variables) {
   }
 
   if ($node instanceof NodeInterface && in_array($node->getType(), $type)) {
-    // Get the current route name to check if the user is on the edit or delete page.
+    // Get the current route name to check if the user is on the edit page.
     $route = \Drupal::routeMatch()->getRouteName();
 
-    if (!in_array($route, array('entity.node.edit_form', 'entity.node.delete_form'))) {
+    if (!in_array($route, ['entity.node.edit_form', 'entity.node.delete_form'])) {
       if ($node->access('update', $account)) {
         $variables['node_edit_url'] = $node->toUrl('edit-form')->toString();
       }
@@ -188,12 +199,12 @@ function template_preprocess_course_material_hero(&$variables) {
  *
  * @param array $variables
  *   An associative array containing:
- *   - material: Information about materials in parent section
+ *   - material: Information about materials in parent section.
  */
-function template_preprocess_course_material_pager(&$variables) {
+function template_preprocess_course_material_pager(array &$variables) {
   $type = [
-    'article',
-    'video',
+    'course_article',
+    'course_video',
   ];
 
   \Drupal::moduleHandler()->alter('social_course_material_types', $type);
@@ -298,17 +309,24 @@ function template_preprocess_course_material_pager(&$variables) {
       ]);
 
       $section_number = $course_wrapper->getSectionNumber($section) + 1;
-      $title = $section_number < count($course_wrapper->getSections()) ? t('Finish section') : t('Finish course');
+
+      if ($section_number < count($course_wrapper->getSections())) {
+        // Set next button title from section url redirect if it exists.
+        $title = empty($section->get('field_course_section_redirect')->title) ? t('Finish section') : $section->get('field_course_section_redirect')->title;
+      }
+      else {
+        $title = t('Finish course');
+      }
+
       $variables['material']['next'] = Link::fromTextAndUrl($title, $next_url)
         ->toRenderable();
+
     }
   }
 }
 
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for account_header_block.
- * @param array $build
- * @param \Drupal\Core\Block\BlockPluginInterface $block
  */
 function social_course_block_view_account_header_block_alter(array &$build, BlockPluginInterface $block) {
   $build['#pre_render'][] = 'social_course_block_view_account_header_block_pre_render';
@@ -316,8 +334,6 @@ function social_course_block_view_account_header_block_alter(array &$build, Bloc
 
 /**
  * Pre-render callback for block account_header_block.
- * @param array $build
- * @return array
  */
 function social_course_block_view_account_header_block_pre_render(array $build) {
   $account = \Drupal::currentUser();
@@ -385,7 +401,7 @@ function social_course_block_view_account_header_block_pre_render(array $build) 
  *
  * @see node_add_page()
  */
-function template_preprocess_course_add_list(&$variables) {
+function template_preprocess_course_add_list(array &$variables) {
   $variables['types'] = [];
 
   if (!empty($variables['content'])) {
@@ -460,7 +476,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 
     if ($group->id()) {
       $group_content_storage = \Drupal::entityTypeManager()->getStorage('group_content');
-      $content = $group_content_storage->loadByGroup($group, 'group_node:section');
+      $content = $group_content_storage->loadByGroup($group, 'group_node:course_section');
 
       $form['sections'] = [
         '#type' => 'fieldset',
@@ -491,15 +507,15 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 
       foreach ($content as $item) {
         $entity = $item->getEntity();
-        $weight = $entity->get('field_section_weight')->value;
-        $form['sections']['list'][ $entity->id() ]['#weight'] = $weight;
-        $form['sections']['list'][ $entity->id() ]['#attributes']['class'][] = 'draggable';
+        $weight = $entity->get('field_course_section_weight')->value;
+        $form['sections']['list'][$entity->id()]['#weight'] = $weight;
+        $form['sections']['list'][$entity->id()]['#attributes']['class'][] = 'draggable';
 
-        $form['sections']['list'][ $entity->id() ]['label'] = [
+        $form['sections']['list'][$entity->id()]['label'] = [
           '#markup' => '<span>' . $entity->label() . '</span>',
         ];
 
-        $form['sections']['list'][ $entity->id() ]['weight'] = [
+        $form['sections']['list'][$entity->id()]['weight'] = [
           '#type' => 'textfield',
           '#title' => t('Weight for @title', [
             '@title' => $entity->label(),
@@ -526,6 +542,30 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     $widget = &$form['field_course_redirect_url']['widget'][0];
     $widget['uri']['#description'] = $widget['#description'];
     $widget['uri']['#type'] = 'textfield';
+
+    // Add a checkbox for users to easily enable/disable course date and time.
+    if (isset($form['field_course_opening_date'])) {
+      $form['field_course_opening_date_status'] = [
+        '#type' => 'checkbox',
+        '#weight' => -1,
+        '#title' => t('Enable open date and time'),
+        '#description' => t("When enabled, course sections and other information can only be accessed by members after the course starts. Enrolment can only take place before the course has started.
+<br>When not enabled, course sections and other information can be accessed right after enrolment."),
+        '#default_value' => !empty($form['field_course_opening_date']['widget'][0]['value']['#default_value']),
+      ];
+
+      $form['field_course_opening_date']['widget'][0]['value']['#states'] = [
+        'visible' => [
+          'input[name="field_course_opening_date_status"]' => ['checked' => TRUE],
+        ],
+      ];
+
+      $form['#group_children']['field_course_opening_date_status'] = 'group_date_and_time';
+      // Remove extra fieldset from datetime field.
+      unset($form['field_course_opening_date']['widget'][0]['#theme_wrappers']);
+    }
+
+    $form['actions']['submit']['#value'] = t('Save');
   }
 
   // Action forms.
@@ -552,13 +592,13 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 
     $form['#attributes']['class'][] = 'form--default';
 
-    if(isset($form['actions']['submit'])) {
+    if (isset($form['actions']['submit'])) {
       $form['actions']['submit']['#button_type'] = 'primary';
       $form['actions']['submit']['#button_level'] = 'raised';
     }
 
     if (isset($form['actions']['cancel'])) {
-      // Some `cancel` buttons are not inputs but links
+      // Some `cancel` buttons are not inputs but links.
       if (isset($form['actions']['cancel']['#type']) &&  $form['actions']['cancel']['#type'] == 'link') {
         $form['actions']['cancel']['#attributes']['class'][] = 'btn btn-flat';
       }
@@ -589,7 +629,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 
         $form['help'] = [
           '#type' => 'item',
-          '#markup' => t('By enrolling you will be able to follow this course.'),
+          '#markup' => t('You will be able to follow this course by enrolling.'),
         ];
         break;
 
@@ -624,7 +664,16 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
   if (in_array($form_id, $membership_forms)) {
     // Change titles on membership forms.
     $form['entity_id']['widget'][0]['target_id']['#title'] = t('Select a member');
-    $form['group_roles']['widget']['#title'] = t('Group roles');
+    $form['group_roles']['widget']['#title'] = t('Course roles');
+
+    // Remove the 'group_admin' role in a generic way
+    // for all (future) group types.
+    foreach ($form['group_roles']['widget']['#options'] as $key => $value) {
+      // Hide the submission for the Group Admin role.
+      if (strpos($key, 'group_admin') != FALSE) {
+        unset($form['group_roles']['widget']['#options'][$key]);
+      }
+    }
 
     if ('group_content_course_basic-group_membership_edit_form' == $form_id) {
       // Remove the user selection autocomplete on editing group membership.
@@ -635,20 +684,8 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     }
   }
 
-  // Open an Closed group Add and edit forms.
-  $group_forms = [
-    'group_open_group_add_form',
-    'group_open_group_edit_form',
-    'group_closed_group_add_form',
-    'group_closed_group_edit_form',
-  ];
-
-  if (in_array($form_id, $group_forms)) {
-    $form['actions']['submit']['#value'] = t('Save');
-  }
-
-  // Remove Courses from Social Group add form
-  if($form_id == 'social_group_add'){
+  // Remove Courses from Social Group add form.
+  if ($form_id == 'social_group_add') {
     $excluded_groups = ['course_advanced', 'course_basic'];
     foreach ($excluded_groups as $excluded_group) {
       if (isset($form['group_settings']['group_type']['#options'][$excluded_group])) {
@@ -679,7 +716,7 @@ function social_course_form_group_public_group_edit_form_alter(&$form, FormState
  */
 function social_course_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_state->get('view')->id() == 'search_content') {
-    foreach (['article', 'section', 'video'] as $type) {
+    foreach (['course_article', 'course_section', 'course_video'] as $type) {
       unset($form['type']['#options'][$type]);
     }
   }
@@ -747,17 +784,25 @@ function social_course_preprocess_group(&$variables) {
 
   if (in_array($group->bundle(), $bundles)) {
     $course_wrapper->setCourse($group);
+    $account = \Drupal::currentUser();
 
-    // attach library
+    // Attach library.
     $variables['#attached']['library'][] = 'social_course/social_course';
 
     // Count number of course sections.
     $sections = $course_wrapper->getSections();
     $variables['course_sections'] = count($sections);
 
+    $variables['finished_sections'] = 0;
+    foreach ($sections as $section) {
+      $status = $course_wrapper->getSectionStatus($section, $account);
+      if ($status === CourseEnrollmentInterface::FINISHED) {
+        $variables['finished_sections'] += 1;
+      }
+    }
+
     // Get Course status.
     $variables['course_status'] = FALSE;
-    $account = \Drupal::currentUser();
 
     // Get Course published status.
     if ($course_wrapper->getCoursePublishedStatus() == 0) {
@@ -766,7 +811,6 @@ function social_course_preprocess_group(&$variables) {
 
     if ($group->getMember($account)) {
       $course_wrapper->setCourse($group);
-
       switch ($course_wrapper->getCourseStatus($account)) {
         case CourseEnrollmentInterface::NOT_STARTED:
           $variables['course_status'] = SOCIAL_COURSE_STATUS_ENROLLED;
@@ -801,21 +845,21 @@ function social_course_group_content_insert(GroupContent $group_content) {
   $sections = $course_wrapper->getSections();
 
   switch ($group_content->getContentPlugin()->getPluginId()) {
-    case 'group_node:section':
+    case 'group_node:course_section':
       // Invalidate cache tags.
       $cache_tags = _social_group_cache_tags($group);
       Cache::invalidateTags($cache_tags);
 
       $entity = $group_content->getEntity();
 
-      if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'section') {
-        if (isset($sections[ $entity->id() ])) {
-          unset($sections[ $entity->id() ]);
+      if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'course_section') {
+        if (isset($sections[$entity->id()])) {
+          unset($sections[$entity->id()]);
         }
 
         if ($section = end($sections)) {
-          $weight = $section->get('field_section_weight')->value + 1;
-          $entity->get('field_section_weight')->setValue($weight);
+          $weight = $section->get('field_course_section_weight')->value + 1;
+          $entity->get('field_course_section_weight')->setValue($weight);
           $entity->save();
         }
       }
@@ -876,7 +920,13 @@ function social_course_menu_local_tasks_alter(&$data, $route_name) {
     }
 
     if ($group->bundle() == 'course_basic') {
-      foreach (['social_group.events', 'social_group.topics', 'social_group.stream', 'social_group.members'] as $key) {
+      $group_tabs = [
+        'social_group.events',
+        'social_group.topics',
+        'social_group.stream',
+        'social_group.members',
+      ];
+      foreach ($group_tabs as $key) {
         if (isset($data['tabs'][0][$key])) {
           $data['tabs'][0][$key]['#access'] = AccessResult::forbidden();
         }
@@ -899,7 +949,6 @@ function social_course_menu_local_tasks_alter(&$data, $route_name) {
 function _social_course_group_form_submit($form, FormStateInterface $form_state) {
   /** @var \Drupal\group\Entity\GroupInterface $group */
   $group = $form_state->getFormObject()->getEntity();
-
   if ($group instanceof Group) {
     $form_state->setRedirect('view.group_information.page_group_about', [
       'group' => $group->id(),
@@ -907,14 +956,18 @@ function _social_course_group_form_submit($form, FormStateInterface $form_state)
   }
 
   $sections_list = $form_state->getValue(['sections', 'list'], []);
-
   if (is_array($sections_list)) {
     foreach ($sections_list as $nid => $value) {
       if ($node = Node::load($nid)) {
-        $node->get('field_section_weight')->setValue($value['weight']);
+        $node->get('field_course_section_weight')->setValue($value['weight']);
         $node->save();
       }
     }
+  }
+
+  if (empty($form_state->getValue('field_course_opening_date_status'))) {
+    $group->get('field_course_opening_date')->setValue(NULL);
+    $group->save();
   }
 }
 
@@ -927,7 +980,7 @@ function social_course_node_grants(AccountInterface $account, $op) {
   }
 
   $grants = [];
-  $plugin_id = 'group_node:section';
+  $plugin_id = 'group_node:course_section';
   $entity_type_manager = \Drupal::entityTypeManager();
   $group_types = $entity_type_manager->getStorage('group_type')->loadMultiple([
     'course_advanced',
@@ -962,7 +1015,7 @@ function social_course_node_grants(AccountInterface $account, $op) {
   }
 
   return [
-    'gnode:section' => $grants,
+    'gnode:course_section' => $grants,
   ];
 }
 
@@ -1061,19 +1114,13 @@ function social_course_preprocess_block(&$variables) {
         }
       }
       break;
-  }
-}
 
-/**
- * Implements hook_preprocess_HOOK().
- */
-function social_course_preprocess_group__course__hero(&$variables) {
-  if (!$variables['group_operations_url']->access()) {
-    unset($variables['group_operations_url']);
-  }
-  if (!$variables['group']->get('field_course_type')->isEmpty()) {
-    $course_type = Term::load($variables['group']->field_course_type->target_id)->getName();
-    $variables['course_type'] = $course_type;
+    case 'views_block:group_managers-block_list_managers':
+      $group = _social_group_get_current_group();
+      if ($group instanceof GroupInterface && in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+        $variables['label']['#markup'] = t('Course Leaders');
+      }
+      break;
   }
 }
 
@@ -1118,49 +1165,52 @@ function social_course_views_pre_render(ViewExecutable $view) {
 }
 
 /**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function social_course_theme_suggestions_group_alter(array &$suggestions, array $variables) {
-  $group = $variables['elements']['#group'];
-
-  if (in_array($group->bundle(), ['course_basic', 'course_advanced']) && $variables['elements']['#view_mode'] == 'hero') {
-    $suggestions[] = 'group__course__hero';
-  }
-}
-
-/**
- *  Implements hook_block_access().
+ * Implements hook_block_access().
  */
 function social_course_block_access(Block $block, $operation, AccountInterface $account) {
   $material_types = [
-    'article',
-    'video',
+    'course_article',
+    'course_video',
   ];
-
   \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
 
-  // Disable block for video and article node view pages.
+  $edit_routes = [
+    'entity.node.edit_form',
+    'entity.node.delete_form',
+  ];
+  $current_route = \Drupal::routeMatch()->getRouteName();
+
+  // Disable block for course_video and course_article node view pages.
   if ($operation == 'view' && $block->getPluginId() == 'social_page_title_block') {
-    $nid = \Drupal::routeMatch()->getRawParameter('node');
-    if (!empty($nid) && ($node = Node::load($nid))) {
-      if (in_array($node->getType(), $material_types)) {
-        return AccessResult::forbidden();
+    if (!in_array($current_route, $edit_routes)) {
+      $nid = \Drupal::routeMatch()->getRawParameter('node');
+      if (!empty($nid) && ($node = Node::load($nid))) {
+        if (in_array($node->getType(), $material_types)) {
+          return AccessResult::forbidden();
+        }
       }
     }
   }
 
   // Exclude Course navigation blocks form Add and Edit node pages.
   $course_blocks = [
+    'course_material_hero',
     'course_material_navigation',
     'course_material_pager',
   ];
   if ($operation == 'view' && in_array($block->getPluginId(), $course_blocks)) {
-    $route_name = \Drupal::routeMatch()->getRouteName();
-    $excluded_routes = [
-      'node.add',
-      'entity.node.edit_form',
-    ];
-    if (in_array($route_name, $excluded_routes)) {
+    if (in_array($current_route, $edit_routes)) {
+      return AccessResult::forbidden();
+    }
+  }
+
+  // Exclude breadcrumb for course pages.
+  if ($operation == 'view' && $block->getPluginId() == 'system_breadcrumb_block') {
+    $course_types = ['course_basic', 'course_advanced'];
+    $group_type = \Drupal::routeMatch()->getParameter('group_type');
+    $group = _social_group_get_current_group();
+    if (($group instanceof GroupInterface && in_array($group->bundle(), $course_types))
+      || $group_type instanceof GroupTypeInterface && in_array($group_type->id(), $course_types)) {
       return AccessResult::forbidden();
     }
   }
@@ -1175,11 +1225,11 @@ function social_course_block_access(Block $block, $operation, AccountInterface $
 function social_course_preprocess_node(&$variables) {
   $node = $variables['elements']['#node'];
 
-  if ($node->bundle() == 'section') {
+  if ($node->bundle() == 'course_section') {
     // Load parent group (course).
     $group_content = GroupContent::loadByEntity($node);
 
-    // attach library
+    // Attach library.
     $variables['#attached']['library'][] = 'social_course/social_course';
 
     if (!$group_content) {
@@ -1232,11 +1282,12 @@ function social_course_preprocess_node(&$variables) {
       }
 
       $variables['parts_count'] = count($course_wrapper->getMaterials($node));
+      $variables['parts_finished'] = count($course_wrapper->getFinishedMaterials($node, $account));
     }
 
   }
 
-  if ($node->bundle() == 'article' || $node->bundle() == 'video') {
+  if ($node->bundle() == 'course_article' || $node->bundle() == 'course_video') {
     // Load parent group (course).
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $course_wrapper->setCourseFromMaterial($node);
@@ -1258,7 +1309,7 @@ function social_course_node_access(NodeInterface $node, $op, AccountInterface $a
     /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
 
-    if ($node->bundle() == 'section' && $course_wrapper->setCourseFromSection($node)->getCourse()) {
+    if ($node->bundle() == 'course_section' && $course_wrapper->setCourseFromSection($node)->getCourse()) {
       return AccessResult::forbiddenIf(!$course_wrapper->sectionAccess($node, $account, 'view')->isAllowed());
     }
     elseif (($section = $course_wrapper->getSectionFromMaterial($node)) && $course_wrapper->setCourseFromSection($section)->getCourse()) {
@@ -1326,7 +1377,7 @@ function social_course_entity_view(array &$build, EntityInterface $entity, Entit
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $account = \Drupal::currentUser();
 
-    if ($entity->bundle() == 'section') {
+    if ($entity->bundle() == 'course_section') {
       $course_wrapper->setCourseFromSection($entity);
       $materials = $course_wrapper->getMaterials($entity);
       $material = current($materials);
@@ -1375,7 +1426,7 @@ function social_course_entity_view(array &$build, EntityInterface $entity, Entit
       }
     }
   }
-  elseif ($view_mode == 'teaser' && $entity->bundle() == 'section') {
+  elseif ($view_mode == 'teaser' && $entity->bundle() == 'course_section') {
     $build['#cache']['contexts'][] = 'user';
   }
 }

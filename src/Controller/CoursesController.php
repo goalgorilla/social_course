@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\social_course\Controller\CoursesController.
- */
-
 namespace Drupal\social_course\Controller;
 
 use Drupal\Core\Cache\Cache;
@@ -14,13 +9,13 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Url;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\node\NodeInterface;
-use Drupal\social_course\CourseEnrollmentInterface;
+use Drupal\social_course\Entity\CourseEnrollmentInterface;
 use Drupal\social_course\CourseWrapper;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Courses controller.
+ * Class CoursesController.
  */
 class CoursesController extends ControllerBase {
 
@@ -57,8 +52,10 @@ class CoursesController extends ControllerBase {
    * Determines if user has access to course creation page.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
+   *   Run access checks for this account.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
    */
   public static function access(AccountInterface $account) {
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
@@ -79,7 +76,7 @@ class CoursesController extends ControllerBase {
    */
   public function startSection(GroupInterface $group, NodeInterface $node) {
     // Get first material.
-    $material = $node->get('field_section_content')->get(0)->entity;
+    $material = $node->get('field_course_section_content')->get(0)->entity;
 
     // Join user to course.
     $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
@@ -117,7 +114,7 @@ class CoursesController extends ControllerBase {
    */
   public function nextMaterial(GroupInterface $group, NodeInterface $node) {
     $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
-    $field = $node->get('field_section_content');
+    $field = $node->get('field_course_section_content');
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $course_wrapper->setCourse($group);
@@ -159,17 +156,20 @@ class CoursesController extends ControllerBase {
       }
     }
 
+    // Redirect after finishing course.
     if (!$group->get('field_course_redirect_url')->isEmpty()) {
       $uri = $group->get('field_course_redirect_url')->uri;
       $parsed_url = parse_url($uri);
 
       if (isset($parsed_url['host'])) {
         $response = new TrustedRedirectResponse($uri);
+        $response->addCacheableDependency($uri);
       }
       else {
         try {
           $url = Url::fromUri($uri);
-        } catch (\InvalidArgumentException $exception) {
+        }
+        catch (\InvalidArgumentException $exception) {
           $url = Url::fromUserInput($uri);
         }
         $response = new RedirectResponse($url->toString());
@@ -199,7 +199,30 @@ class CoursesController extends ControllerBase {
           ]));
         }
 
-        $response = self::nextMaterial($group, $next_section);
+        // Redirect after finishing section.
+        $current_section = $course_wrapper->getSection($node, 0);
+        if (!$course_wrapper->courseIsSequential() && !$current_section->get('field_course_section_redirect')->isEmpty()) {
+          $uri = $current_section->get('field_course_section_redirect')->uri;
+          $parsed_url = parse_url($uri);
+
+          if (isset($parsed_url['host'])) {
+            $response = new TrustedRedirectResponse($uri);
+            $response->addCacheableDependency($uri);
+          }
+          else {
+            try {
+              $url = Url::fromUri($uri);
+            }
+            catch (\InvalidArgumentException $exception) {
+              $url = Url::fromUserInput($uri);
+            }
+            $response = new RedirectResponse($url->toString());
+          }
+        }
+        else {
+          $response = self::nextMaterial($group, $next_section);
+        }
+
       }
     }
     else {
@@ -224,20 +247,20 @@ class CoursesController extends ControllerBase {
    * Access callback of "/group/{group}/section/{node}/next" page.
    */
   public function nextMaterialAccess(GroupInterface $group, NodeInterface $node) {
-    $bunles = CourseWrapper::getAvailableBundles();
+    $bundles = CourseWrapper::getAvailableBundles();
 
     // Forbid if group is not a course.
-    if (!in_array($group->bundle(), $bunles)) {
+    if (!in_array($group->bundle(), $bundles)) {
       return AccessResult::forbidden();
     }
 
     // Forbid if node is not a section.
-    if ($node->bundle() != 'section') {
+    if ($node->bundle() != 'course_section') {
       return AccessResult::forbidden();
     }
 
     // Forbid if section does not contain materials.
-    $field = $node->get('field_section_content');
+    $field = $node->get('field_course_section_content');
 
     if ($field->isEmpty()) {
       return AccessResult::forbidden();

@@ -8,29 +8,22 @@ use Drupal\group\Entity\GroupInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\group\Entity\GroupContent;
+use Drupal\Core\Extension\ModuleHandler;
 use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
- * Class CourseWrapper
+ * Class CourseWrapper.
  *
  * @package Drupal\social_course
  */
 class CourseWrapper implements CourseWrapperInterface {
 
   /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
+   * The group entity.
+   *
    * @var \Drupal\group\Entity\GroupInterface
    */
   protected $group;
-
-  /**
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $currentUser;
 
   /**
    * List of available to handle bundles.
@@ -40,14 +33,40 @@ class CourseWrapper implements CourseWrapperInterface {
   protected static $bundles = ['course_basic', 'course_advanced'];
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
+   * Module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandler
+   */
+  protected $moduleHandler;
+
+  /**
    * CourseWrapper constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
+   * @param \Drupal\Core\Extension\ModuleHandler $moduleHandler
+   *   The module handler.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user, ModuleHandler $moduleHandler) {
     $this->entityTypeManager = $entity_type_manager;
     $this->currentUser = $current_user;
+    $this->moduleHandler = $moduleHandler;
   }
 
   /**
@@ -160,11 +179,6 @@ class CourseWrapper implements CourseWrapperInterface {
     switch ($op) {
       case 'start':
       case 'continue':
-        // Do not allow to author start a course.
-        if ($node->getOwnerId() == $account->id() || $this->getCourse()->getOwnerId() == $account->id() || !$this->getCourse()->getMember($account)) {
-          return AccessResult::forbidden()->cachePerUser();
-        }
-
         /** @var \Drupal\Core\Entity\EntityStorageInterface $course_enrollment_storage */
         $course_enrollment_storage = $this->entityTypeManager->getStorage('course_enrollment');
         $entities = $course_enrollment_storage->loadByProperties([
@@ -172,8 +186,8 @@ class CourseWrapper implements CourseWrapperInterface {
           'sid' => $node->id(),
         ]);
 
-        // If user has already started or finished section, forbid starting a section
-        // because it should be automatically after finishing previous section.
+        // If user has already started or finished section, forbid starting a
+        // section because it should be automatically after finishing previous.
         if ($entities) {
           return AccessResult::forbidden()->cachePerUser();
         }
@@ -186,7 +200,7 @@ class CourseWrapper implements CourseWrapperInterface {
         $sections = $this->getSections();
         // Allow start first section if user has not started course yet.
         $section = current($sections);
-        $access = $access->orIf(AccessResult::allowedIf($section->id() == $node->id() && !$section->get('field_section_content')->isEmpty()));
+        $access = $access->orIf(AccessResult::allowedIf($section->id() == $node->id() && !$section->get('field_course_section_content')->isEmpty()));
         break;
 
       case 'bypass':
@@ -259,7 +273,7 @@ class CourseWrapper implements CourseWrapperInterface {
    * {@inheritdoc}
    */
   public function getSections() {
-    $sections = $this->group->getContentEntities('group_node:section');
+    $sections = $this->group->getContentEntities('group_node:course_section');
 
     if (!$sections) {
       return [];
@@ -267,20 +281,20 @@ class CourseWrapper implements CourseWrapperInterface {
 
     // Set id of section as key of array.
     foreach ($sections as $key => $section) {
-      unset($sections[ $key ]);
+      unset($sections[$key]);
 
       if ($section instanceof NodeInterface) {
-        $sections[ $section->id() ] = $section;
+        $sections[$section->id()] = $section;
       }
     }
 
     // Sort sections by weight to get first section.
     uasort($sections, function ($a, $b) {
-      if ($a->get('field_section_weight')->value == $b->get('field_section_weight')->value) {
+      if ($a->get('field_course_section_weight')->value == $b->get('field_course_section_weight')->value) {
         return 0;
       }
 
-      return $a->get('field_section_weight')->value > $b->get('field_section_weight')->value ? 1 : -1;
+      return $a->get('field_course_section_weight')->value > $b->get('field_course_section_weight')->value ? 1 : -1;
     });
 
     return $sections;
@@ -296,14 +310,14 @@ class CourseWrapper implements CourseWrapperInterface {
     if (!$node) {
       $nodes = $sections;
     }
-    elseif (isset($sections[ $node->id() ])) {
+    elseif (isset($sections[$node->id()])) {
       $nodes = [$node];
     }
 
     $ids = [];
 
     foreach ($nodes as $node) {
-      foreach ($node->get('field_section_content')->getValue() as $item) {
+      foreach ($node->get('field_course_section_content')->getValue() as $item) {
         $ids[] = $item['target_id'];
       }
     }
@@ -312,7 +326,7 @@ class CourseWrapper implements CourseWrapperInterface {
       return [];
     }
 
-    \Drupal::moduleHandler()->alter('social_course_materials', $ids);
+    $this->moduleHandler->alter('social_course_materials', $ids);
 
     if (!$ids) {
       return [];
@@ -355,8 +369,8 @@ class CourseWrapper implements CourseWrapperInterface {
   public function getSectionFromMaterial(NodeInterface $node) {
     $storage = $this->entityTypeManager->getStorage('node');
     $entitites = $storage->loadByProperties([
-      'type' => 'section',
-      'field_section_content' => $node->id(),
+      'type' => 'course_section',
+      'field_course_section_content' => $node->id(),
     ]);
 
     return current($entitites);
@@ -404,6 +418,20 @@ class CourseWrapper implements CourseWrapperInterface {
     $number = array_search($node->id(), array_keys($materials));
 
     return $number;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFinishedMaterials(NodeInterface $node, AccountInterface $account) {
+    $storage = $this->entityTypeManager->getStorage('course_enrollment');
+    $materials = $storage->loadByProperties([
+      'gid' => $this->group->id(),
+      'sid' => $node->id(),
+      'uid' => $account->id(),
+      'status' => CourseEnrollmentInterface::FINISHED,
+    ]);
+    return $materials;
   }
 
 }

@@ -9,6 +9,9 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Class RouteSubscriber.
+ */
 class RouteSubscriber extends RouteSubscriberBase {
 
   /**
@@ -65,6 +68,9 @@ class RouteSubscriber extends RouteSubscriberBase {
     return $events;
   }
 
+  /**
+   * Redirect Course Section node.
+   */
   public function redirectSectionNode(GetResponseEvent $event) {
     $request = $event->getRequest();
 
@@ -73,7 +79,7 @@ class RouteSubscriber extends RouteSubscriberBase {
     }
 
     // Only redirect a certain content type.
-    if ($request->attributes->get('node')->getType() !== 'section') {
+    if ($request->attributes->get('node')->getType() !== 'course_section') {
       return;
     }
 

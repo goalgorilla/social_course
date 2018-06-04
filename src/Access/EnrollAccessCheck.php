@@ -8,6 +8,9 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\Routing\Route;
 
+/**
+ * Class EnrollAccessCheck.
+ */
 class EnrollAccessCheck implements AccessInterface {
 
   /**
@@ -35,7 +38,6 @@ class EnrollAccessCheck implements AccessInterface {
     if ($group->hasField($field) && !$group->get($field)->isEmpty() && $group->get($field)->value) {
       return AccessResult::forbidden();
     }
-
 
     return AccessResult::allowed();
   }

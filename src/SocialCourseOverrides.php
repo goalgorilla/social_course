@@ -6,6 +6,9 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
 use Drupal\Core\Config\StorageInterface;
 
+/**
+ * Class SocialCourseOverrides.
+ */
 class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
 
   /**
@@ -440,10 +443,110 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
             'entity:node' => [
               'bundles' => [
                 'selected' => [
-                  'article',
-                  'section',
-                  'video',
+                  'course_article',
+                  'course_section',
+                  'course_video',
                 ],
+              ],
+            ],
+          ],
+        ];
+      }
+    }
+
+    // Set view mode "Teaser" for "Course" groups in Search All.
+    $config_name = 'views.view.search_all';
+
+    if (in_array($config_name, $names)) {
+      $config = \Drupal::service('config.factory')->getEditable($config_name);
+      $bundles = $config->get('display.default.display_options.row.options.view_modes.entity:group');
+      $bundles['course_basic'] = 'teaser';
+      $bundles['course_advanced'] = 'teaser';
+
+      if (in_array($config_name, $names)) {
+        $overrides[$config_name] = [
+          'display' => [
+            'default' => [
+              'display_options' => [
+                'row' => [
+                  'options' => [
+                    'view_modes' => [
+                      'entity:group' => $bundles,
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ];
+      }
+    }
+
+    $config_name = 'views.view.group_managers';
+
+    if (in_array($config_name, $names)) {
+      $overrides[$config_name] = [
+        'display' => [
+          'default' => [
+            'display_options' => [
+              'filters' => [
+                'group_roles_target_id' => [
+                  'operator' => 'ends',
+                  'value' => 'group_manager',
+                ],
+              ],
+            ],
+          ],
+        ],
+      ];
+    }
+
+    $config_name = 'block.block.views_block__group_managers_block_list_managers';
+
+    if (in_array($config_name, $names)) {
+      $config = \Drupal::service('config.factory')->getEditable($config_name);
+      $group_types = $config->get('visibility.group_type.group_types');
+      $group_types['course_basic'] = 'course_basic';
+      $group_types['course_advanced'] = 'course_advanced';
+      $overrides[$config_name] = [
+        'visibility' => [
+          'group_type' => [
+            'group_types' => $group_types,
+          ],
+        ],
+      ];
+    }
+
+    // Show profile hero block on My Courses page.
+    $config_name = 'block.block.socialblue_profile_hero_block';
+
+    if (in_array($config_name, $names)) {
+      $config = \Drupal::service('config.factory')->getEditable($config_name);
+      $pages = $config->get('visibility.request_path.pages');
+      $pages .= "\r\n/user/*/courses";
+      $overrides[$config_name] = [
+        'visibility' => [
+          'request_path' => [
+            'pages' => $pages,
+          ],
+        ],
+      ];
+    }
+
+    // Add Basic and Advanced Courses to related courses field settings.
+    $config_names = [
+      'field.field.group.course_advanced.field_course_related_courses',
+      'field.field.group.course_basic.field_course_related_courses',
+    ];
+
+    foreach ($names as $name) {
+      if (in_array($name, $config_names)) {
+        $overrides[$name] = [
+          'settings' => [
+            'handler_settings' => [
+              'target_bundles' => [
+                'course_advanced',
+                'course_basic',
               ],
             ],
           ],
