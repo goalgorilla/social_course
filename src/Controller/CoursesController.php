@@ -9,7 +9,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Url;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\node\NodeInterface;
-use Drupal\social_course\CourseEnrollmentInterface;
+use Drupal\social_course\Entity\CourseEnrollmentInterface;
 use Drupal\social_course\CourseWrapper;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -247,15 +247,15 @@ class CoursesController extends ControllerBase {
    * Access callback of "/group/{group}/section/{node}/next" page.
    */
   public function nextMaterialAccess(GroupInterface $group, NodeInterface $node) {
-    $bunles = CourseWrapper::getAvailableBundles();
+    $bundles = CourseWrapper::getAvailableBundles();
 
     // Forbid if group is not a course.
-    if (!in_array($group->bundle(), $bunles)) {
+    if (!in_array($group->bundle(), $bundles)) {
       return AccessResult::forbidden();
     }
 
     // Forbid if node is not a section.
-    if ($node->bundle() != 'section') {
+    if ($node->bundle() != 'course_section') {
       return AccessResult::forbidden();
     }
 

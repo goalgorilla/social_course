@@ -7,7 +7,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\group\Entity\GroupInterface;
-use Drupal\social_course\CourseEnrollmentInterface;
+use Drupal\social_course\Entity\CourseEnrollmentInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**

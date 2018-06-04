@@ -19,7 +19,7 @@ use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\node\Entity\Node;
-use Drupal\social_course\CourseEnrollmentInterface;
+use Drupal\social_course\Entity\CourseEnrollmentInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
