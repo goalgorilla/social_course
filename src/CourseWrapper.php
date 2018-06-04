@@ -9,6 +9,7 @@ use Drupal\node\NodeInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\group\Entity\GroupContent;
 use Drupal\Core\Extension\ModuleHandler;
+use Drupal\social_course\Entity\CourseEnrollmentInterface;
 use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
