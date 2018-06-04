@@ -1,19 +1,14 @@
 # Social Course
 
-Enables CM+ to create courses
+This module allows Community Managers to create courses for their members. 
+A Course is a step-by-step program that guides users through a course complete
+with video, text and an opportunity for users to keep track of their progress.
+You can look up courses via the *all courses* overview, usually positioned 
+under the *explore menu*.
 
-### Features
+### Documentation
 
-- 'All courses' menu item added to the 'Explore' menu
-- 'Add course' menu item added to the user menu
-- Basic and advanced course group type, with option for sequential or non-sequential
-- Section content type with entity reference field for Article and Video content types
-- Uses https://www.drupal.org/project/paragraphs for image, text and file content within course
-- 'Add Section' button added in sidebar of a course
-- Course overview shows status of sections (enrolled, started, finished)
-- Initial styles match socialblue palette
-
-More info to be added here about permissions
+https://lets.getopensocial.com/enterprise-feature-courses
 
 ### Installation
 
@@ -39,12 +34,4 @@ In your project's composer.json:
 
 ### Developer Notes
 
-WIP
-
-### Configuration
-
-WIP
-
-### Documentation
-
-Update once https://jira.goalgorilla.com/browse/ECI-676 is completed
+See `social_course.api.php`

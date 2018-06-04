@@ -17,8 +17,10 @@ interface CourseWrapperInterface {
    * Set a group instance.
    *
    * @param \Drupal\group\Entity\GroupInterface $group
+   *   The Group entity.
    *
    * @return \Drupal\social_course\CourseWrapperInterface
+   *   The CourseWrapper entity.
    */
   public function setCourse(GroupInterface $group);
 
@@ -26,6 +28,7 @@ interface CourseWrapperInterface {
    * Get a group instance.
    *
    * @return \Drupal\group\Entity\GroupInterface|null
+   *   The Group entity.
    */
   public function getCourse();
 
@@ -79,6 +82,7 @@ interface CourseWrapperInterface {
    *   An operation key.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
    */
   public function sectionAccess(NodeInterface $node, AccountInterface $account, $op);
 
@@ -93,6 +97,7 @@ interface CourseWrapperInterface {
    *   An operation key.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
    */
   public function materialAccess(NodeInterface $node, AccountInterface $account, $op);
 
@@ -108,9 +113,9 @@ interface CourseWrapperInterface {
    * Get all materials within a section or a course.
    *
    * @param \Drupal\node\NodeInterface|null $node
-   *   Optional parameter. If NULL, method will return all materials of a course.
-   *   If not null, it should be an instance of a node type of "section".
-   *   In this case method will return only materials that attached to a section.
+   *   Optional parameter. If NULL method will return all materials of a course.
+   *   If not NULL it should be an instance of a node type of "section". In
+   *   this case method will return only materials that attached to a section.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   Array with node entities.
@@ -138,6 +143,7 @@ interface CourseWrapperInterface {
    *   this instance.
    *
    * @return \Drupal\social_course\CourseWrapperInterface
+   *   The CourseWrapper entity.
    */
   public function setCourseFromSection(NodeInterface $node);
 
@@ -149,6 +155,7 @@ interface CourseWrapperInterface {
    *   section and then will load a course.
    *
    * @return \Drupal\social_course\CourseWrapperInterface
+   *   The CourseWrapper entity.
    *
    * @see \Drupal\social_course\CourseWrapperInterface::setCourseFromSection()
    */
@@ -162,6 +169,7 @@ interface CourseWrapperInterface {
    *   this instance.
    *
    * @return \Drupal\node\NodeInterface
+   *   The Node entity.
    */
   public function getSectionFromMaterial(NodeInterface $node);
 
@@ -175,6 +183,7 @@ interface CourseWrapperInterface {
    *   section. If 1, method will return next section.
    *
    * @return \Drupal\node\NodeInterface
+   *   The Node entity.
    */
   public function getSection(NodeInterface $node, $offset);
 
@@ -188,6 +197,7 @@ interface CourseWrapperInterface {
    *   material. If 1, method will return next material.
    *
    * @return \Drupal\node\NodeInterface
+   *   The Node entity.
    */
   public function getMaterial(NodeInterface $node, $offset);
 

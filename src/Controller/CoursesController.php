@@ -52,8 +52,10 @@ class CoursesController extends ControllerBase {
    * Determines if user has access to course creation page.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
+   *   Run access checks for this account.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
    */
   public static function access(AccountInterface $account) {
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */

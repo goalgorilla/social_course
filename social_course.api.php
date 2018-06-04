@@ -11,14 +11,14 @@
  */
 
 /**
- * Provide a method to alter content types which can be added to course sections.
+ * Provide a method to alter content types which can be added to course section.
  *
  * @param array $content_types
  *   List of machine names of content types.
  *
  * @ingroup social_course_api
  */
-function hook_social_course_material_types_alter(&$content_types) {
+function hook_social_course_material_types_alter(array &$content_types) {
   if (in_array('course_video', $content_types) && !in_array('course_audio', $content_types)) {
     $content_types[] = 'course_audio';
   }
@@ -32,7 +32,7 @@ function hook_social_course_material_types_alter(&$content_types) {
  *
  * @ingroup social_course_api
  */
-function hook_social_course_materials_alter(&$node_ids) {
+function hook_social_course_materials_alter(array &$node_ids) {
   $node_ids = array_diff($node_ids, [5, 7]);
 }
 

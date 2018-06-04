@@ -49,8 +49,13 @@ function _social_course_set_permissions() {
 }
 
 /**
- * @param $role
+ * Return the permissions per role.
+ *
+ * @param string $role
+ *   The role to get the permissions for.
+ *
  * @return array
+ *   A list of permissions.
  */
 function _social_course_get_permissions($role) {
   // Anonymous.

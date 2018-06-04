@@ -140,7 +140,7 @@ function social_course_theme($existing, $type, $theme, $path) {
  *   - material: Information about materials parent section
  *   - parent_course: Information about parent course.
  */
-function template_preprocess_course_material_hero(&$variables) {
+function template_preprocess_course_material_hero(array &$variables) {
   $type = [
     'course_article',
     'course_video',
@@ -161,7 +161,7 @@ function template_preprocess_course_material_hero(&$variables) {
   }
 
   if ($node instanceof NodeInterface && in_array($node->getType(), $type)) {
-    // Get the current route name to check if the user is on the edit or delete page.
+    // Get the current route name to check if the user is on the edit page.
     $route = \Drupal::routeMatch()->getRouteName();
 
     if (!in_array($route, ['entity.node.edit_form', 'entity.node.delete_form'])) {
@@ -201,7 +201,7 @@ function template_preprocess_course_material_hero(&$variables) {
  *   An associative array containing:
  *   - material: Information about materials in parent section.
  */
-function template_preprocess_course_material_pager(&$variables) {
+function template_preprocess_course_material_pager(array &$variables) {
   $type = [
     'course_article',
     'course_video',
@@ -327,9 +327,6 @@ function template_preprocess_course_material_pager(&$variables) {
 
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for account_header_block.
- *
- * @param array $build
- * @param \Drupal\Core\Block\BlockPluginInterface $block
  */
 function social_course_block_view_account_header_block_alter(array &$build, BlockPluginInterface $block) {
   $build['#pre_render'][] = 'social_course_block_view_account_header_block_pre_render';
@@ -337,10 +334,6 @@ function social_course_block_view_account_header_block_alter(array &$build, Bloc
 
 /**
  * Pre-render callback for block account_header_block.
- *
- * @param array $build
- *
- * @return array
  */
 function social_course_block_view_account_header_block_pre_render(array $build) {
   $account = \Drupal::currentUser();
@@ -408,7 +401,7 @@ function social_course_block_view_account_header_block_pre_render(array $build) 
  *
  * @see node_add_page()
  */
-function template_preprocess_course_add_list(&$variables) {
+function template_preprocess_course_add_list(array &$variables) {
   $variables['types'] = [];
 
   if (!empty($variables['content'])) {
@@ -927,7 +920,13 @@ function social_course_menu_local_tasks_alter(&$data, $route_name) {
     }
 
     if ($group->bundle() == 'course_basic') {
-      foreach (['social_group.events', 'social_group.topics', 'social_course.group_stream', 'social_group.members'] as $key) {
+      $group_tabs = [
+        'social_group.events',
+        'social_group.topics',
+        'social_course.group_stream',
+        'social_group.members',
+      ];
+      foreach ($group_tabs as $key) {
         if (isset($data['tabs'][0][$key])) {
           $data['tabs'][0][$key]['#access'] = AccessResult::forbidden();
         }
