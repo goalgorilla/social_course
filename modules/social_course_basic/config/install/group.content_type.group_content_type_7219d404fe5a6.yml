@@ -7,6 +7,7 @@ dependencies:
   module:
     - gnode
     - node
+    - social_course
 id: group_content_type_7219d404fe5a6
 label: Section
 description: 'Adds <em class="placeholder">Section</em> content to groups both publicly and privately.'
