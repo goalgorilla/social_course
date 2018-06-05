@@ -32,4 +32,4 @@ permissions:
   - 'view group_node:topic content'
   - 'post comments'
   - 'access comments'
-  - 'view stream page group'
+  - 'view group stream page'

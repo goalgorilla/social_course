@@ -69,4 +69,3 @@ permissions:
   - 'update any group_node:course_section content'
   - 'update own group_node:course_section content'
   - 'view group_node:course_section content'
-  - 'view stream page group'
