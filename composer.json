@@ -2,7 +2,7 @@
     "name": "goalgorilla/social_course",
     "type": "drupal-module",
     "require": {
-        "goalgorilla/social_paragraphs": "dev-master",
+        "goalgorilla/social_paragraphs": "^2.0",
         "drupal/inline_entity_form": "^1.0@beta",
         "drupal/video_embed_field": "^1.5",
         "drupal/weight": "^3.0"
