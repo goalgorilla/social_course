@@ -40,18 +40,18 @@
     </div>
     {% if course_status == 'enrolled' %}
       <span class="badge badge-start teaser__badge badge--section-not-started">
-              {% trans %}You've enrolled{% endtrans %}
+              {% trans %}You have enrolled{% endtrans %}
           </span>
     {% elseif course_status == 'started' %}
       <span class="badge teaser__badge badge-warning">
             <span class="badge__container">
-              <span class="badge__label">{% trans %}You've started{% endtrans %} </span>
+              <span class="badge__label">{% trans %}You have started{% endtrans %} </span>
             </span>
           </span>
     {% elseif course_status == 'finished' %}
       <span class="badge teaser__badge badge-success">
               <span class="badge__container">
-                <span class="badge__label">{% trans %}You've finished{% endtrans %} </span>
+                <span class="badge__label">{% trans %}You have finished{% endtrans %} </span>
               </span>
             </span>
     {% endif %}
