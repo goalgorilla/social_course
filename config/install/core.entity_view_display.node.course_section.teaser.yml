@@ -5,7 +5,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.course_section.field_course_section_content
     - field.field.node.course_section.field_course_section_description
-    - field.field.node.course_section.field_course_section_image
     - field.field.node.course_section.field_course_section_weight
     - image.style.social_xx_large
     - node.type.course_section
@@ -24,15 +23,6 @@ content:
     region: content
     label: hidden
     settings: {  }
-    third_party_settings: {  }
-  field_course_section_image:
-    type: image
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      image_style: social_xx_large
-      image_link: ''
     third_party_settings: {  }
   links:
     weight: 2

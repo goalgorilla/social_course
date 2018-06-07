@@ -5,7 +5,6 @@ dependencies:
     - core.entity_form_mode.node.course
     - field.field.node.course_section.field_course_section_content
     - field.field.node.course_section.field_course_section_description
-    - field.field.node.course_section.field_course_section_image
     - field.field.node.course_section.field_course_section_redirect
     - field.field.node.course_section.field_course_section_weight
     - image.style.social_x_large
@@ -23,7 +22,6 @@ third_party_settings:
       children:
         - title
         - field_course_section_description
-        - field_course_section_image
         - groups
       parent_name: ''
       weight: 0
@@ -61,14 +59,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
-    region: content
-  field_course_section_image:
-    weight: 3
-    settings:
-      preview_image_style: social_x_large
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: image_image
     region: content
   field_course_section_redirect:
     weight: 26
