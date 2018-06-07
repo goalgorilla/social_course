@@ -180,6 +180,10 @@ class CourseWrapper implements CourseWrapperInterface {
     switch ($op) {
       case 'start':
       case 'continue':
+        // Only members can start a course.
+        if (!$this->getCourse()->getMember($account)) {
+          return AccessResult::forbidden()->cachePerUser();
+        }
         /** @var \Drupal\Core\Entity\EntityStorageInterface $course_enrollment_storage */
         $course_enrollment_storage = $this->entityTypeManager->getStorage('course_enrollment');
         $entities = $course_enrollment_storage->loadByProperties([
