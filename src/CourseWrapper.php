@@ -278,9 +278,10 @@ class CourseWrapper implements CourseWrapperInterface {
    * {@inheritdoc}
    */
   public function getSections() {
-    $sections = $this->group->getContentEntities('group_node:course_section');
-
-    if (!$sections) {
+    if ($this->group) {
+      $sections = $this->group->getContentEntities('group_node:course_section');
+    }
+    if (empty($sections)) {
       return [];
     }
 
