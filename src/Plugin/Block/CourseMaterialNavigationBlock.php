@@ -9,6 +9,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\social_course\Entity\CourseEnrollmentInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Provides a 'CourseMaterialNavigationBlock' block.
@@ -28,8 +29,7 @@ class CourseMaterialNavigationBlock extends BlockBase {
    */
   public function build() {
     $node = $this->getContextValue('node');
-
-    if ($node) {
+    if ($node instanceof NodeInterface && $node->id()) {
       $translation = \Drupal::service('entity.repository')
         ->getTranslationFromContext($node);
 
@@ -118,8 +118,8 @@ class CourseMaterialNavigationBlock extends BlockBase {
    */
   public function getCacheTags() {
     $tags = parent::getCacheTags();
-
-    if ($node = $this->getContextValue('node')) {
+    $node = $this->getContextValue('node');
+    if ($node instanceof NodeInterface && $node->id()) {
       /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
       $course_wrapper = \Drupal::service('social_course.course_wrapper');
       $course_wrapper->setCourseFromMaterial($node);
@@ -134,15 +134,17 @@ class CourseMaterialNavigationBlock extends BlockBase {
    * {@inheritdoc}
    */
   protected function blockAccess(AccountInterface $account) {
-    if ($node = $this->getContextValue('node')) {
+    $node = $this->getContextValue('node');
+    if ($node instanceof NodeInterface && $node->id()) {
       $group = \Drupal::service('social_course.course_wrapper')
         ->setCourseFromMaterial($node)
         ->getCourse();
 
       return AccessResult::allowedIf($group instanceof GroupInterface);
     }
-
-    return parent::blockAccess($account);
+    else {
+      return AccessResult::forbidden();
+    }
   }
 
 }

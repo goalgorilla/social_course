@@ -8,6 +8,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\group\Entity\GroupInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Provides a 'CourseSectionNavigationBlock' block.
@@ -27,8 +28,7 @@ class CourseSectionNavigationBlock extends BlockBase {
    */
   public function build() {
     $node = $this->getContextValue('node');
-
-    if ($node) {
+    if ($node instanceof NodeInterface && $node->id()) {
       $translation = \Drupal::service('entity.repository')
         ->getTranslationFromContext($node);
 
@@ -87,8 +87,8 @@ class CourseSectionNavigationBlock extends BlockBase {
    */
   public function getCacheTags() {
     $tags = parent::getCacheTags();
-
-    if ($node = $this->getContextValue('node')) {
+    $node = $this->getContextValue('node');
+    if ($node instanceof NodeInterface && $node->id()) {
       /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
       $course_wrapper = \Drupal::service('social_course.course_wrapper');
       $course_wrapper->setCourseFromMaterial($node);
@@ -103,7 +103,8 @@ class CourseSectionNavigationBlock extends BlockBase {
    * {@inheritdoc}
    */
   protected function blockAccess(AccountInterface $account) {
-    if ($node = $this->getContextValue('node')) {
+    $node = $this->getContextValue('node');
+    if ($node instanceof NodeInterface && $node->id()) {
       $group = \Drupal::service('social_course.course_wrapper')
         ->setCourseFromMaterial($node)
         ->getCourse();
@@ -118,8 +119,9 @@ class CourseSectionNavigationBlock extends BlockBase {
         return AccessResult::forbidden();
       }
     }
-
-    return parent::blockAccess($account);
+    else {
+      return AccessResult::forbidden();
+    }
   }
 
 }

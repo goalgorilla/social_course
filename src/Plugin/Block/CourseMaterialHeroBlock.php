@@ -5,6 +5,10 @@ namespace Drupal\social_course\Plugin\Block;
 use Drupal\taxonomy\Entity\Term;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Drupal\Core\Block\Plugin\Block\PageTitleBlock;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\group\Entity\GroupInterface;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * Provides a 'CourseMaterialHeroBlock' block.
@@ -25,8 +29,7 @@ class CourseMaterialHeroBlock extends PageTitleBlock {
   public function build() {
     $parent_course_type = NULL;
     $node = $this->getContextValue('node');
-
-    if ($node) {
+    if ($node instanceof NodeInterface && $node->id()) {
       $translation = \Drupal::service('entity.repository')
         ->getTranslationFromContext($node);
 
@@ -68,6 +71,23 @@ class CourseMaterialHeroBlock extends PageTitleBlock {
           '#title' => '',
         ];
       }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function blockAccess(AccountInterface $account) {
+    $node = $this->getContextValue('node');
+    if ($node instanceof NodeInterface && $node->id()) {
+      $group = \Drupal::service('social_course.course_wrapper')
+        ->setCourseFromMaterial($node)
+        ->getCourse();
+
+      return AccessResult::allowedIf($group instanceof GroupInterface);
+    }
+    else {
+      return AccessResult::forbidden();
     }
   }
 
