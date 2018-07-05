@@ -15,7 +15,6 @@ dependencies:
     - image.style.social_featured
   module:
     - image
-    - social_landing_page
 id: group.course_basic.featured
 targetEntityType: group
 bundle: course_basic
