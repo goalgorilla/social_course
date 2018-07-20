@@ -78,12 +78,4 @@ class GroupController extends EntityController {
       ->cachePerUser();
   }
 
-
-  /**
-   * Access callback of "/stream" page.
-   */
-  public function streamAccess(GroupInterface $group) {
-    return AccessResult::allowedIf($group->bundle() !== 'course_basic');
-  }
-
 }
