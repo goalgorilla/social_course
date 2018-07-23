@@ -5,19 +5,6 @@ social_course.course_add:
     _title: 'Add course'
   requirements:
     _custom_access:  '\Drupal\social_course\Controller\CoursesController::access'
-social_course.group_stream:
-  path: '/group/{group}/stream'
-  defaults:
-    _controller: '\Drupal\social_course\Controller\GroupController::stream'
-    _title_callback: '\Drupal\social_group\Controller\SocialGroupController::groupStreamTitle'
-    _entity_view: 'group.stream'
-  requirements:
-    _group_permission: 'view group stream page'
-    _custom_access: '\Drupal\social_course\Controller\GroupController::streamAccess'
-  options:
-    parameters:
-      group:
-        type: entity:group
 social_course.start_section:
   path: '/group/{group}/section/{node}/start'
   defaults:
