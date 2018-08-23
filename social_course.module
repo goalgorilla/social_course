@@ -1304,7 +1304,7 @@ function social_course_preprocess_node(&$variables) {
  * Implements hook_node_access().
  */
 function social_course_node_access(NodeInterface $node, $op, AccountInterface $account) {
-  if ($op == 'view') {
+  if ($op == 'view' && $node->id()) {
     /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
 
