@@ -127,6 +127,32 @@ function social_course_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Retrieves the course material types that are available.
+ *
+ * @return array
+ *   An array of course materials
+ */
+function social_course_get_material_types() {
+  // Ensure we only calculate this once per request.
+  $material_types = &drupal_static(__FUNCTION__);
+
+  if (!is_null($material_types)) {
+    return $material_types;
+  }
+
+  // By default we have an article and video course type.
+  $material_types = [
+    'course_article',
+    'course_video',
+  ];
+
+  // Allow other modules to register their own types.
+  \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
+
+  return $material_types;
+}
+
+/**
  * Prepares variables for the social page hero data.
  *
  * Default template: page-hero-data.html.twig.
@@ -141,12 +167,7 @@ function social_course_theme($existing, $type, $theme, $path) {
  *   - parent_course: Information about parent course.
  */
 function template_preprocess_course_material_hero(array &$variables) {
-  $type = [
-    'course_article',
-    'course_video',
-  ];
-
-  \Drupal::moduleHandler()->alter('social_course_material_types', $type);
+  $material_types = social_course_get_material_types();
 
   // Get current user.
   $account = \Drupal::currentUser();
@@ -160,7 +181,7 @@ function template_preprocess_course_material_hero(array &$variables) {
       ->load($node);
   }
 
-  if ($node instanceof NodeInterface && in_array($node->getType(), $type)) {
+  if ($node instanceof NodeInterface && in_array($node->getType(), $material_types)) {
     // Get the current route name to check if the user is on the edit page.
     $route = \Drupal::routeMatch()->getRouteName();
 
@@ -202,12 +223,7 @@ function template_preprocess_course_material_hero(array &$variables) {
  *   - material: Information about materials in parent section.
  */
 function template_preprocess_course_material_pager(array &$variables) {
-  $type = [
-    'course_article',
-    'course_video',
-  ];
-
-  \Drupal::moduleHandler()->alter('social_course_material_types', $type);
+  $material_types = social_course_get_material_types();
 
   // Get current node object or node id.
   $node = \Drupal::routeMatch()->getParameter('node');
@@ -218,7 +234,7 @@ function template_preprocess_course_material_pager(array &$variables) {
       ->load($node);
   }
 
-  if ($node instanceof NodeInterface && in_array($node->getType(), $type)) {
+  if ($node instanceof NodeInterface && in_array($node->getType(), $material_types)) {
     /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $course_wrapper->setCourseFromMaterial($node);
@@ -1167,12 +1183,8 @@ function social_course_views_pre_render(ViewExecutable $view) {
  * Implements hook_block_access().
  */
 function social_course_block_access(Block $block, $operation, AccountInterface $account) {
-  $material_types = [
-    'course_article',
-    'course_video',
-  ];
-  \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
-
+  $material_types = social_course_get_material_types();
+  
   $edit_routes = [
     'entity.node.edit_form',
     'entity.node.delete_form',
