@@ -3,6 +3,8 @@
 {%
 set cover_classes = [
 'cover',
+'cover--course',
+'cover--' ~ group.type.0.target_id | clean_class,
 'brand-bg-primary',
 group_hero_styled_image_url ? 'cover-img cover-img-gradient',
 ]
