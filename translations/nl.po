@@ -1,0 +1,217 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: node-gettext\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: social_course.module:247
+msgid "Previous"
+msgstr "Vorige"
+
+#: social_course.module:293
+msgid "Continue"
+msgstr "Doorgaan"
+
+#: social_course.module:315
+msgid "Finish section"
+msgstr ""
+
+#: social_course.module:318
+msgid "Finish course"
+msgstr ""
+
+#: social_course.module:348
+msgid "Create New Course"
+msgstr ""
+
+#: social_course.module:349
+msgid "New course"
+msgstr ""
+
+#: social_course.module:366
+msgid "View my courses"
+msgstr ""
+
+#: social_course.module:367
+msgid "My courses"
+msgstr ""
+
+#: social_course.module:486
+msgid "Author"
+msgstr "Auteur"
+
+#: social_course.module:498;936
+msgid "Sections"
+msgstr ""
+
+#: social_course.module:505
+msgid "Drag and drop to change the order"
+msgstr ""
+
+#: social_course.module:518
+msgid "Title"
+msgstr "Titel"
+
+#: social_course.module:519
+msgid "Weight"
+msgstr "Gewicht"
+
+#: social_course.module:535
+msgid "Weight for @title"
+msgstr "Gewicht voor @title"
+
+#: social_course.module:566
+msgid "Enable open date and time"
+msgstr ""
+
+#: social_course.module:567
+msgid ""
+"When enabled, course sections and other information can only be accessed by members after the course starts. Enrolment can only take place before the course has started.\n"
+"<br>When not enabled, course sections and other information can be accessed right after enrolment."
+msgstr ""
+
+#: social_course.module:583
+msgid "Save"
+msgstr "Opslaan"
+
+#: social_course.module:601
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: social_course.module:635
+msgid "Enroll in course"
+msgstr ""
+
+#: social_course.module:647
+msgid "You will be able to follow this course by enrolling."
+msgstr ""
+
+#: social_course.module:656
+msgid "Cancel enrollment"
+msgstr "Aanmelding annuleren"
+
+#: social_course.module:681
+msgid "Select a member"
+msgstr "Selecteer een lid"
+
+#: social_course.module:682
+msgid "Course roles"
+msgstr ""
+
+#: social_course.module:808
+msgid "Unpublished"
+msgstr "niet gepubliceerd"
+
+#: social_course.module:1033
+msgid "Enroll in course @label"
+msgstr ""
+
+#: social_course.module:1039
+msgid "Course members"
+msgstr ""
+
+#: social_course.module:1043;1074
+msgid "Course Topics"
+msgstr ""
+
+#: social_course.module:1047;1078
+msgid "Course Events"
+msgstr ""
+
+#: social_course.module:1064
+msgid "About"
+msgstr "Over"
+
+#: social_course.module:1068
+msgid "Enroll in course %label"
+msgstr ""
+
+#: social_course.module:1097
+msgid "in the course"
+msgstr ""
+
+#: social_course.module:1120
+msgid "Course Leaders"
+msgstr ""
+
+#: social_course.module:1141
+msgid "No upcoming events in this course"
+msgstr ""
+
+#: social_course.module:1145;1157
+msgid "No topics in this course"
+msgstr ""
+
+#: social_course.module:1149;1153
+msgid "No members in this course"
+msgstr ""
+
+#: social_course.module:1161
+msgid "No events in this course"
+msgstr ""
+
+#: social_course.module:1439 social_course.install:200
+msgid "Published"
+msgstr "Gepubliceerd"
+
+#: social_course.install:143
+msgid "All courses"
+msgstr ""
+
+#: src/Controller/CoursesController.php:90
+msgid "You have successfully enrolled"
+msgstr ""
+
+#: src/Controller/CoursesController.php:197
+msgid "You have successfully finished the @title section"
+msgstr ""
+
+#: src/Controller/GroupController.php:68
+msgid "Course sections can only be accessed after the course starts. You can only enrol in this course before the course has started."
+msgstr ""
+
+#: src/Controller/GroupController.php:72
+msgid "Course sections and other information can only be accessed after enrolling for this course."
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:89
+msgid "Owner"
+msgstr "Eigenaar"
+
+#: src/Entity/CourseEnrollment.php:94
+msgid "Group ID"
+msgstr "Groep-ID"
+
+#: src/Entity/CourseEnrollment.php:99
+msgid "Section ID"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:104
+msgid "Material ID"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:109
+msgid "Created"
+msgstr "Aangemaakt"
+
+#: src/Entity/CourseEnrollment.php:110
+msgid "The time that the entity was created."
+msgstr "Het tijdstip waarop de entiteit is aangemaakt."
+
+#: src/Entity/CourseEnrollment.php:113
+msgid "Changed"
+msgstr "Gewijzigd"
+
+#: src/Entity/CourseEnrollment.php:114
+msgid "The time that the entity was last edited."
+msgstr "Het tijdstip waarop de entiteit voor het laatst is bewerkt."
+
+#: src/Entity/CourseEnrollment.php:117
+msgid "Status"
+msgstr ""
+
+#: src/Plugin/Block/CourseAddSectionBlock.php:62
+msgid "Create Section"
+msgstr ""
