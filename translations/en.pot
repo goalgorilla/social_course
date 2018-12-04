@@ -4,17 +4,38 @@
 # Copyright 2018 GoalGorilla <devel@goalgorilla.com>
 # Generated from files:
 #  social_course.module: n/a
+#  templates/group--course-basic--hero.html.twig: n/a
+#  templates/node--course-section--teaser.html.twig: n/a
 #  social_course.install: n/a
+#  social_course.info.yml: n/a
+#  modules/social_course_advanced/social_course_advanced.info.yml: n/a
+#  modules/social_course_basic/social_course_basic.info.yml: n/a
+#  social_course.links.task.yml: n/a
+#  social_course.permissions.yml: n/a
+#  social_course.routing.yml: n/a
 #  src/Controller/CoursesController.php: n/a
 #  src/Controller/GroupController.php: n/a
 #  src/Entity/CourseEnrollment.php: n/a
 #  src/Plugin/Block/CourseAddSectionBlock.php: n/a
+#  src/Plugin/Block/CourseMaterialHeroBlock.php: n/a
+#  src/Plugin/Block/CourseMaterialNavigationBlock.php: n/a
+#  src/Plugin/Block/CourseMaterialPagerBlock.php: n/a
+#  src/Plugin/Block/CourseRelatedCourses.php: n/a
+#  src/Plugin/Block/CourseSectionNavigationBlock.php: n/a
+#  templates/block--course-material-navigation.html.twig: n/a
+#  templates/course-add-list.html.twig: n/a
+#  templates/course-material-hero.html.twig: n/a
+#  templates/course-material-navigation.html.twig: n/a
+#  templates/course-material-pager.html.twig: n/a
+#  templates/group--course-basic--featured.html.twig: n/a
+#  templates/group--course-basic--teaser.html.twig: n/a
+#  templates/node--course-video--full.html.twig: n/a
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: social_course\n"
-"POT-Creation-Date: 2018-11-29 10:02+0000\n"
+"POT-Creation-Date: 2018-12-04 11:18+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -103,7 +124,7 @@ msgstr ""
 msgid "You will be able to follow this course by enrolling."
 msgstr ""
 
-#: social_course.module:656
+#: social_course.module:656 templates/group--course-basic--hero.html.twig:44
 msgid "Cancel enrollment"
 msgstr ""
 
@@ -115,7 +136,7 @@ msgstr ""
 msgid "Course roles"
 msgstr ""
 
-#: social_course.module:808
+#: social_course.module:808 templates/node--course-section--teaser.html.twig:71
 msgid "Unpublished"
 msgstr ""
 
@@ -175,6 +196,58 @@ msgstr ""
 msgid "All courses"
 msgstr ""
 
+#: social_course.info.yml:0
+msgid "Social Course"
+msgstr ""
+
+#: social_course.info.yml:0
+msgid "Provides course feature."
+msgstr ""
+
+#: social_course.info.yml:0 modules/social_course_advanced/social_course_advanced.info.yml:0 modules/social_course_basic/social_course_basic.info.yml:0
+msgid "Social"
+msgstr ""
+
+#: social_course.links.task.yml:0
+msgid "Courses"
+msgstr ""
+
+#: social_course.permissions.yml:0
+msgid "Use courses feature"
+msgstr ""
+
+#: social_course.permissions.yml:0
+msgid "Access to view courses pages"
+msgstr ""
+
+#: social_course.permissions.yml:0
+msgid "View own unpublished groups"
+msgstr ""
+
+#: social_course.permissions.yml:0
+msgid "View unpublished groups"
+msgstr ""
+
+#: social_course.routing.yml:0
+msgid "Add course"
+msgstr ""
+
+#: modules/social_course_advanced/social_course_advanced.info.yml:0
+msgid "Social Course Advanced"
+msgstr ""
+
+#: modules/social_course_advanced/social_course_advanced.info.yml:0
+msgid "Provides advanced course type."
+msgstr ""
+
+#: modules/social_course_basic/social_course_basic.info.yml:0
+msgid "Social Course Basic"
+msgstr ""
+
+#: modules/social_course_basic/social_course_basic.info.yml:0
+msgid "Provides basic course type."
+msgstr ""
+
 #: src/Controller/CoursesController.php:90
 msgid "You have successfully enrolled"
 msgstr ""
@@ -227,7 +300,123 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
+#: src/Entity/CourseEnrollment.php:12
+msgid "Course Enrollment"
+msgstr ""
+
 #: src/Plugin/Block/CourseAddSectionBlock.php:62
 msgid "Create Section"
+msgstr ""
+
+#: src/Plugin/Block/CourseAddSectionBlock.php:11
+msgid "Course add section block"
+msgstr ""
+
+#: src/Plugin/Block/CourseMaterialHeroBlock.php:13
+msgid "Course material hero block"
+msgstr ""
+
+#: src/Plugin/Block/CourseMaterialNavigationBlock.php:14
+msgid "Course material navigation block"
+msgstr ""
+
+#: src/Plugin/Block/CourseMaterialPagerBlock.php:13
+msgid "Course material pager block"
+msgstr ""
+
+#: src/Plugin/Block/CourseRelatedCourses.php:9
+msgid "Related courses"
+msgstr ""
+
+#: src/Plugin/Block/CourseSectionNavigationBlock.php:13
+msgid "Course section navigation block"
+msgstr ""
+
+#: templates/block--course-material-navigation.html.twig:21
+msgid "In this section"
+msgstr ""
+
+#: templates/block--course-material-navigation.html.twig:32
+msgid "Go back"
+msgstr ""
+
+#: templates/course-add-list.html.twig:15
+msgid "You have not created any courses types yet. Go to the Group types creation page to add a new course type."
+msgstr ""
+
+#: templates/course-material-hero.html.twig:6 templates/node--course-section--teaser.html.twig:50
+msgid "Edit content"
+msgstr ""
+
+#: templates/course-material-navigation.html.twig:3
+msgid "Current page"
+msgstr ""
+
+#: templates/course-material-pager.html.twig:4
+msgid "Pagination"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:31 templates/group--course-basic--teaser.html.twig:27
+msgid "sections completed"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:36 templates/group--course-basic--teaser.html.twig:40
+msgid "The visibility of this content is set to community"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:43 templates/group--course-basic--teaser.html.twig:47
+msgid "You have enrolled"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:48 templates/group--course-basic--teaser.html.twig:52
+msgid "You have started"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:54 templates/group--course-basic--teaser.html.twig:58
+msgid "You have finished"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:59 templates/group--course-basic--teaser.html.twig:64
+msgid "Read more"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:60
+msgid "about"
+msgstr ""
+
+#: templates/group--course-basic--hero.html.twig:33
+msgid "Starts at"
+msgstr ""
+
+#: templates/group--course-basic--hero.html.twig:42
+msgid "Enrolled"
+msgstr ""
+
+#: templates/group--course-basic--hero.html.twig:47
+msgid "Enroll"
+msgstr ""
+
+#: templates/group--course-basic--hero.html.twig:54
+msgid "Enrollment is closed"
+msgstr ""
+
+#: templates/node--course-section--teaser.html.twig:19
+msgid "Not started"
+msgstr ""
+
+#: templates/node--course-section--teaser.html.twig:30
+msgid "In progress"
+msgstr ""
+
+#: templates/node--course-section--teaser.html.twig:41
+msgid "Finished"
+msgstr ""
+
+#: templates/node--course-section--teaser.html.twig:92
+msgid "completed"
+msgstr ""
+
+#: templates/node--course-video--full.html.twig:24
+msgid "unpublished"
 msgstr ""
 
