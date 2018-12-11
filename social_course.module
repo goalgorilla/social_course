@@ -13,7 +13,6 @@ use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\group\Entity\GroupContent;
-use Drupal\social_course\Controller\CoursesController;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -342,68 +341,45 @@ function template_preprocess_course_material_pager(array &$variables) {
 }
 
 /**
- * Implements hook_block_view_BASE_BLOCK_ID_alter() for account_header_block.
+ * Implements hook_social_user_account_header_create_links().
  */
-function social_course_block_view_account_header_block_alter(array &$build, BlockPluginInterface $block) {
-  $build['#pre_render'][] = 'social_course_block_view_account_header_block_pre_render';
+function social_course_social_user_account_header_create_links(array $context) {
+
+  return [
+    'add_course' => [
+      '#type' => 'link',
+      '#attributes' => [
+        'title' => t('Create New Course'),
+      ],
+      '#title' => t('New Course'),
+      // Put this after 'Create Topic'.
+      '#weight' => 250,
+    ] + Url::fromRoute('social_course.course_add')->toRenderArray()
+  ];
 }
 
 /**
- * Pre-render callback for block account_header_block.
+ * Implements hook_social_user_account_header_account_links().
  */
-function social_course_block_view_account_header_block_pre_render(array $build) {
-  $account = \Drupal::currentUser();
-
-  // Add Courses link.
-  $build['content']['#links']['add']['below']['add_course'] = [
-    'classes' => '',
-    'link_attributes' => '',
-    'link_classes' => '',
-    'icon_classes' => '',
-    'icon_label' => '',
-    'title' => t('Create New Course'),
-    'label' => t('New course'),
-    'title_classes' => '',
-    'url' => Url::fromRoute('social_course.course_add'),
-    'access' => CoursesController::access($account)->isAllowed(),
-  ];
-
-  // My Courses link.
-  if (isset($build['content']['#links']['account_box']['below'])) {
-    $url = Url::fromRoute('view.courses_user.page', [
-      'user' => $account->id(),
-    ]);
-    $my_courses = [
-      'classes' => '',
-      'link_attributes' => '',
-      'link_classes' => '',
-      'icon_classes' => '',
-      'icon_label' => '',
-      'title' => t('View my courses'),
-      'label' => t('My courses'),
-      'title_classes' => '',
-      'url' => $url,
-      'access' => $url->access(),
-    ];
-
-    $links = $build['content']['#links']['account_box']['below'];
-
-    // Find our reference key.
-    $divider_idx = array_search('divide_content', array_keys($links));
-
-    // If we can't find it, we just guess at the position.
-    if ($divider_idx === FALSE) {
-      $divider_idx = 6;
-    }
-
-    $links = array_slice($links, 0, $divider_idx, TRUE) +
-      ['my_courses' => $my_courses] +
-      array_slice($links, $divider_idx, NULL, TRUE);
-
-    $build['content']['#links']['account_box']['below'] = $links;
+function social_course_social_user_account_header_account_links(array $context) {
+  // We require a user and user access for these links.
+  if (empty($context['user']) || !($context['user'] instanceof AccountInterface)) {
+    return [];
   }
 
-  return $build;
+  return [
+    'my_courses' => [
+      '#type' => 'link',
+      '#attributes' => [
+        'title' => t('View my courses'),
+      ],
+      '#title' => t('My courses'),
+      // Put this after "My Topics".
+      '#weight' => 750,
+    ] + Url::fromRoute('view.courses_user.page', [
+        'user' => $context['user']->id(),
+    ])->toRenderArray(),
+  ];
 }
 
 /**
