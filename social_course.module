@@ -127,6 +127,32 @@ function social_course_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Retrieves the course material types that are available.
+ *
+ * @return array
+ *   An array of course materials
+ */
+function social_course_get_material_types() {
+  // Ensure we only calculate this once per request.
+  $material_types = &drupal_static(__FUNCTION__);
+
+  if (!is_null($material_types)) {
+    return $material_types;
+  }
+
+  // By default we have an article and video course type.
+  $material_types = [
+    'course_article',
+    'course_video',
+  ];
+
+  // Allow other modules to register their own types.
+  \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
+
+  return $material_types;
+}
+
+/**
  * Prepares variables for the social page hero data.
  *
  * Default template: page-hero-data.html.twig.
@@ -141,12 +167,7 @@ function social_course_theme($existing, $type, $theme, $path) {
  *   - parent_course: Information about parent course.
  */
 function template_preprocess_course_material_hero(array &$variables) {
-  $type = [
-    'course_article',
-    'course_video',
-  ];
-
-  \Drupal::moduleHandler()->alter('social_course_material_types', $type);
+  $material_types = social_course_get_material_types();
 
   // Get current user.
   $account = \Drupal::currentUser();
@@ -160,7 +181,7 @@ function template_preprocess_course_material_hero(array &$variables) {
       ->load($node);
   }
 
-  if ($node instanceof NodeInterface && in_array($node->getType(), $type)) {
+  if ($node instanceof NodeInterface && in_array($node->getType(), $material_types)) {
     // Get the current route name to check if the user is on the edit page.
     $route = \Drupal::routeMatch()->getRouteName();
 
@@ -202,12 +223,7 @@ function template_preprocess_course_material_hero(array &$variables) {
  *   - material: Information about materials in parent section.
  */
 function template_preprocess_course_material_pager(array &$variables) {
-  $type = [
-    'course_article',
-    'course_video',
-  ];
-
-  \Drupal::moduleHandler()->alter('social_course_material_types', $type);
+  $material_types = social_course_get_material_types();
 
   // Get current node object or node id.
   $node = \Drupal::routeMatch()->getParameter('node');
@@ -218,7 +234,7 @@ function template_preprocess_course_material_pager(array &$variables) {
       ->load($node);
   }
 
-  if ($node instanceof NodeInterface && in_array($node->getType(), $type)) {
+  if ($node instanceof NodeInterface && in_array($node->getType(), $material_types)) {
     /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $course_wrapper->setCourseFromMaterial($node);
@@ -1167,11 +1183,70 @@ function social_course_views_pre_render(ViewExecutable $view) {
  * Implements hook_block_access().
  */
 function social_course_block_access(Block $block, $operation, AccountInterface $account) {
-  $material_types = [
-    'course_article',
-    'course_video',
+  // There are some blocks that this module handles, we don't care about others.
+  switch ($block->getPluginId()) {
+    case 'social_page_title_block':
+      return social_course_social_page_title_block_access($block, $operation, $account);
+    case 'course_material_hero':
+    case 'course_material_navigation':
+    case 'course_material_pager':
+      return social_course_course_navigation_block_access($block, $operation, $account);
+    case 'system_breadcrumb_block':
+      return social_course_system_breadcrumb_block_access($block, $operation, $account);
+    default:
+      return AccessResult::neutral();
+  }
+}
+
+/**
+ * Handles the extra access check for the social_page_title_block.
+ */
+function social_course_social_page_title_block_access(Block $block, $operation, AccountInterface $account) {
+  // We only care about the view operation.
+  // TODO: This is possibly redundant because then the route wouldn't match?
+  if ($operation !== 'view') {
+    return AccessResult::neutral();
+  }
+
+  $edit_routes = [
+    'entity.node.edit_form',
+    'entity.node.delete_form',
   ];
-  \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
+
+  $current_route = \Drupal::routeMatch()->getRouteName();
+
+  // We ignore non-view routes.
+  if (in_array($current_route, $edit_routes)) {
+    return AccessResult::neutral();
+  }
+
+  $nid = \Drupal::routeMatch()->getRawParameter('node');
+
+  // If this route has no node then we can't handle it.
+  if (empty($nid) || !($node = Node::load($nid))) {
+    return AccessResult::neutral();
+  }
+
+  $material_types = social_course_get_material_types();
+
+  // We disallow the page title block for course materials.
+  if (in_array($node->getType(), $material_types)) {
+    return AccessResult::forbidden();
+  }
+
+  // We don't have an opinion on other node types.
+  return AccessResult::neutral();
+}
+
+/**
+ * Handles access restrictions for the course navigation blocks.
+ */
+function social_course_course_navigation_block_access(Block $block, $operation, AccountInterface $account) {
+  // We only care about the view operation.
+  // TODO: This is possibly redundant because then the route wouldn't match?
+  if ($operation !== 'view') {
+    return AccessResult::neutral();
+  }
 
   $edit_routes = [
     'entity.node.edit_form',
@@ -1179,42 +1254,35 @@ function social_course_block_access(Block $block, $operation, AccountInterface $
   ];
   $current_route = \Drupal::routeMatch()->getRouteName();
 
-  // Disable block for course_video and course_article node view pages.
-  if ($operation == 'view' && $block->getPluginId() == 'social_page_title_block') {
-    if (!in_array($current_route, $edit_routes)) {
-      $nid = \Drupal::routeMatch()->getRawParameter('node');
-      if (!empty($nid) && ($node = Node::load($nid))) {
-        if (in_array($node->getType(), $material_types)) {
-          return AccessResult::forbidden();
-        }
-      }
-    }
+  // Hide the block on edit forms.
+  if (in_array($current_route, $edit_routes)) {
+    return AccessResult::forbidden();
   }
 
-  // Exclude Course navigation blocks form Add and Edit node pages.
-  $course_blocks = [
-    'course_material_hero',
-    'course_material_navigation',
-    'course_material_pager',
-  ];
-  if ($operation == 'view' && in_array($block->getPluginId(), $course_blocks)) {
-    if (in_array($current_route, $edit_routes)) {
-      return AccessResult::forbidden();
-    }
+  // We don't care about these blocks on other routes.
+  return AccessResult::neutral();
+}
+
+/**
+ * Handles access restrictions for the system_breadcrumb_block.
+ */
+function social_course_system_breadcrumb_block_access(Block $block, $operation, AccountInterface $account) {
+  // We only care about the view operation.
+  // TODO: This is possibly redundant because then the route wouldn't match?
+  if ($operation !== 'view') {
+    return AccessResult::neutral();
   }
 
-  // Exclude breadcrumb for course pages.
-  if ($operation == 'view' && $block->getPluginId() == 'system_breadcrumb_block') {
-    $course_types = ['course_basic', 'course_advanced'];
-    $group_type = \Drupal::routeMatch()->getParameter('group_type');
-    $group = _social_group_get_current_group();
-    if (($group instanceof GroupInterface && in_array($group->bundle(), $course_types))
-      || $group_type instanceof GroupTypeInterface && in_array($group_type->id(), $course_types)) {
-      return AccessResult::forbidden();
-    }
+  // The breadcrumb block is hidden on course pages.
+  $course_types = ['course_basic', 'course_advanced'];
+  $group_type = \Drupal::routeMatch()->getParameter('group_type');
+  $group = _social_group_get_current_group();
+  if (($group instanceof GroupInterface && in_array($group->bundle(), $course_types))
+    || $group_type instanceof GroupTypeInterface && in_array($group_type->id(), $course_types)) {
+    return AccessResult::forbidden();
   }
 
-  // No opinion for other situations really.
+  // We don't care about other situations.
   return AccessResult::neutral();
 }
 
