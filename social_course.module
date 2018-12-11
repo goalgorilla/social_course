@@ -13,7 +13,6 @@ use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\group\Entity\GroupContent;
-use Drupal\social_course\Controller\CoursesController;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -329,21 +328,18 @@ function template_preprocess_course_material_pager(array &$variables) {
  * Implements hook_social_user_account_header_create_links().
  */
 function social_course_social_user_account_header_create_links(array $context) {
-  $links = [];
-  $account = \Drupal::currentUser();
-  if (CoursesController::access($account)->isAllowed()) {
-    $links['add_course'] = [
+
+  return [
+    'add_course' => [
       '#type' => 'link',
       '#attributes' => [
         'title' => t('Create New Course'),
       ],
-      '#url' => Url::fromRoute('social_course.course_add'),
       '#title' => t('New Course'),
       // Put this after 'Create Topic'.
       '#weight' => 250,
-    ];
-  }
-  return $links;
+    ] + Url::fromRoute('social_course.course_add')->toRenderArray()
+  ];
 }
 
 /**
@@ -351,10 +347,7 @@ function social_course_social_user_account_header_create_links(array $context) {
  */
 function social_course_social_user_account_header_account_links(array $context) {
   // We require a user and user access for these links.
-  $url = Url::fromRoute('view.courses_user.page', [
-    'user' => $context['user']->id(),
-  ]);
-  if (empty($context['user']) || !($context['user'] instanceof AccountInterface) || !$url->access()) {
+  if (empty($context['user']) || !($context['user'] instanceof AccountInterface)) {
     return [];
   }
 
@@ -364,11 +357,12 @@ function social_course_social_user_account_header_account_links(array $context) 
       '#attributes' => [
         'title' => t('View my courses'),
       ],
-      '#url' => $url,
       '#title' => t('My courses'),
       // Put this after "My Topics".
       '#weight' => 750,
-    ],
+    ] + Url::fromRoute('view.courses_user.page', [
+        'user' => $context['user']->id(),
+    ])->toRenderArray(),
   ];
 }
 
