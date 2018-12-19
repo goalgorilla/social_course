@@ -4,6 +4,7 @@
 # Copyright 2018 GoalGorilla <devel@goalgorilla.com>
 # Generated from files:
 #  social_course.module: n/a
+#  config/install/field.field.node.course_section.field_course_section_weight.yml: n/a
 #  templates/group--course-basic--hero.html.twig: n/a
 #  templates/node--course-section--teaser.html.twig: n/a
 #  social_course.install: n/a
@@ -17,10 +18,20 @@
 #  src/Controller/GroupController.php: n/a
 #  src/Entity/CourseEnrollment.php: n/a
 #  src/Plugin/Block/CourseAddSectionBlock.php: n/a
+#  config/optional/block.block.course_add_section.yml: n/a
+#  config/optional/block.block.socialblue_course_add_section.yml: n/a
 #  src/Plugin/Block/CourseMaterialHeroBlock.php: n/a
+#  config/optional/block.block.course_material_hero.yml: n/a
+#  config/optional/block.block.socialblue_course_material_hero.yml: n/a
 #  src/Plugin/Block/CourseMaterialNavigationBlock.php: n/a
+#  config/optional/block.block.course_material_navigation.yml: n/a
+#  config/optional/block.block.socialblue_course_material_navigation.yml: n/a
 #  src/Plugin/Block/CourseMaterialPagerBlock.php: n/a
+#  config/optional/block.block.course_material_pager.yml: n/a
+#  config/optional/block.block.socialblue_course_material_pager.yml: n/a
 #  src/Plugin/Block/CourseRelatedCourses.php: n/a
+#  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_related_courses.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group.course_basic.field_course_related_courses.yml: n/a
 #  src/Plugin/Block/CourseSectionNavigationBlock.php: n/a
 #  templates/block--course-material-navigation.html.twig: n/a
 #  templates/course-add-list.html.twig: n/a
@@ -30,12 +41,41 @@
 #  templates/group--course-basic--featured.html.twig: n/a
 #  templates/group--course-basic--teaser.html.twig: n/a
 #  templates/node--course-video--full.html.twig: n/a
+#  config/install/core.base_field_override.node.course_article.promote.yml: n/a
+#  config/install/core.base_field_override.node.course_section.promote.yml: n/a
+#  config/install/core.base_field_override.node.course_video.promote.yml: n/a
+#  config/install/core.entity_form_mode.node.course.yml: n/a
+#  config/install/field.field.node.course_article.field_course_article_content.yml: n/a
+#  config/install/field.field.node.course_section.field_course_section_content.yml: n/a
+#  config/install/field.field.node.course_section.field_course_section_description.yml: n/a
+#  config/install/field.field.node.course_video.field_course_video_description.yml: n/a
+#  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_group_description.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group.course_basic.field_group_description.yml: n/a
+#  config/install/field.field.node.course_section.field_course_section_redirect.yml: n/a
+#  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_redirect_url.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group.course_basic.field_course_redirect_url.yml: n/a
+#  config/install/field.field.node.course_video.field_course_video_video.yml: n/a
+#  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_date.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_date.yml: n/a
+#  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_status.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_status.yml: n/a
+#  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_order.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group.course_basic.field_course_order.yml: n/a
+#  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_type.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group.course_basic.field_course_type.yml: n/a
+#  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_group_image.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group.course_basic.field_group_image.yml: n/a
+#  modules/social_course_advanced/config/install/field.field.group_content.course_advanced-group_membership.group_roles.yml: n/a
+#  modules/social_course_basic/config/install/field.field.group_content.course_basic-group_membership.group_roles.yml: n/a
+#  config/optional/block.block.related_courses.yml: n/a
+#  config/optional/block.block.socialblue_related_courses.yml: n/a
+#  config/optional/block.block.socialblue_course_section_navigation.yml: n/a
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: social_course\n"
-"POT-Creation-Date: 2018-12-04 11:18+0000\n"
+"POT-Creation-Date: 2018-12-19 16:59+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -44,151 +84,151 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: social_course.module:247
+#: social_course.module:262
 msgid "Previous"
 msgstr ""
 
-#: social_course.module:293
+#: social_course.module:308
 msgid "Continue"
 msgstr ""
 
-#: social_course.module:315
+#: social_course.module:330
 msgid "Finish section"
 msgstr ""
 
-#: social_course.module:318
+#: social_course.module:333
 msgid "Finish course"
 msgstr ""
 
-#: social_course.module:348
+#: social_course.module:352
 msgid "Create New Course"
 msgstr ""
 
-#: social_course.module:349
-msgid "New course"
+#: social_course.module:354
+msgid "New Course"
 msgstr ""
 
-#: social_course.module:366
+#: social_course.module:374
 msgid "View my courses"
 msgstr ""
 
-#: social_course.module:367
+#: social_course.module:376
 msgid "My courses"
 msgstr ""
 
-#: social_course.module:486
+#: social_course.module:478
 msgid "Author"
 msgstr ""
 
-#: social_course.module:498;936
+#: social_course.module:490;928
 msgid "Sections"
 msgstr ""
 
-#: social_course.module:505
+#: social_course.module:497
 msgid "Drag and drop to change the order"
 msgstr ""
 
-#: social_course.module:518
+#: social_course.module:510
 msgid "Title"
 msgstr ""
 
-#: social_course.module:519
+#: social_course.module:511 config/install/field.field.node.course_section.field_course_section_weight.yml:0
 msgid "Weight"
 msgstr ""
 
-#: social_course.module:535
+#: social_course.module:527
 msgid "Weight for @title"
 msgstr ""
 
-#: social_course.module:566
+#: social_course.module:558
 msgid "Enable open date and time"
 msgstr ""
 
-#: social_course.module:567
+#: social_course.module:559
 msgid "When enabled, course sections and other information can only be accessed by members after the course starts. Enrolment can only take place before the course has started.\n<br>When not enabled, course sections and other information can be accessed right after enrolment."
 msgstr ""
 
-#: social_course.module:583
+#: social_course.module:575
 msgid "Save"
 msgstr ""
 
-#: social_course.module:601
+#: social_course.module:593
 msgid "Cancel"
 msgstr ""
 
-#: social_course.module:635
+#: social_course.module:627
 msgid "Enroll in course"
 msgstr ""
 
-#: social_course.module:647
+#: social_course.module:639
 msgid "You will be able to follow this course by enrolling."
 msgstr ""
 
-#: social_course.module:656 templates/group--course-basic--hero.html.twig:44
+#: social_course.module:648 templates/group--course-basic--hero.html.twig:44
 msgid "Cancel enrollment"
 msgstr ""
 
-#: social_course.module:681
+#: social_course.module:673
 msgid "Select a member"
 msgstr ""
 
-#: social_course.module:682
+#: social_course.module:674
 msgid "Course roles"
 msgstr ""
 
-#: social_course.module:808 templates/node--course-section--teaser.html.twig:71
+#: social_course.module:800 templates/node--course-section--teaser.html.twig:71
 msgid "Unpublished"
 msgstr ""
 
-#: social_course.module:1033
+#: social_course.module:1025
 msgid "Enroll in course @label"
 msgstr ""
 
-#: social_course.module:1039
+#: social_course.module:1031
 msgid "Course members"
 msgstr ""
 
-#: social_course.module:1043;1074
+#: social_course.module:1035;1066
 msgid "Course Topics"
 msgstr ""
 
-#: social_course.module:1047;1078
+#: social_course.module:1039;1070
 msgid "Course Events"
 msgstr ""
 
-#: social_course.module:1064
+#: social_course.module:1056
 msgid "About"
 msgstr ""
 
-#: social_course.module:1068
+#: social_course.module:1060
 msgid "Enroll in course %label"
 msgstr ""
 
-#: social_course.module:1097
+#: social_course.module:1089
 msgid "in the course"
 msgstr ""
 
-#: social_course.module:1120
+#: social_course.module:1112
 msgid "Course Leaders"
 msgstr ""
 
-#: social_course.module:1141
+#: social_course.module:1133
 msgid "No upcoming events in this course"
 msgstr ""
 
-#: social_course.module:1145;1157
+#: social_course.module:1137;1149
 msgid "No topics in this course"
 msgstr ""
 
-#: social_course.module:1149;1153
+#: social_course.module:1141;1145
 msgid "No members in this course"
 msgstr ""
 
-#: social_course.module:1161
+#: social_course.module:1153
 msgid "No events in this course"
 msgstr ""
 
-#: social_course.module:1439 social_course.install:200
+#: social_course.module:1483 social_course.install:200
 msgid "Published"
 msgstr ""
 
@@ -308,23 +348,23 @@ msgstr ""
 msgid "Create Section"
 msgstr ""
 
-#: src/Plugin/Block/CourseAddSectionBlock.php:11
+#: src/Plugin/Block/CourseAddSectionBlock.php:11 config/optional/block.block.course_add_section.yml:0 config/optional/block.block.socialblue_course_add_section.yml:0
 msgid "Course add section block"
 msgstr ""
 
-#: src/Plugin/Block/CourseMaterialHeroBlock.php:13
+#: src/Plugin/Block/CourseMaterialHeroBlock.php:13 config/optional/block.block.course_material_hero.yml:0 config/optional/block.block.socialblue_course_material_hero.yml:0
 msgid "Course material hero block"
 msgstr ""
 
-#: src/Plugin/Block/CourseMaterialNavigationBlock.php:14
+#: src/Plugin/Block/CourseMaterialNavigationBlock.php:14 config/optional/block.block.course_material_navigation.yml:0 config/optional/block.block.socialblue_course_material_navigation.yml:0
 msgid "Course material navigation block"
 msgstr ""
 
-#: src/Plugin/Block/CourseMaterialPagerBlock.php:13
+#: src/Plugin/Block/CourseMaterialPagerBlock.php:13 config/optional/block.block.course_material_pager.yml:0 config/optional/block.block.socialblue_course_material_pager.yml:0
 msgid "Course material pager block"
 msgstr ""
 
-#: src/Plugin/Block/CourseRelatedCourses.php:9
+#: src/Plugin/Block/CourseRelatedCourses.php:9 modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_related_courses.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_related_courses.yml:0
 msgid "Related courses"
 msgstr ""
 
@@ -418,5 +458,97 @@ msgstr ""
 
 #: templates/node--course-video--full.html.twig:24
 msgid "unpublished"
+msgstr ""
+
+#: config/install/core.base_field_override.node.course_article.promote.yml:0 config/install/core.base_field_override.node.course_section.promote.yml:0 config/install/core.base_field_override.node.course_video.promote.yml:0
+msgid "Promoted to front page"
+msgstr ""
+
+#: config/install/core.base_field_override.node.course_article.promote.yml:0 config/install/core.base_field_override.node.course_section.promote.yml:0 config/install/core.base_field_override.node.course_video.promote.yml:0
+msgid "On"
+msgstr ""
+
+#: config/install/core.base_field_override.node.course_article.promote.yml:0 config/install/core.base_field_override.node.course_section.promote.yml:0 config/install/core.base_field_override.node.course_video.promote.yml:0
+msgid "Off"
+msgstr ""
+
+#: config/install/core.entity_form_mode.node.course.yml:0
+msgid "Course"
+msgstr ""
+
+#: config/install/field.field.node.course_article.field_course_article_content.yml:0
+msgid "Content"
+msgstr ""
+
+#: config/install/field.field.node.course_section.field_course_section_content.yml:0
+msgid "Parts"
+msgstr ""
+
+#: config/install/field.field.node.course_section.field_course_section_description.yml:0 config/install/field.field.node.course_video.field_course_video_description.yml:0 modules/social_course_advanced/config/install/field.field.group.course_advanced.field_group_description.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_group_description.yml:0
+msgid "Description"
+msgstr ""
+
+#: config/install/field.field.node.course_section.field_course_section_redirect.yml:0 modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_redirect_url.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_redirect_url.yml:0
+msgid "Redirect URL"
+msgstr ""
+
+#: config/install/field.field.node.course_section.field_course_section_redirect.yml:0
+msgid "Redirect people to this URL after they finished a section. Text of the next button may be customized.\r\nWorks only for non-sequential courses."
+msgstr ""
+
+#: config/install/field.field.node.course_video.field_course_video_video.yml:0
+msgid "Video"
+msgstr ""
+
+#: config/install/field.field.node.course_video.field_course_video_video.yml:0
+msgid "Enter a URL to video on Vimeo internet media provider, e.g. https://vimeo.com/1234567"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_date.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_date.yml:0
+msgid "Opening date"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_date.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_date.yml:0
+msgid "The date when the course will be opened "
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_status.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_status.yml:0
+msgid "Opening status"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_status.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_status.yml:0
+msgid "Opened"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_status.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_status.yml:0
+msgid "Closed"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_order.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_order.yml:0
+msgid "Course order"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_redirect_url.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_redirect_url.yml:0
+msgid "The URL where user will be redirected when he finished the course."
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_type.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_type.yml:0
+msgid "Course type"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_group_image.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_group_image.yml:0
+msgid "Image"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group_content.course_advanced-group_membership.group_roles.yml:0 modules/social_course_basic/config/install/field.field.group_content.course_basic-group_membership.group_roles.yml:0
+msgid "Roles"
+msgstr ""
+
+#: config/optional/block.block.related_courses.yml:0 config/optional/block.block.socialblue_related_courses.yml:0
+msgid "Related"
+msgstr ""
+
+#: config/optional/block.block.socialblue_course_section_navigation.yml:0
+msgid "Other sections"
 msgstr ""
 
