@@ -12,4 +12,5 @@ dependencies:
   - video_embed_field:video_embed_field
   - weight:weight
 package: Social
+project: 'social_course'
 hidden: true
