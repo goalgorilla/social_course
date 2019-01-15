@@ -55,6 +55,9 @@
 #  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_redirect_url.yml: n/a
 #  modules/social_course_basic/config/install/field.field.group.course_basic.field_course_redirect_url.yml: n/a
 #  config/install/field.field.node.course_video.field_course_video_video.yml: n/a
+#  config/optional/block.block.related_courses.yml: n/a
+#  config/optional/block.block.socialblue_related_courses.yml: n/a
+#  config/optional/block.block.socialblue_course_section_navigation.yml: n/a
 #  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_date.yml: n/a
 #  modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_date.yml: n/a
 #  modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_status.yml: n/a
@@ -67,15 +70,14 @@
 #  modules/social_course_basic/config/install/field.field.group.course_basic.field_group_image.yml: n/a
 #  modules/social_course_advanced/config/install/field.field.group_content.course_advanced-group_membership.group_roles.yml: n/a
 #  modules/social_course_basic/config/install/field.field.group_content.course_basic-group_membership.group_roles.yml: n/a
-#  config/optional/block.block.related_courses.yml: n/a
-#  config/optional/block.block.socialblue_related_courses.yml: n/a
-#  config/optional/block.block.socialblue_course_section_navigation.yml: n/a
+#  modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml: n/a
+#  modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml: n/a
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: social_course\n"
-"POT-Creation-Date: 2018-12-19 16:59+0000\n"
+"POT-Creation-Date: 2019-01-15 11:35+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -504,6 +506,14 @@ msgstr ""
 msgid "Enter a URL to video on Vimeo internet media provider, e.g. https://vimeo.com/1234567"
 msgstr ""
 
+#: config/optional/block.block.related_courses.yml:0 config/optional/block.block.socialblue_related_courses.yml:0
+msgid "Related"
+msgstr ""
+
+#: config/optional/block.block.socialblue_course_section_navigation.yml:0
+msgid "Other sections"
+msgstr ""
+
 #: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_date.yml:0 modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_date.yml:0
 msgid "Opening date"
 msgstr ""
@@ -544,11 +554,35 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: config/optional/block.block.related_courses.yml:0 config/optional/block.block.socialblue_related_courses.yml:0
-msgid "Related"
+#: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
+msgid "Event"
 msgstr ""
 
-#: config/optional/block.block.socialblue_course_section_navigation.yml:0
-msgid "Other sections"
+#: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
+msgid "Adds <em class=\"placeholder\">Event</em> content to groups both publicly and privately."
+msgstr ""
+
+#: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
+msgid "course_advanced"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
+msgid "group_node:event"
+msgstr ""
+
+#: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
+msgid "Section"
+msgstr ""
+
+#: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
+msgid "Adds <em class=\"placeholder\">Section</em> content to groups both publicly and privately."
+msgstr ""
+
+#: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
+msgid "course_basic"
+msgstr ""
+
+#: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
+msgid "group_node:course_section"
 msgstr ""
 
