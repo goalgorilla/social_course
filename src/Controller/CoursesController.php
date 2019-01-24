@@ -192,9 +192,10 @@ class CoursesController extends ControllerBase {
           'uid' => $account->id(),
         ]);
         $course_enrollment = current($course_enrollment);
+        $finish_section = !$course_enrollment || $course_enrollment->getStatus() !== CourseEnrollmentInterface::FINISHED;
 
-        if (!$course_enrollment || $course_enrollment->getStatus() !== CourseEnrollmentInterface::FINISHED) {
-          drupal_set_message($this->t('You have successfully finished the @title section', [
+        if ($finish_section) {
+          \Drupal::messenger()->addStatus($this->t('You have successfully finished the @title section', [
             '@title' => $node->label(),
           ]));
         }
@@ -218,6 +219,9 @@ class CoursesController extends ControllerBase {
             }
             $response = new RedirectResponse($url->toString());
           }
+        }
+        elseif ($finish_section) {
+          $response = self::nextMaterial($group, $next_section);
         }
         else {
           $response = $this->redirect('entity.node.canonical', [
