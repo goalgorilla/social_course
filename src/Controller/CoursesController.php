@@ -220,7 +220,9 @@ class CoursesController extends ControllerBase {
           }
         }
         else {
-          $response = self::nextMaterial($group, $next_section);
+          $response = $this->redirect('entity.node.canonical', [
+            'node' => $next_section->id(),
+          ]);
         }
 
       }
