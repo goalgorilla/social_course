@@ -1,6 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: node-gettext\n"
+"POT-Creation-Date: 2019-01-28 22:09+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,11 +20,15 @@ msgid "Add course"
 msgstr ""
 
 #: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
-msgid "Adds <em class=\"placeholder\">Event</em> content to groups both publicly and privately."
+msgid ""
+"Adds <em class=\"placeholder\">Event</em> content to groups both publicly "
+"and privately."
 msgstr ""
 
 #: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
-msgid "Adds <em class=\"placeholder\">Section</em> content to groups both publicly and privately."
+msgid ""
+"Adds <em class=\"placeholder\">Section</em> content to groups both publicly "
+"and privately."
 msgstr ""
 
 #: social_course.install:143
@@ -121,11 +126,15 @@ msgid "Course section navigation block"
 msgstr ""
 
 #: src/Controller/GroupController.php:72
-msgid "Course sections and other information can only be accessed after enrolling for this course."
+msgid ""
+"Course sections and other information can only be accessed after enrolling "
+"for this course."
 msgstr ""
 
 #: src/Controller/GroupController.php:68
-msgid "Course sections can only be accessed after the course starts. You can only enrol in this course before the course has started."
+msgid ""
+"Course sections can only be accessed after the course starts. You can only "
+"enrol in this course before the course has started."
 msgstr ""
 
 #: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_type.yml:0
@@ -198,7 +207,9 @@ msgid "Enrollment is closed"
 msgstr ""
 
 #: config/install/field.field.node.course_video.field_course_video_video.yml:0
-msgid "Enter a URL to video on Vimeo internet media provider, e.g. https://vimeo.com/1234567"
+msgid ""
+"Enter a URL to video on Vimeo internet media provider, e.g. https://vimeo."
+"com/1234567"
 msgstr ""
 
 #: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
@@ -352,7 +363,8 @@ msgstr ""
 
 #: config/install/field.field.node.course_section.field_course_section_redirect.yml:0
 msgid ""
-"Redirect people to this URL after they finished a section. Text of the next button may be customized.\r\n"
+"Redirect people to this URL after they finished a section. Text of the next "
+"button may be customized.\r\n"
 "Works only for non-sequential courses."
 msgstr ""
 
@@ -445,7 +457,8 @@ msgstr ""
 msgid "Title"
 msgstr "Titel"
 
-#: social_course.module:800 templates/node--course-section--teaser.html.twig:71
+#: social_course.module:800
+#: templates/node--course-section--teaser.html.twig:71
 msgid "Unpublished"
 msgstr "Unveröffentlicht"
 
@@ -480,8 +493,11 @@ msgstr "Reihenfolge für @title"
 
 #: social_course.module:559
 msgid ""
-"When enabled, course sections and other information can only be accessed by members after the course starts. Enrolment can only take place before the course has started.\n"
-"<br>When not enabled, course sections and other information can be accessed right after enrolment."
+"When enabled, course sections and other information can only be accessed by "
+"members after the course starts. Enrolment can only take place before the "
+"course has started.\n"
+"<br>When not enabled, course sections and other information can be accessed "
+"right after enrolment."
 msgstr ""
 
 #: templates/group--course-basic--featured.html.twig:43
@@ -495,7 +511,9 @@ msgid "You have finished"
 msgstr ""
 
 #: templates/course-add-list.html.twig:15
-msgid "You have not created any courses types yet. Go to the Group types creation page to add a new course type."
+msgid ""
+"You have not created any courses types yet. Go to the Group types creation "
+"page to add a new course type."
 msgstr ""
 
 #: templates/group--course-basic--featured.html.twig:48
