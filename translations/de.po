@@ -1,0 +1,553 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: node-gettext\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: social_course.module:1056
+msgid "About"
+msgstr "Über"
+
+#: social_course.permissions.yml:0
+msgid "Access to view courses pages"
+msgstr ""
+
+#: social_course.routing.yml:0
+msgid "Add course"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
+msgid "Adds <em class=\"placeholder\">Event</em> content to groups both publicly and privately."
+msgstr ""
+
+#: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
+msgid "Adds <em class=\"placeholder\">Section</em> content to groups both publicly and privately."
+msgstr ""
+
+#: social_course.install:143
+msgid "All courses"
+msgstr ""
+
+#: social_course.module:478
+msgid "Author"
+msgstr ""
+
+#: social_course.module:593
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: social_course.module:648 templates/group--course-basic--hero.html.twig:44
+msgid "Cancel enrollment"
+msgstr "Anmeldung abbrechen"
+
+#: src/Entity/CourseEnrollment.php:113
+msgid "Changed"
+msgstr "Geändert"
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_status.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_status.yml:0
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: config/install/field.field.node.course_article.field_course_article_content.yml:0
+msgid "Content"
+msgstr "Inhalt"
+
+#: social_course.module:308
+msgid "Continue"
+msgstr "Weiter"
+
+#: config/install/core.entity_form_mode.node.course.yml:0
+msgid "Course"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:12
+msgid "Course Enrollment"
+msgstr ""
+
+#: social_course.module:1039;1070
+msgid "Course Events"
+msgstr ""
+
+#: social_course.module:1112
+msgid "Course Leaders"
+msgstr ""
+
+#: social_course.module:1035;1066
+msgid "Course Topics"
+msgstr ""
+
+#: src/Plugin/Block/CourseAddSectionBlock.php:11
+#: config/optional/block.block.course_add_section.yml:0
+#: config/optional/block.block.socialblue_course_add_section.yml:0
+msgid "Course add section block"
+msgstr ""
+
+#: src/Plugin/Block/CourseMaterialHeroBlock.php:13
+#: config/optional/block.block.course_material_hero.yml:0
+#: config/optional/block.block.socialblue_course_material_hero.yml:0
+msgid "Course material hero block"
+msgstr ""
+
+#: src/Plugin/Block/CourseMaterialNavigationBlock.php:14
+#: config/optional/block.block.course_material_navigation.yml:0
+#: config/optional/block.block.socialblue_course_material_navigation.yml:0
+msgid "Course material navigation block"
+msgstr ""
+
+#: src/Plugin/Block/CourseMaterialPagerBlock.php:13
+#: config/optional/block.block.course_material_pager.yml:0
+#: config/optional/block.block.socialblue_course_material_pager.yml:0
+msgid "Course material pager block"
+msgstr ""
+
+#: social_course.module:1031
+msgid "Course members"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_order.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_order.yml:0
+msgid "Course order"
+msgstr ""
+
+#: social_course.module:674
+msgid "Course roles"
+msgstr ""
+
+#: src/Plugin/Block/CourseSectionNavigationBlock.php:13
+msgid "Course section navigation block"
+msgstr ""
+
+#: src/Controller/GroupController.php:72
+msgid "Course sections and other information can only be accessed after enrolling for this course."
+msgstr ""
+
+#: src/Controller/GroupController.php:68
+msgid "Course sections can only be accessed after the course starts. You can only enrol in this course before the course has started."
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_type.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_type.yml:0
+msgid "Course type"
+msgstr ""
+
+#: social_course.links.task.yml:0
+msgid "Courses"
+msgstr ""
+
+#: social_course.module:352
+msgid "Create New Course"
+msgstr ""
+
+#: src/Plugin/Block/CourseAddSectionBlock.php:62
+msgid "Create Section"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:109
+msgid "Created"
+msgstr "Erstellt"
+
+#: templates/course-material-navigation.html.twig:3
+msgid "Current page"
+msgstr "Aktuelle Seite"
+
+#: config/install/field.field.node.course_section.field_course_section_description.yml:0
+#: config/install/field.field.node.course_video.field_course_video_description.yml:0
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_group_description.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_group_description.yml:0
+msgid "Description"
+msgstr "Beschreibung"
+
+#: social_course.module:497
+msgid "Drag and drop to change the order"
+msgstr ""
+
+#: templates/course-material-hero.html.twig:6
+#: templates/node--course-section--teaser.html.twig:50
+msgid "Edit content"
+msgstr "Inhalt bearbeiten"
+
+#: social_course.module:558
+msgid "Enable open date and time"
+msgstr ""
+
+#: templates/group--course-basic--hero.html.twig:47
+msgid "Enroll"
+msgstr "Anmelden"
+
+#: social_course.module:627
+msgid "Enroll in course"
+msgstr ""
+
+#: social_course.module:1060
+msgid "Enroll in course %label"
+msgstr ""
+
+#: social_course.module:1025
+msgid "Enroll in course @label"
+msgstr ""
+
+#: templates/group--course-basic--hero.html.twig:42
+msgid "Enrolled"
+msgstr ""
+
+#: templates/group--course-basic--hero.html.twig:54
+msgid "Enrollment is closed"
+msgstr ""
+
+#: config/install/field.field.node.course_video.field_course_video_video.yml:0
+msgid "Enter a URL to video on Vimeo internet media provider, e.g. https://vimeo.com/1234567"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
+msgid "Event"
+msgstr ""
+
+#: social_course.module:333
+msgid "Finish course"
+msgstr ""
+
+#: social_course.module:330
+msgid "Finish section"
+msgstr ""
+
+#: templates/node--course-section--teaser.html.twig:41
+msgid "Finished"
+msgstr ""
+
+#: templates/block--course-material-navigation.html.twig:32
+msgid "Go back"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:94
+msgid "Group ID"
+msgstr "Gruppen-ID"
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_group_image.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_group_image.yml:0
+msgid "Image"
+msgstr ""
+
+#: templates/node--course-section--teaser.html.twig:30
+msgid "In progress"
+msgstr ""
+
+#: templates/block--course-material-navigation.html.twig:21
+msgid "In this section"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:104
+msgid "Material ID"
+msgstr ""
+
+#: social_course.module:376
+msgid "My courses"
+msgstr ""
+
+#: social_course.module:354
+msgid "New Course"
+msgstr ""
+
+#: social_course.module:1153
+msgid "No events in this course"
+msgstr ""
+
+#: social_course.module:1141;1145
+msgid "No members in this course"
+msgstr ""
+
+#: social_course.module:1137;1149
+msgid "No topics in this course"
+msgstr ""
+
+#: social_course.module:1133
+msgid "No upcoming events in this course"
+msgstr ""
+
+#: templates/node--course-section--teaser.html.twig:19
+msgid "Not started"
+msgstr ""
+
+#: config/install/core.base_field_override.node.course_article.promote.yml:0
+#: config/install/core.base_field_override.node.course_section.promote.yml:0
+#: config/install/core.base_field_override.node.course_video.promote.yml:0
+msgid "Off"
+msgstr "Aus"
+
+#: config/install/core.base_field_override.node.course_article.promote.yml:0
+#: config/install/core.base_field_override.node.course_section.promote.yml:0
+#: config/install/core.base_field_override.node.course_video.promote.yml:0
+msgid "On"
+msgstr "An"
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_status.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_status.yml:0
+msgid "Opened"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_date.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_date.yml:0
+msgid "Opening date"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_status.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_status.yml:0
+msgid "Opening status"
+msgstr ""
+
+#: config/optional/block.block.socialblue_course_section_navigation.yml:0
+msgid "Other sections"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:89
+msgid "Owner"
+msgstr "Eigentümer"
+
+#: templates/course-material-pager.html.twig:4
+msgid "Pagination"
+msgstr "Seitennummerierung"
+
+#: config/install/field.field.node.course_section.field_course_section_content.yml:0
+msgid "Parts"
+msgstr ""
+
+#: social_course.module:262
+msgid "Previous"
+msgstr "Zurück"
+
+#: config/install/core.base_field_override.node.course_article.promote.yml:0
+#: config/install/core.base_field_override.node.course_section.promote.yml:0
+#: config/install/core.base_field_override.node.course_video.promote.yml:0
+msgid "Promoted to front page"
+msgstr ""
+
+#: modules/social_course_advanced/social_course_advanced.info.yml:0
+msgid "Provides advanced course type."
+msgstr ""
+
+#: modules/social_course_basic/social_course_basic.info.yml:0
+msgid "Provides basic course type."
+msgstr ""
+
+#: social_course.info.yml:0
+msgid "Provides course feature."
+msgstr ""
+
+#: social_course.module:1483 social_course.install:200
+msgid "Published"
+msgstr "Veröffentlicht"
+
+#: templates/group--course-basic--featured.html.twig:59
+#: templates/group--course-basic--teaser.html.twig:64
+msgid "Read more"
+msgstr "Weiterlesen"
+
+#: config/install/field.field.node.course_section.field_course_section_redirect.yml:0
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_redirect_url.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_redirect_url.yml:0
+msgid "Redirect URL"
+msgstr ""
+
+#: config/install/field.field.node.course_section.field_course_section_redirect.yml:0
+msgid ""
+"Redirect people to this URL after they finished a section. Text of the next button may be customized.\r\n"
+"Works only for non-sequential courses."
+msgstr ""
+
+#: config/optional/block.block.related_courses.yml:0
+#: config/optional/block.block.socialblue_related_courses.yml:0
+msgid "Related"
+msgstr ""
+
+#: src/Plugin/Block/CourseRelatedCourses.php:9
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_related_courses.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_related_courses.yml:0
+msgid "Related courses"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group_content.course_advanced-group_membership.group_roles.yml:0
+#: modules/social_course_basic/config/install/field.field.group_content.course_basic-group_membership.group_roles.yml:0
+msgid "Roles"
+msgstr ""
+
+#: social_course.module:575
+msgid "Save"
+msgstr "Speichern"
+
+#: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
+msgid "Section"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:99
+msgid "Section ID"
+msgstr ""
+
+#: social_course.module:490;928
+msgid "Sections"
+msgstr ""
+
+#: social_course.module:673
+msgid "Select a member"
+msgstr "Mitglied auswählen"
+
+#: social_course.info.yml:0
+#: modules/social_course_advanced/social_course_advanced.info.yml:0
+#: modules/social_course_basic/social_course_basic.info.yml:0
+msgid "Social"
+msgstr "Sozial"
+
+#: social_course.info.yml:0
+msgid "Social Course"
+msgstr ""
+
+#: modules/social_course_advanced/social_course_advanced.info.yml:0
+msgid "Social Course Advanced"
+msgstr ""
+
+#: modules/social_course_basic/social_course_basic.info.yml:0
+msgid "Social Course Basic"
+msgstr ""
+
+#: templates/group--course-basic--hero.html.twig:33
+msgid "Starts at"
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:117
+msgid "Status"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_redirect_url.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_redirect_url.yml:0
+msgid "The URL where user will be redirected when he finished the course."
+msgstr ""
+
+#: modules/social_course_advanced/config/install/field.field.group.course_advanced.field_course_opening_date.yml:0
+#: modules/social_course_basic/config/install/field.field.group.course_basic.field_course_opening_date.yml:0
+msgid "The date when the course will be opened "
+msgstr ""
+
+#: src/Entity/CourseEnrollment.php:110
+msgid "The time that the entity was created."
+msgstr "Der Erstellungszeitpunkt der Entität."
+
+#: src/Entity/CourseEnrollment.php:114
+msgid "The time that the entity was last edited."
+msgstr "Der letzte Aktualisierungszeitpunkt der Entität."
+
+#: templates/group--course-basic--featured.html.twig:36
+#: templates/group--course-basic--teaser.html.twig:40
+msgid "The visibility of this content is set to community"
+msgstr ""
+
+#: social_course.module:510
+msgid "Title"
+msgstr "Titel"
+
+#: social_course.module:800 templates/node--course-section--teaser.html.twig:71
+msgid "Unpublished"
+msgstr "Unveröffentlicht"
+
+#: social_course.permissions.yml:0
+msgid "Use courses feature"
+msgstr ""
+
+#: config/install/field.field.node.course_video.field_course_video_video.yml:0
+msgid "Video"
+msgstr ""
+
+#: social_course.module:374
+msgid "View my courses"
+msgstr ""
+
+#: social_course.permissions.yml:0
+msgid "View own unpublished groups"
+msgstr ""
+
+#: social_course.permissions.yml:0
+msgid "View unpublished groups"
+msgstr ""
+
+#: social_course.module:511
+#: config/install/field.field.node.course_section.field_course_section_weight.yml:0
+msgid "Weight"
+msgstr "Gewichtung"
+
+#: social_course.module:527
+msgid "Weight for @title"
+msgstr "Reihenfolge für @title"
+
+#: social_course.module:559
+msgid ""
+"When enabled, course sections and other information can only be accessed by members after the course starts. Enrolment can only take place before the course has started.\n"
+"<br>When not enabled, course sections and other information can be accessed right after enrolment."
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:43
+#: templates/group--course-basic--teaser.html.twig:47
+msgid "You have enrolled"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:54
+#: templates/group--course-basic--teaser.html.twig:58
+msgid "You have finished"
+msgstr ""
+
+#: templates/course-add-list.html.twig:15
+msgid "You have not created any courses types yet. Go to the Group types creation page to add a new course type."
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:48
+#: templates/group--course-basic--teaser.html.twig:52
+msgid "You have started"
+msgstr ""
+
+#: src/Controller/CoursesController.php:90
+msgid "You have successfully enrolled"
+msgstr ""
+
+#: src/Controller/CoursesController.php:197
+msgid "You have successfully finished the @title section"
+msgstr ""
+
+#: social_course.module:639
+msgid "You will be able to follow this course by enrolling."
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:60
+msgid "about"
+msgstr "Über"
+
+#: templates/node--course-section--teaser.html.twig:92
+msgid "completed"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
+msgid "course_advanced"
+msgstr ""
+
+#: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
+msgid "course_basic"
+msgstr ""
+
+#: modules/social_course_basic/config/install/group.content_type.group_content_type_7219d404fe5a6.yml:0
+msgid "group_node:course_section"
+msgstr ""
+
+#: modules/social_course_advanced/config/install/group.content_type.course_advanced-group_node-event.yml:0
+msgid "group_node:event"
+msgstr ""
+
+#: social_course.module:1089
+msgid "in the course"
+msgstr ""
+
+#: templates/group--course-basic--featured.html.twig:31
+#: templates/group--course-basic--teaser.html.twig:27
+msgid "sections completed"
+msgstr ""
+
+#: templates/node--course-video--full.html.twig:24
+msgid "unpublished"
+msgstr "unveröffentlicht"
