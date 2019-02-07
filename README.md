@@ -17,7 +17,7 @@ In your project's composer.json:
 ```
 "require": {
   ...
-  "drupal/social_course": "^1.0",
+  "drupal/social_course": "^2.0",
   ...
 }
 ```
