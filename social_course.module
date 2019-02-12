@@ -121,6 +121,15 @@ function social_course_theme($existing, $type, $theme, $path) {
     'field__group__field_course_opening_date' => [
       'base hook' => 'field',
     ],
+    'paragraph__images__default' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__image_text__default' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__text_image__default' => [
+      'base hook' => 'paragraph',
+    ],
   ];
 }
 
