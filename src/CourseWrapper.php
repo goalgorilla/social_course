@@ -162,7 +162,7 @@ class CourseWrapper implements CourseWrapperInterface {
     }
 
     foreach ($entities as $entity) {
-      /** @var CourseEnrollmentInterface $entity */
+      /** @var \Drupal\social_course\Entity\CourseEnrollmentInterface $entity */
       if ($entity->getStatus() === CourseEnrollmentInterface::IN_PROGRESS) {
         return CourseEnrollmentInterface::IN_PROGRESS;
       }

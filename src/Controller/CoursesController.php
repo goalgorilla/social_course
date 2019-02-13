@@ -192,14 +192,15 @@ class CoursesController extends ControllerBase {
           'uid' => $account->id(),
         ]);
         $course_enrollment = current($course_enrollment);
+        $finish_section = !$course_enrollment || $course_enrollment->getStatus() !== CourseEnrollmentInterface::FINISHED;
 
-        if (!$course_enrollment || $course_enrollment->getStatus() !== CourseEnrollmentInterface::FINISHED) {
-          drupal_set_message($this->t('You have successfully finished the @title section', [
+        if ($finish_section) {
+          \Drupal::messenger()->addStatus($this->t('You have successfully finished the @title section', [
             '@title' => $node->label(),
           ]));
         }
 
-        // Redirect after finishing section.
+        // Redirect to a specific page which set in section.
         $current_section = $course_wrapper->getSection($node, 0);
         if (!$course_wrapper->courseIsSequential() && !$current_section->get('field_course_section_redirect')->isEmpty()) {
           $uri = $current_section->get('field_course_section_redirect')->uri;
@@ -219,8 +220,17 @@ class CoursesController extends ControllerBase {
             $response = new RedirectResponse($url->toString());
           }
         }
-        else {
+        // Redirect to the next section when it exists and not marked as
+        // completed.
+        elseif ($finish_section) {
           $response = self::nextMaterial($group, $next_section);
+        }
+        // Redirect to next step even if the next step was completed but current
+        // material does not have a link of specific next material.
+        else {
+          $response = $this->redirect('entity.node.canonical', [
+            'node' => $next_section->id(),
+          ]);
         }
 
       }
