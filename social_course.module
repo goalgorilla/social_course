@@ -17,6 +17,7 @@ use Drupal\group\Entity\GroupTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\node\Entity\Node;
+use Drupal\search_api\Query\QueryInterface;
 use Drupal\social_course\Entity\CourseEnrollmentInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -1545,6 +1546,55 @@ function social_course_query_alter(AlterableInterface $query) {
     }
 
     $query->condition($or);
+  }
+}
+
+/**
+ * Implements hook_search_api_query_alter().
+ */
+function social_course_search_api_query_alter(QueryInterface &$query) {
+  $account = \Drupal::currentUser();
+
+  // Skip if a user has global access or can manage all unpublished groups.
+  if ($account->hasPermission('bypass group access') || $account->hasPermission('view unpublished groups')) {
+    return;
+  }
+
+  $index = $query->getIndex();
+
+  // Ignore when search index does not support group entity type.
+  if (!in_array('entity:group', $index->getDatasourceIds())) {
+    return;
+  }
+
+  $fields = $index->getFields();
+  $is_field = FALSE;
+
+  foreach ($fields as $status_field => $field) {
+    if ($field->getPropertyPath() === 'status' && $field->getDatasourceId() === 'entity:group') {
+      $is_field = TRUE;
+      break;
+    }
+  }
+
+  if (!$is_field) {
+    return;
+  }
+
+  if ($account->hasPermission('view own unpublished groups')) {
+    // Search of field for group owner ID.
+    foreach ($fields as $user_field => $field) {
+      if ($field->getPropertyPath() === 'uid' && $field->getDatasourceId() === 'entity:group') {
+        $query->addConditionGroup(
+          $query->createConditionGroup('OR')
+            ->addCondition($status_field, TRUE)
+            ->addCondition($user_field, $account->id())
+        );
+      }
+    }
+  }
+  else {
+    $query->addCondition($status_field, TRUE);
   }
 }
 

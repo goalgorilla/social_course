@@ -436,9 +436,9 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
       'search_api.index.social_content',
     ];
 
-    foreach ($names as $name) {
-      if (in_array($name, $config_names)) {
-        $overrides[$name] = [
+    foreach ($config_names as $config_name) {
+      if (in_array($config_name, $names)) {
+        $overrides[$config_name] = [
           'datasource_settings' => [
             'entity:node' => [
               'bundles' => [
@@ -451,6 +451,15 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
             ],
           ],
         ];
+
+        if ($config_name === 'search_api.index.social_all') {
+          $overrides[$config_name]['field_settings']['group_status'] = [
+            'label' => 'Published',
+            'datasource_id' => 'entity:group',
+            'property_path' => 'status',
+            'type' => 'boolean',
+          ];
+        }
       }
     }
 
