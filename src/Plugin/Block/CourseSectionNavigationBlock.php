@@ -5,10 +5,17 @@ namespace Drupal\social_course\Plugin\Block;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Controller\TitleResolverInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\group\Entity\GroupInterface;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Drupal\node\NodeInterface;
+use Drupal\social_course\CourseWrapperInterface;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'CourseSectionNavigationBlock' block.
@@ -21,40 +28,132 @@ use Drupal\node\NodeInterface;
  *   }
  * )
  */
-class CourseSectionNavigationBlock extends BlockBase {
+class CourseSectionNavigationBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The entity repository.
+   *
+   * @var \Drupal\Core\Entity\EntityRepositoryInterface
+   */
+  protected $entityRepository;
+
+  /**
+   * The course wrapper.
+   *
+   * @var \Drupal\social_course\CourseWrapperInterface
+   */
+  protected $courseWrapper;
+
+  /**
+   * The current active user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * The currently active request object.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  protected $request;
+
+  /**
+   * The title resolver.
+   *
+   * @var \Drupal\Core\Controller\TitleResolverInterface
+   */
+  protected $titleResolver;
+
+  /**
+   * Creates a CourseSectionNavigationBlock instance.
+   *
+   * @param array $configuration
+   *   The plugin configuration, i.e. an array with configuration values keyed
+   *   by configuration option name. The special key 'context' may be used to
+   *   initialize the defined contexts by setting it to an array of context
+   *   values keyed by context names.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository.
+   * @param \Drupal\social_course\CourseWrapperInterface $course_wrapper
+   *   The course wrapper.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current active user.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
+   * @param \Drupal\Core\Controller\TitleResolverInterface $title_resolver
+   *   The title resolver.
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    EntityRepositoryInterface $entity_repository,
+    CourseWrapperInterface $course_wrapper,
+    AccountProxyInterface $current_user,
+    RequestStack $request_stack,
+    TitleResolverInterface $title_resolver
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+
+    $this->entityRepository = $entity_repository;
+    $this->courseWrapper = $course_wrapper;
+    $this->currentUser = $current_user;
+    $this->request = $request_stack->getCurrentRequest();
+    $this->titleResolver = $title_resolver;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity.repository'),
+      $container->get('social_course.course_wrapper'),
+      $container->get('current_user'),
+      $container->get('request_stack'),
+      $container->get('title_resolver')
+    );
+  }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
     $node = $this->getContextValue('node');
+
     if ($node instanceof NodeInterface && $node->id()) {
-      $translation = \Drupal::service('entity.repository')
-        ->getTranslationFromContext($node);
+      $translation = $this->entityRepository->getTranslationFromContext($node);
 
       if (!empty($translation)) {
         $node->setTitle($translation->getTitle());
       }
 
-      /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
-      $course_wrapper = \Drupal::service('social_course.course_wrapper');
-      $course_wrapper->setCourseFromMaterial($node);
-      $parent_section = $course_wrapper->getSectionFromMaterial($node);
+      $parent_section = $this->courseWrapper->setCourseFromMaterial($node)
+        ->getSectionFromMaterial($node);
+
       $items = [];
 
-      foreach ($course_wrapper->getSections() as $section) {
+      foreach ($this->courseWrapper->getSections() as $section) {
         $item = [
           'label' => $section->label(),
           'url' => FALSE,
         ];
 
-        if ($course_wrapper->sectionAccess($section, \Drupal::currentUser(), 'view')->isAllowed()) {
+        $access = $this->courseWrapper->sectionAccess($section, $this->currentUser, 'view');
+
+        if ($access->isAllowed() && $section->id() !== $parent_section->id()) {
           $item['url'] = $section->toUrl();
         }
 
-        if ($section->id() !== $parent_section->id()) {
-          $items[] = $item;
-        }
+        $items[] = $item;
       }
 
       return [
@@ -62,24 +161,21 @@ class CourseSectionNavigationBlock extends BlockBase {
         '#items' => $items,
       ];
     }
-    else {
-      $request = \Drupal::request();
 
-      if ($route = $request->attributes->get(RouteObjectInterface::ROUTE_OBJECT)) {
-        $title = \Drupal::service('title_resolver')->getTitle($request, $route);
+    $route = $this->request->attributes
+      ->get(RouteObjectInterface::ROUTE_OBJECT);
 
-        return [
-          '#type' => 'page_title',
-          '#title' => $title,
-        ];
-      }
-      else {
-        return [
-          '#type' => 'page_title',
-          '#title' => '',
-        ];
-      }
+    if ($route) {
+      $title = $this->titleResolver->getTitle($this->request, $route);
     }
+    else {
+      $title = '';
+    }
+
+    return [
+      '#type' => 'page_title',
+      '#title' => $title,
+    ];
   }
 
   /**
@@ -88,12 +184,11 @@ class CourseSectionNavigationBlock extends BlockBase {
   public function getCacheTags() {
     $tags = parent::getCacheTags();
     $node = $this->getContextValue('node');
+
     if ($node instanceof NodeInterface && $node->id()) {
-      /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
-      $course_wrapper = \Drupal::service('social_course.course_wrapper');
-      $course_wrapper->setCourseFromMaterial($node);
-      $tags = Cache::mergeTags($tags, $course_wrapper->getCourse()->getCacheTags());
-      $tags = Cache::mergeTags($tags, $course_wrapper->getSectionFromMaterial($node)->getCacheTags());
+      $this->courseWrapper->setCourseFromMaterial($node);
+      $tags = Cache::mergeTags($tags, $this->courseWrapper->getCourse()->getCacheTags());
+      $tags = Cache::mergeTags($tags, $this->courseWrapper->getSectionFromMaterial($node)->getCacheTags());
     }
 
     return $tags;
@@ -104,24 +199,18 @@ class CourseSectionNavigationBlock extends BlockBase {
    */
   protected function blockAccess(AccountInterface $account) {
     $node = $this->getContextValue('node');
-    if ($node instanceof NodeInterface && $node->id()) {
-      $group = \Drupal::service('social_course.course_wrapper')
-        ->setCourseFromMaterial($node)
-        ->getCourse();
 
-      /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
-      $course_wrapper = \Drupal::service('social_course.course_wrapper');
-      $course_wrapper->setCourseFromMaterial($node);
-      if (count($course_wrapper->getSections()) > 1) {
+    if ($node instanceof NodeInterface && $node->id()) {
+      $this->courseWrapper->setCourseFromMaterial($node);
+
+      if ($this->courseWrapper->getSections()) {
+        $group = $this->courseWrapper->getCourse();
+
         return AccessResult::allowedIf($group instanceof GroupInterface);
       }
-      else {
-        return AccessResult::forbidden();
-      }
     }
-    else {
-      return AccessResult::forbidden();
-    }
+
+    return AccessResult::forbidden();
   }
 
 }
