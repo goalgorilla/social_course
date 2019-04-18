@@ -7,6 +7,7 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
@@ -1381,6 +1382,7 @@ function social_course_node_access(NodeInterface $node, $op, AccountInterface $a
 function social_course_entity_delete(EntityInterface $entity) {
   switch ($entity->getEntityTypeId()) {
     case 'group':
+      // Delete all course enrollments for the course that was deleted.
       $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
       $entities = $storage->loadByProperties([
         'gid' => $entity->id(),
@@ -1392,6 +1394,8 @@ function social_course_entity_delete(EntityInterface $entity) {
       break;
 
     case 'node':
+      // Delete any enrollment entities for the section or material that was
+      // deleted.
       $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
 
       foreach (['sid', 'mid'] as $column) {
@@ -1399,13 +1403,38 @@ function social_course_entity_delete(EntityInterface $entity) {
           $column => $entity->id(),
         ]);
 
-        foreach ($entities as $entity) {
-          $entity->delete();
+        foreach ($entities as $enrollment_entity) {
+          $enrollment_entity->delete();
         }
+      }
+
+      // If this was a section then also remove the materials
+      $is_section = $entity->bundle() === 'course_section';
+      // Guard against breaking of the section node type.
+      $has_materials = $entity->hasField('field_course_section_content');
+      if ($is_section && $has_materials) {
+        /** @var \Drupal\node\NodeInterface $entity */
+        $section_content = $entity->get('field_course_section_content');
+        // Guard against the wrong field type being added.
+        if (!($section_content instanceof EntityReferenceFieldItemListInterface)) {
+          throw new \RuntimeException('The field used to store course section content should be an entity reference type field.');
+        }
+
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $section_content */
+        foreach ($section_content->referencedEntities() as $section_material) {
+          $section_material->delete();
+        }
+      }
+
+      // If this was a material then also remove it as value for parts in a
+      // section.
+      if (in_array($entity->bundle(), social_course_get_material_types(), TRUE)) {
+        social_course_remove_material_from_courses($entity->id());
       }
       break;
 
     case 'user':
+      // Remove all course enrollments for the deleted user.
       $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
 
       $entities = $storage->loadByProperties([
@@ -1416,6 +1445,56 @@ function social_course_entity_delete(EntityInterface $entity) {
         $entity->delete();
       }
       break;
+  }
+}
+
+/**
+ * Finds the course sections that a material is referenced in.
+ *
+ * @param int $material_id
+ *   The id of the material to search for.
+ *
+ * @return int[]
+ *   An array of node ids corresponding to the course section nodes that
+ *   reference the material as part of their content.
+ */
+function social_course_find_sections_with_material(int $material_id) : array {
+  // Find all course sections that reference this material.
+  // Stolen from: https://drupal.stackexchange.com/a/248054/2166
+  $sections = \Drupal::entityQueryAggregate('node')
+    ->condition('type', 'course_section')
+    ->condition('field_course_section_content', $material_id)
+    ->groupBy('nid')
+    ->execute();
+
+  return array_column($sections, 'nid');
+}
+
+/**
+ * Ensures that a material is no longer referenced by any course sections.
+ *
+ * @param int $material_id
+ *   The id of the material that should be removed from the sections.
+ */
+function social_course_remove_material_from_courses(int $material_id) : void {
+  $section_ids = social_course_find_sections_with_material($material_id);
+
+  $sections = Node::loadMultiple($section_ids);
+  foreach ($sections as $section) {
+    $section_content = $section->get('field_course_section_content');
+    // Guard against the wrong field type being added.
+    if (!($section_content instanceof EntityReferenceFieldItemListInterface)) {
+      $bundle = $section->bundle();
+      throw new \RuntimeException("The field used to store course section content should be an entity reference type field for node type ${$bundle}.");
+    }
+
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $section_content */
+    $materials = $section_content->getValue();
+    // Find the index of the material in this field.
+    $idx = array_search($material_id, array_column($materials, 'target_id'), TRUE);
+    $section_content->removeItem($idx);
+
+    $section->save();
   }
 }
 

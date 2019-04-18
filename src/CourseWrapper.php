@@ -212,6 +212,10 @@ class CourseWrapper implements CourseWrapperInterface {
           'sid' => $node->id(),
         ]);
 
+        // Anonymous users can't ever view sections because we can't track
+        // their progress.
+        $access = $access->orIf(AccessResult::forbiddenIf($account->isAnonymous()));
+
         $access = $access->orIf(AccessResult::allowedIf($course_enrollments));
         $access = $access->orIf(AccessResult::allowedIf($node->getOwnerId() === $account->id()));
         $access = $access->orIf(AccessResult::allowedIf(!$this->courseIsSequential()));
@@ -248,6 +252,10 @@ class CourseWrapper implements CourseWrapperInterface {
           'sid' => $section->id(),
           'mid' => $node->id(),
         ]);
+
+        // Anonymous users can't ever view materials because we can't track
+        // their progress.
+        $access = $access->orIf(AccessResult::forbiddenIf($account->isAnonymous()));
 
         $access = $access->orIf(AccessResult::allowedIf($course_enrollments));
         $access = $access->orIf(AccessResult::allowedIf($node->getOwnerId() === $account->id()));
