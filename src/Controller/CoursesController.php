@@ -31,7 +31,7 @@ class CoursesController extends ControllerBase {
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $bundles = $course_wrapper::getAvailableBundles();
 
-    foreach ($this->entityTypeManager->getStorage('group_type')->loadMultiple() as $type) {
+    foreach ($this->entityTypeManager()->getStorage('group_type')->loadMultiple() as $type) {
       if (in_array($type->id(), $bundles)) {
         $content[$type->id()] = $type;
       }
@@ -82,9 +82,9 @@ class CoursesController extends ControllerBase {
     ]);
 
     /** @var \Drupal\Core\Entity\EntityStorageInterface $course_enrollment_storage */
-    $course_enrollment_storage = $this->entityTypeManager->getStorage('course_enrollment');
+    $course_enrollment_storage = $this->entityTypeManager()->getStorage('course_enrollment');
     $entities = $course_enrollment_storage->loadByProperties([
-      'uid' => $this->currentUser->id(),
+      'uid' => $this->currentUser()->id(),
       'sid' => $node->id(),
     ]);
 
@@ -95,7 +95,7 @@ class CoursesController extends ControllerBase {
     }
 
     // Join user to course.
-    $storage = $this->entityTypeManager->getStorage('course_enrollment');
+    $storage = $this->entityTypeManager()->getStorage('course_enrollment');
     $storage->create([
       'gid' => $group->id(),
       'sid' => $node->id(),
@@ -120,21 +120,21 @@ class CoursesController extends ControllerBase {
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $course_wrapper->setCourse($group);
-    return $course_wrapper->sectionAccess($node, $this->currentUser, 'start');
+    return $course_wrapper->sectionAccess($node, $this->currentUser(), 'start');
   }
 
   /**
    * Callback of "/group/{group}/section/{node}/next".
    */
   public function nextMaterial(GroupInterface $group, NodeInterface $node) {
-    $storage = $this->entityTypeManager->getStorage('course_enrollment');
+    $storage = $this->entityTypeManager()->getStorage('course_enrollment');
     $field = $node->get('field_course_section_content');
     /** @var \Drupal\social_course\CourseWrapper $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
     $course_wrapper->setCourse($group);
     $current_material = NULL;
     $next_material = NULL;
-    $account = $this->currentUser;
+    $account = $this->currentUser();
 
     foreach ($field->getValue() as $key => $value) {
       $course_enrollment = $storage->loadByProperties([
@@ -209,7 +209,7 @@ class CoursesController extends ControllerBase {
         $finish_section = !$course_enrollment || $course_enrollment->getStatus() !== CourseEnrollmentInterface::FINISHED;
 
         if ($finish_section) {
-          $this->messenger->addStatus($this->t('You have successfully finished the @title section', [
+          $this->messenger()->addStatus($this->t('You have successfully finished the @title section', [
             '@title' => $node->label(),
           ]));
         }
