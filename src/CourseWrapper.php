@@ -184,18 +184,6 @@ class CourseWrapper implements CourseWrapperInterface {
         if (!$this->getCourse()->getMember($account)) {
           return AccessResult::forbidden()->cachePerUser();
         }
-        /** @var \Drupal\Core\Entity\EntityStorageInterface $course_enrollment_storage */
-        $course_enrollment_storage = $this->entityTypeManager->getStorage('course_enrollment');
-        $entities = $course_enrollment_storage->loadByProperties([
-          'uid' => $account->id(),
-          'sid' => $node->id(),
-        ]);
-
-        // If user has already started or finished section, forbid starting a
-        // section because it should be automatically after finishing previous.
-        if ($entities) {
-          return AccessResult::forbidden()->cachePerUser();
-        }
 
         if (!$this->getCourse()->get('field_course_opening_status')->value) {
           return AccessResult::forbidden()->addCacheTags($this->getCourse()->getCacheTags());

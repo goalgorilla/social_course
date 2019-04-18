@@ -77,6 +77,22 @@ class CoursesController extends ControllerBase {
   public function startSection(GroupInterface $group, NodeInterface $node) {
     // Get first material.
     $material = $node->get('field_course_section_content')->get(0)->entity;
+    $material_redirect = $this->redirect('entity.node.canonical', [
+      'node' => $material->id(),
+    ]);
+
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $course_enrollment_storage */
+    $course_enrollment_storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
+    $entities = $course_enrollment_storage->loadByProperties([
+      'uid' => \Drupal::currentUser()->id(),
+      'sid' => $node->id(),
+    ]);
+
+    // If user has already started or finished section, we just redirect them
+    // to the material instead of creating a new enrollment.
+    if ($entities) {
+      return $material_redirect;
+    }
 
     // Join user to course.
     $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
@@ -94,9 +110,7 @@ class CoursesController extends ControllerBase {
     $tags = Cache::mergeTags($tags, $material->getCacheTags());
     Cache::invalidateTags($tags);
 
-    return $this->redirect('entity.node.canonical', [
-      'node' => $material->id(),
-    ]);
+    return $material_redirect;
   }
 
   /**
