@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Template\Attribute;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\node\NodeInterface;
 use Drupal\social_course\CourseWrapperInterface;
@@ -143,14 +144,22 @@ class CourseSectionNavigationBlock extends BlockBase implements ContainerFactory
 
       foreach ($this->courseWrapper->getSections() as $section) {
         $item = [
+          'attributes' => new Attribute(),
           'label' => $section->label(),
-          'url' => FALSE,
         ];
 
         $access = $this->courseWrapper->sectionAccess($section, $this->currentUser, 'view');
 
-        if ($access->isAllowed() && $section->id() !== $parent_section->id()) {
-          $item['url'] = $section->toUrl();
+        if ($access->isAllowed()) {
+          $item['label'] = $section->toLink()->toRenderable();
+          // Mark the current section link as active.
+          if ($section->id() === $parent_section->id()) {
+            $item['attributes']->addClass('active');
+          }
+        }
+        else {
+          $item['label'] = $section->label();
+          $item['attributes']->addClass('not-allowed');
         }
 
         $items[] = $item;
