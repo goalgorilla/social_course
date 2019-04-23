@@ -63,14 +63,20 @@ class GroupController extends EntityController {
       }
     }
 
-    $field = 'field_course_opening_status';
-    if ($group->hasField($field) && !$group->get($field)->isEmpty() && !$group->get($field)->value) {
-      $message = $this->t('Course sections can only be accessed after the course starts. You can only enrol in this course before the course has started.');
-      drupal_set_message($message, 'warning');
-    }
-    elseif (in_array($group->bundle(), $bundles) && !$group->getMember($account)) {
-      $message = $this->t('Course sections and other information can only be accessed after enrolling for this course.');
-      drupal_set_message($message, 'warning');
+    // Only show a message to the user when they are actually authenticated.
+    // Anonymous users can't enroll in courses anyway.
+    // TODO: We shouldn't be setting messages in access checks because these
+    // can happen at any moment (e.g. when creating a link).
+    if ($account->isAuthenticated()) {
+      $field = 'field_course_opening_status';
+      if ($group->hasField($field) && !$group->get($field)->isEmpty() && !$group->get($field)->value) {
+        $message = $this->t('Course sections can only be accessed after the course starts. You can only enrol in this course before the course has started.');
+        drupal_set_message($message, 'warning');
+      }
+      elseif (in_array($group->bundle(), $bundles) && !$group->getMember($account)) {
+        $message = $this->t('Course sections and other information can only be accessed after enrolling for this course.');
+        drupal_set_message($message, 'warning');
+      }
     }
 
     return $access
