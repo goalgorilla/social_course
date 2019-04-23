@@ -15,7 +15,7 @@ provider: null
 plugin: course_section_navigation
 settings:
   id: course_section_navigation
-  label: 'Other sections'
+  label: 'Course sections'
   provider: social_course
   label_display: visible
   context_mapping:
