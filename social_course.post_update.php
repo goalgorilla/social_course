@@ -12,6 +12,7 @@ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Site\Settings;
 use Drupal\node\Entity\Node;
 use Drupal\social_course\Entity\CourseEnrollment;
+use Drupal\user\Entity\User;
 
 /**
  * Toggle search indexes to fix fields in index.
@@ -60,6 +61,8 @@ function social_course_post_update_0002_clean_orphaned_enrollments(&$sandbox) {
     // Use array_values to get the entity_ids. No need to know about revisions.
     $sandbox['ceids'] = array_values(
       \Drupal::entityQuery('course_enrollment')
+        // Run query as administrator to avoid access checks.
+        ->addMetaData('account', User::load(1))
         ->execute()
     );
     $sandbox['enrollment_count'] = count($sandbox['ceids']);
@@ -107,6 +110,8 @@ function social_course_post_update_0003_clean_up_material_references(&$sandbox) 
     $sandbox['csids'] = array_values(
       \Drupal::entityQuery('node')
         ->condition('type', 'course_section')
+        // Run query as administrator to avoid node access checks.
+        ->addMetaData('account', User::load(1))
         ->execute()
     );
     $sandbox['section_count'] = count($sandbox['csids']);
