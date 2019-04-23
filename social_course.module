@@ -277,17 +277,20 @@ function template_preprocess_course_material_pager(array &$variables) {
     if ($material_number < count($materials)) {
       $account = \Drupal::currentUser();
       $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
-      $course_enrollment = $storage->loadByProperties([
+      $next_material_id = $course_wrapper->getMaterial($node, 1)->id();
+      $next_material_enrollment = $storage->loadByProperties([
         'gid' => $course_wrapper->getCourse()->id(),
         'sid' => $section->id(),
-        'mid' => $node->id(),
+        'mid' => $next_material_id,
         'uid' => $account->id(),
       ]);
-      $course_enrollment = current($course_enrollment);
 
-      if (($course_enrollment && $course_enrollment->getStatus() === CourseEnrollmentInterface::FINISHED) || !$course_wrapper->sectionAccess($section, $account, 'continue')) {
-        $next_url = Url::fromRoute('entity.node.canonical', [
-          'node' => $course_wrapper->getMaterial($node, 1)->id(),
+      // If a user is not yet enrolled in the next section then we link to the
+      // section start page. Otherwise we just link there directly.
+      if (!$next_material_enrollment) {
+        $next_url = Url::fromRoute('social_course.next_material', [
+          'group' => $course_wrapper->getCourse()->id(),
+          'node' => $section->id(),
         ], [
           'attributes' => [
             'class' => [
@@ -300,9 +303,8 @@ function template_preprocess_course_material_pager(array &$variables) {
         ]);
       }
       else {
-        $next_url = Url::fromRoute('social_course.next_material', [
-          'group' => $course_wrapper->getCourse()->id(),
-          'node' => $section->id(),
+        $next_url = Url::fromRoute('entity.node.canonical', [
+          'node' => $course_wrapper->getMaterial($node, 1)->id(),
         ], [
           'attributes' => [
             'class' => [
