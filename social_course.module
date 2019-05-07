@@ -583,8 +583,6 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
       // Remove extra fieldset from datetime field.
       unset($form['field_course_opening_date']['widget'][0]['#theme_wrappers']);
     }
-
-    $form['actions']['submit']['#value'] = t('Save');
   }
 
   // Action forms.
@@ -599,16 +597,6 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 
   // Perform alterations on joining / leaving groups.
   if (in_array($form_id, $action_forms)) {
-    // Add cancel option on join and leave form.
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#value' => t('Cancel'),
-      '#submit' => ['_social_group_cancel_join_leave_form'],
-      '#limit_validation_errors' => [],
-    ];
-
-    $form['actions']['submit']['#submit'][] = '_social_course_action_form_submit';
-
     $form['#attributes']['class'][] = 'form--default';
 
     if (isset($form['actions']['submit'])) {
@@ -662,16 +650,6 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     }
   }
 
-  // Delete membership forms.
-  $delete_membership_forms = [
-    'group_content_course_basic-group_membership_delete_form',
-    'group_content_course_advanced-group_membership_delete_form',
-  ];
-
-  if (in_array($form_id, $delete_membership_forms)) {
-    $form['actions']['submit']['#submit'][] = '_social_membership_delete_form_submit';
-  }
-
   // Memberhsip forms.
   $membership_forms = [
     'group_content_course_basic-group_membership_add_form',
@@ -684,15 +662,6 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     // Change titles on membership forms.
     $form['entity_id']['widget'][0]['target_id']['#title'] = t('Select a member');
     $form['group_roles']['widget']['#title'] = t('Course roles');
-
-    // Remove the 'group_admin' role in a generic way
-    // for all (future) group types.
-    foreach ($form['group_roles']['widget']['#options'] as $key => $value) {
-      // Hide the submission for the Group Admin role.
-      if (strpos($key, 'group_admin') != FALSE) {
-        unset($form['group_roles']['widget']['#options'][$key]);
-      }
-    }
 
     if ('group_content_course_basic-group_membership_edit_form' == $form_id) {
       // Remove the user selection autocomplete on editing group membership.
@@ -722,38 +691,6 @@ function social_course_form_views_exposed_form_alter(&$form, FormStateInterface 
     foreach (['course_article', 'course_section', 'course_video'] as $type) {
       unset($form['type']['#options'][$type]);
     }
-  }
-}
-
-/**
- * Form submit for group join / leave form.
- */
-function _social_course_action_form_submit($form, FormStateInterface $form_state) {
-  $group = $form_state->getFormObject()->getEntity()->getGroup();
-
-  // Invalidate cache tags.
-  $cache_tags = _social_group_cache_tags($group);
-  Cache::invalidateTags($cache_tags);
-
-  // Get form that was submitted.
-  $complete_form = $form_state->getCompleteForm();
-
-  $join_forms = [
-    'group_content_course_basic-group_membership_group-join_form',
-    'group_content_course_advanced-group_membership_group-join_form',
-  ];
-
-  if (in_array($complete_form['#form_id'], $join_forms)) {
-    // Set redirect to group home page.
-    $form_state->setRedirect('entity.group.canonical', [
-      'group' => $group->id(),
-    ]);
-  }
-  else {
-    // Set redirect to the Group overview page when a user saves their profile.
-    $form_state->setRedirect('view.groups.page_user_groups', [
-      'user' => \Drupal::currentUser()->id(),
-    ]);
   }
 }
 
@@ -952,11 +889,6 @@ function social_course_menu_local_tasks_alter(&$data, $route_name) {
 function _social_course_group_form_submit($form, FormStateInterface $form_state) {
   /** @var \Drupal\group\Entity\GroupInterface $group */
   $group = $form_state->getFormObject()->getEntity();
-  if ($group instanceof Group) {
-    $form_state->setRedirect('view.group_information.page_group_about', [
-      'group' => $group->id(),
-    ]);
-  }
 
   $sections_list = $form_state->getValue(['sections', 'list'], []);
   if (is_array($sections_list)) {
@@ -1742,4 +1674,12 @@ function social_course_cron() {
       }
     }
   }
+}
+
+/**
+ * Implements hook_social_group_types_alter().
+ */
+function social_course_social_group_types_alter(&$social_group_types) {
+  $social_group_types[] = 'course_basic';
+  $social_group_types[] = 'course_advanced';
 }
