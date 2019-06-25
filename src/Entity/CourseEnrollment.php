@@ -124,14 +124,14 @@ class CourseEnrollment extends ContentEntityBase implements CourseEnrollmentInte
    * {@inheritdoc}
    */
   public function getCourse() {
-    return $this->get('cid')->entity;
+    return $this->get('gid')->entity;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCourseId() {
-    return $this->get('cid')->target_id;
+    return $this->get('gid')->target_id;
   }
 
   /**
