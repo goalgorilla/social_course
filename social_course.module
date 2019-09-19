@@ -89,6 +89,14 @@ function social_course_theme($existing, $type, $theme, $path) {
         'parent_section' => NULL,
       ],
     ],
+    'course_navigation' => [
+      'variables' => [
+        'items' => [],
+        'course_sections' => [],
+        'parent_course' => NULL,
+        'parent_section' => NULL,
+      ],
+    ],
     'course_section_navigation' => [
       'variables' => [
         'items' => [],
@@ -118,6 +126,9 @@ function social_course_theme($existing, $type, $theme, $path) {
       'base hook' => 'node',
     ],
     'block__course_material_navigation' => [
+      'base hook' => 'block',
+    ],
+    'block__course_navigation' => [
       'base hook' => 'block',
     ],
     'field__group__field_course_opening_date' => [
@@ -1102,6 +1113,7 @@ function social_course_preprocess_block(&$variables) {
       break;
 
     case 'course_material_navigation':
+    case 'course_navigation':
       $nid = \Drupal::routeMatch()->getRawParameter('node');
       $storage = \Drupal::entityTypeManager()->getStorage('node');
 
@@ -1178,6 +1190,7 @@ function social_course_block_access(Block $block, $operation, AccountInterface $
 
     case 'course_material_hero':
     case 'course_material_navigation':
+    case 'course_navigation':
     case 'course_material_pager':
       return social_course_course_navigation_block_access($block, $operation, $account);
 
