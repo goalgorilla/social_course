@@ -1,0 +1,142 @@
+.course__navigation {
+  overflow: hidden;
+
+  .complementary-title {
+    padding: 1.25rem;
+  }
+
+  .course_nav-title {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      border-radius: 50%;
+      background: #000;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+  }
+
+  .card__block--list {
+    padding: 0;
+  }
+
+  .course__list-item {
+    padding: 1.25rem;
+
+    &:nth-child(odd) {
+      background: #f3f3f3;
+    }
+
+    &.active {
+      .list-item__text {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .course__items-header {
+    position: relative;
+    min-height: 24px;
+    font-size: .75rem;
+    margin-bottom: 5px;
+    padding-right: 35px;
+  }
+
+  .section__status {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+
+  .badge__container {
+    padding: 1px;
+  }
+
+  .teaser__badge {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    overflow: hidden;
+
+    .badge__icon {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+  }
+
+  .list-item__text {
+    font-size: .875rem;
+    line-height: 24px;
+  }
+
+  .list-items {
+    margin-top: 1.25rem;
+    border-top: 1px solid #d5d6d2;
+  }
+
+  .list-item {
+    padding: 1.25rem 0;
+
+    + .list-item {
+      margin-top: -1.25rem;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+
+    &.active {
+      color: inherit;
+
+      a {
+        font-weight: 900;
+      }
+    }
+  }
+
+  .list-item__avatar {
+    display: flex;
+    width: 18px;
+    flex: 0 0 18px;
+    height: 18px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+
+    .badge {
+      width: 18px;
+      flex: 0 0 18px;
+      height: 18px;
+      padding: 0;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+    }
+
+    .not-finished {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4a4a4a;
+    }
+  }
+}
