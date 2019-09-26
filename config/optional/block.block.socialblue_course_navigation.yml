@@ -7,7 +7,7 @@ dependencies:
     - system
   theme:
     - socialblue
-id: socialblue_course_course_navigation
+id: socialblue_course_navigation
 theme: socialblue
 region: complementary_top
 weight: 0

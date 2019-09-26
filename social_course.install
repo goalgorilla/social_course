@@ -307,3 +307,18 @@ function social_course_update_8005(&$sandbox) {
 function social_course_update_8006() {
   user_role_grant_permissions('authenticated', ['use courses feature']);
 }
+
+/**
+ * Delete course_section_navigation and course_material_navigation blocks.
+ */
+function social_course_update_8007() {
+  $block_ids = ['course_section_navigation', 'course_material_navigation'];
+  $entity_type_manager = \Drupal::entityTypeManager();
+  foreach ($block_ids as $block_id) {
+    if ($entity_type_manager->hasDefinition('block')) {
+      foreach ($entity_type_manager->getStorage('block')->loadByProperties(['plugin' => $block_id]) as $block) {
+        $block->delete();
+      }
+    }
+  }
+}
