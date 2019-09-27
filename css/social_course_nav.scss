@@ -2,7 +2,16 @@
   overflow: hidden;
 
   .complementary-title {
-    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+
+    @media(max-width: 899px) {
+      font-size: .75rem;
+      padding-left: .625rem;
+      padding-right: 1rem;
+    }
   }
 
   .course_nav-title {
@@ -19,29 +28,76 @@
       margin-right: 10px;
       border-radius: 50%;
       background: #000;
+
+      @media(max-width: 899px) {
+        width: 16px;
+        height: 16px;
+        margin-right: 15px;
+      }
     }
 
     svg {
       width: 18px;
       height: 18px;
       fill: #fff;
+
+      @media(max-width: 899px) {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .course_dividing-line,
+  .course_nav-toggle {
+    @media(min-width: 900px) {
+      display: none;
+    }
+  }
+
+  .course_dividing-line {
+    margin: 0 1rem;
+  }
+
+  .course_nav-toggle {
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-left: 5px;
     }
   }
 
   .card__block--list {
     padding: 0;
+
+    @media(min-width: 900px) {
+      display: block !important;
+    }
   }
 
   .course__list-item {
     padding: 1.25rem;
 
+    @media(max-width: 899px) {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
     &:nth-child(odd) {
       background: #f3f3f3;
+    }
+
+    &:last-child {
+      padding-bottom: 1.5rem;
     }
 
     &.active {
       .list-item__text {
         font-size: 1rem;
+
+        @media(max-width: 899px) {
+          font-size: .75rem;
+        }
       }
     }
   }
@@ -52,6 +108,10 @@
     font-size: .75rem;
     margin-bottom: 5px;
     padding-right: 35px;
+
+    .list-item__section {
+      font-weight: 700;
+    }
   }
 
   .section__status {
@@ -73,16 +133,30 @@
     border-radius: 5px;
     overflow: hidden;
 
+    @media(max-width: 899px) {
+      width: 18px;
+      height: 18px;
+    }
+
     .badge__icon {
       width: 22px;
       height: 22px;
       fill: #fff;
+
+      @media(max-width: 899px) {
+        width: 18px;
+        height: 16px;
+      }
     }
   }
 
   .list-item__text {
     font-size: .875rem;
     line-height: 24px;
+
+    @media(max-width: 899px) {
+      font-size: .75rem;
+    }
   }
 
   .list-items {
@@ -105,7 +179,7 @@
       color: inherit;
 
       a {
-        font-weight: 900;
+        font-weight: 700;
       }
     }
   }

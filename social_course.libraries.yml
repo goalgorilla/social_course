@@ -27,3 +27,8 @@ social_course_nav:
   css:
     theme:
       css/social_course_nav.css: {}
+  js:
+    js/social_course_nav.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
