@@ -182,6 +182,17 @@
         font-weight: 700;
       }
     }
+
+    &.not-allowed {
+      opacity: .5;
+      color: #4a4a4a;
+
+      .list-item__avatar {
+        .not-finished {
+          background: transparent;
+        }
+      }
+    }
   }
 
   .list-item__avatar {
@@ -211,6 +222,7 @@
       height: 6px;
       border-radius: 50%;
       background: #4a4a4a;
+      border: 1px solid #4a4a4a;
     }
   }
 }

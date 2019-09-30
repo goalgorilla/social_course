@@ -164,6 +164,13 @@
 .course__navigation .list-item.active a {
   font-weight: 700;
 }
+.course__navigation .list-item.not-allowed {
+  opacity: 0.5;
+  color: #4a4a4a;
+}
+.course__navigation .list-item.not-allowed .list-item__avatar .not-finished {
+  background: transparent;
+}
 .course__navigation .list-item__avatar {
   display: flex;
   width: 18px;
@@ -189,6 +196,7 @@
   height: 6px;
   border-radius: 50%;
   background: #4a4a4a;
+  border: 1px solid #4a4a4a;
 }
 
 /*# sourceMappingURL=social_course_nav.css.map */
