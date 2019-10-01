@@ -71,6 +71,7 @@
 }
 .course__navigation .course__list-item {
   padding: 1.25rem;
+  background: #f3f3f3;
 }
 @media (max-width: 899px) {
   .course__navigation .course__list-item {
@@ -78,11 +79,11 @@
     padding-bottom: 1rem;
   }
 }
-.course__navigation .course__list-item:nth-child(odd) {
-  background: #f3f3f3;
-}
 .course__navigation .course__list-item:last-child {
   padding-bottom: 1.5rem;
+}
+.course__navigation .course__list-item.active {
+  background: #fff;
 }
 .course__navigation .course__list-item.active .list-item__text {
   font-size: 1rem;
