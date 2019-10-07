@@ -103,17 +103,12 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
     $account = $this->currentUser;
 
     if ($node instanceof NodeInterface && $node->id()) {
-      $translation = $this->entityRepository->getTranslationFromContext($node);
-
-      if (!empty($translation)) {
-        $node->setTitle($translation->getTitle());
-      }
-
       /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
       $course_wrapper = \Drupal::service('social_course.course_wrapper');
       $course_wrapper->setCourseFromMaterial($node);
       $parent_section = $course_wrapper->getSectionFromMaterial($node);
 
+      // Prepares variable with the course sections.
       $course_sections = [];
       /** @var \Drupal\node\NodeInterface $section */
       foreach ($course_wrapper->getSections() as $section) {
@@ -135,6 +130,7 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
           'sid' => $section->id(),
         ]);
 
+        // Adds status label for sections.
         if (!$entities) {
           $section_item['section_status'] = 'not-started';
           $section_item['allowed_start'] = $course_wrapper->sectionAccess($section, $this->currentUser, 'start')->isAllowed();
@@ -154,6 +150,7 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
           }
         }
 
+        // Adds access label for sections.
         $access = $this->courseWrapper->sectionAccess($section, $this->currentUser, 'view');
         if ($access->isAllowed()) {
           $section_item['label'] = $section->toLink()->toRenderable();
@@ -171,6 +168,7 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
         $course_sections[] = $section_item;
       }
 
+      // Prepares variable with the material items of the active section.
       $items = [];
       $course_enrollment_storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
       $course_enrollments = $course_enrollment_storage->loadByProperties([
