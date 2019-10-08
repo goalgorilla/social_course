@@ -9,6 +9,7 @@ use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Cache\Cache;
@@ -167,7 +168,8 @@ function social_course_get_material_types() {
   ];
 
   // Allow other modules to register their own types.
-  \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
+  \Drupal::moduleHandler()
+    ->alter('social_course_material_types', $material_types);
 
   return $material_types;
 }
@@ -205,7 +207,10 @@ function template_preprocess_course_material_hero(array &$variables) {
     // Get the current route name to check if the user is on the edit page.
     $route = \Drupal::routeMatch()->getRouteName();
 
-    if (!in_array($route, ['entity.node.edit_form', 'entity.node.delete_form'])) {
+    if (!in_array($route, [
+      'entity.node.edit_form',
+      'entity.node.delete_form'
+    ])) {
       if ($node->access('update', $account)) {
         $variables['node_edit_url'] = $node->toUrl('edit-form')->toString();
       }
@@ -370,14 +375,14 @@ function social_course_social_user_account_header_create_links(array $context) {
 
   return [
     'add_course' => [
-      '#type' => 'link',
-      '#attributes' => [
-        'title' => t('Create New Course'),
-      ],
-      '#title' => t('New Course'),
-      // Put this after 'Create Topic'.
-      '#weight' => 250,
-    ] + Url::fromRoute('social_course.course_add')->toRenderArray(),
+        '#type' => 'link',
+        '#attributes' => [
+          'title' => t('Create New Course'),
+        ],
+        '#title' => t('New Course'),
+        // Put this after 'Create Topic'.
+        '#weight' => 250,
+      ] + Url::fromRoute('social_course.course_add')->toRenderArray(),
   ];
 }
 
@@ -392,16 +397,16 @@ function social_course_social_user_account_header_account_links(array $context) 
 
   return [
     'my_courses' => [
-      '#type' => 'link',
-      '#attributes' => [
-        'title' => t('View my courses'),
-      ],
-      '#title' => t('My courses'),
-      // Put this after "My Topics".
-      '#weight' => 750,
-    ] + Url::fromRoute('view.courses_user.page', [
-      'user' => $context['user']->id(),
-    ])->toRenderArray(),
+        '#type' => 'link',
+        '#attributes' => [
+          'title' => t('View my courses'),
+        ],
+        '#title' => t('My courses'),
+        // Put this after "My Topics".
+        '#weight' => 750,
+      ] + Url::fromRoute('view.courses_user.page', [
+        'user' => $context['user']->id(),
+      ])->toRenderArray(),
   ];
 }
 
@@ -505,7 +510,8 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     $group = $form_state->getFormObject()->getEntity();
 
     if ($group->id()) {
-      $group_content_storage = \Drupal::entityTypeManager()->getStorage('group_content');
+      $group_content_storage = \Drupal::entityTypeManager()
+        ->getStorage('group_content');
       $content = $group_content_storage->loadByGroup($group, 'group_node:course_section');
 
       $form['sections'] = [
@@ -629,7 +635,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 
     if (isset($form['actions']['cancel'])) {
       // Some `cancel` buttons are not inputs but links.
-      if (isset($form['actions']['cancel']['#type']) &&  $form['actions']['cancel']['#type'] == 'link') {
+      if (isset($form['actions']['cancel']['#type']) && $form['actions']['cancel']['#type'] == 'link') {
         $form['actions']['cancel']['#attributes']['class'][] = 'btn btn-flat';
       }
       else {
@@ -777,7 +783,10 @@ function social_course_form_node_form_alter(&$form, FormStateInterface $form_sta
   // @TODO: Fix it in social_group module.
   if (isset($form['groups']['widget']['#options'])) {
     $group = _social_group_get_current_group();
-    if ($group instanceof GroupInterface && in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+    if ($group instanceof GroupInterface && in_array($group->bundle(), [
+        'course_basic',
+        'course_advanced'
+      ])) {
       foreach ($form['groups']['widget']['#options'] as $key => $option) {
         if (!in_array($key, ['Basic Course', 'Advanced Course'])) {
           unset($form['groups']['widget']['#options'][$key]);
@@ -1039,7 +1048,10 @@ function social_course_node_grants(AccountInterface $account, $op) {
 function social_course_preprocess_html(&$variables) {
   $group = _social_group_get_current_group();
 
-  if (!$group || !in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+  if (!$group || !in_array($group->bundle(), [
+      'course_basic',
+      'course_advanced'
+    ])) {
     return;
   }
 
@@ -1067,10 +1079,33 @@ function social_course_preprocess_html(&$variables) {
 /**
  * Implements hook_preprocess_page_title().
  */
+function social_course_preprocess_page(&$variables) {
+  $nid = \Drupal::routeMatch()->getRawParameter('node');
+  // At this point the parameter could also be a simple string of a nid.
+  // EG: on: /node/%node/enrollments.
+  if (!is_null($nid) && !is_object($nid)) {
+    $node = Node::load($nid);
+  }
+  // Display navigation block on the left side of course pages.
+  $material_types = social_course_get_material_types();
+  if (isset($variables['node']) && in_array($node->bundle(), $material_types)) {
+    if (!$variables['content_attributes'] instanceof Attribute) {
+      $variables['content_attributes'] = new Attribute();
+    }
+    $variables['content_attributes']->addClass('sidebar-left');
+  }
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
 function social_course_preprocess_page_title(&$variables) {
   $group = _social_group_get_current_group();
 
-  if (!$group || !in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+  if (!$group || !in_array($group->bundle(), [
+      'course_basic',
+      'course_advanced'
+    ])) {
     return;
   }
 
@@ -1105,7 +1140,10 @@ function social_course_preprocess_block(&$variables) {
     case 'views_block:group_members-block_newest_members':
       $group = _social_group_get_current_group();
 
-      if (!$group || !in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+      if (!$group || !in_array($group->bundle(), [
+          'course_basic',
+          'course_advanced'
+        ])) {
         return;
       }
 
@@ -1132,7 +1170,10 @@ function social_course_preprocess_block(&$variables) {
 
     case 'views_block:group_managers-block_list_managers':
       $group = _social_group_get_current_group();
-      if ($group instanceof GroupInterface && in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+      if ($group instanceof GroupInterface && in_array($group->bundle(), [
+          'course_basic',
+          'course_advanced'
+        ])) {
         $variables['label']['#markup'] = t('Course Leaders');
       }
       break;
@@ -1323,7 +1364,8 @@ function social_course_preprocess_node(&$variables) {
 
     if (!$entities) {
       $variables['section_status'] = 'not-started';
-      $variables['allowed_start'] = $course_wrapper->sectionAccess($node, \Drupal::currentUser(), 'start')->isAllowed();
+      $variables['allowed_start'] = $course_wrapper->sectionAccess($node, \Drupal::currentUser(), 'start')
+        ->isAllowed();
     }
     else {
       foreach ($entities as $entity) {
@@ -1340,7 +1382,8 @@ function social_course_preprocess_node(&$variables) {
       }
     }
 
-    if (isset($variables['url']) && !$course_wrapper->sectionAccess($node, $account, 'view')->isAllowed()) {
+    if (isset($variables['url']) && !$course_wrapper->sectionAccess($node, $account, 'view')
+        ->isAllowed()) {
       unset($variables['url']);
     }
 
@@ -1380,11 +1423,15 @@ function social_course_node_access(NodeInterface $node, $op, AccountInterface $a
     /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
 
-    if ($node->bundle() == 'course_section' && $course_wrapper->setCourseFromSection($node)->getCourse()) {
-      return AccessResult::forbiddenIf(!$course_wrapper->sectionAccess($node, $account, 'view')->isAllowed());
+    if ($node->bundle() == 'course_section' && $course_wrapper->setCourseFromSection($node)
+        ->getCourse()) {
+      return AccessResult::forbiddenIf(!$course_wrapper->sectionAccess($node, $account, 'view')
+        ->isAllowed());
     }
-    elseif (($section = $course_wrapper->getSectionFromMaterial($node)) && $course_wrapper->setCourseFromSection($section)->getCourse()) {
-      return AccessResult::forbiddenIf(!$course_wrapper->materialAccess($node, $account, 'view')->isAllowed());
+    elseif (($section = $course_wrapper->getSectionFromMaterial($node)) && $course_wrapper->setCourseFromSection($section)
+        ->getCourse()) {
+      return AccessResult::forbiddenIf(!$course_wrapper->materialAccess($node, $account, 'view')
+        ->isAllowed());
     }
   }
 
@@ -1473,7 +1520,7 @@ function social_course_entity_delete(EntityInterface $entity) {
  *   An array of node ids corresponding to the course section nodes that
  *   reference the material as part of their content.
  */
-function social_course_find_sections_with_material(int $material_id) : array {
+function social_course_find_sections_with_material(int $material_id): array {
   // Find all course sections that reference this material.
   // Stolen from: https://drupal.stackexchange.com/a/248054/2166
   $sections = \Drupal::entityQueryAggregate('node')
@@ -1491,7 +1538,7 @@ function social_course_find_sections_with_material(int $material_id) : array {
  * @param int $material_id
  *   The id of the material that should be removed from the sections.
  */
-function social_course_remove_material_from_courses(int $material_id) : void {
+function social_course_remove_material_from_courses(int $material_id): void {
   $section_ids = social_course_find_sections_with_material($material_id);
 
   $sections = Node::loadMultiple($section_ids);
@@ -1533,7 +1580,8 @@ function social_course_entity_view(array &$build, EntityInterface $entity, Entit
 
       if ($course_wrapper->getCourse() && !$course_wrapper->courseIsSequential() && $material) {
         // Join user to course.
-        $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
+        $storage = \Drupal::entityTypeManager()
+          ->getStorage('course_enrollment');
         $entities = $storage->loadByProperties([
           'gid' => $course_wrapper->getCourse()->id(),
           'sid' => $entity->id(),
@@ -1556,7 +1604,8 @@ function social_course_entity_view(array &$build, EntityInterface $entity, Entit
 
       if ($course_wrapper->getCourse() && !$course_wrapper->courseIsSequential()) {
         // Join user to course.
-        $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
+        $storage = \Drupal::entityTypeManager()
+          ->getStorage('course_enrollment');
         $entities = $storage->loadByProperties([
           'gid' => $course_wrapper->getCourse()->id(),
           'sid' => $section->id(),
