@@ -98,6 +98,9 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     $node = $this->getContextValue('node');
     $account = $this->currentUser;
@@ -120,6 +123,7 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
           'parts_finished' => 0,
         ];
 
+        // Set the values for progress indicator.
         $section_item['parts_count'] = count($course_wrapper->getMaterials($section));
         $section_item['parts_finished'] = count($course_wrapper->getFinishedMaterials($section, $account));
 
