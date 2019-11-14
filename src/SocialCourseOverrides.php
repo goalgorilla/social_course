@@ -514,30 +514,6 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
       ];
     }
 
-    $config_name = 'views.view.group_manage_members';
-
-    if (in_array($config_name, $names)) {
-      $overrides[$config_name] = [
-        'display' => [
-          'default' => [
-            'display_options' => [
-              'filters' => [
-                'type' => [
-                  'value' => [
-                    'closed_group-group_membership' => 'closed_group-group_membership',
-                    'open_group-group_membership' => 'open_group-group_membership',
-                    'public_group-group_membership' => 'public_group-group_membership',
-                    'course_basic-group_membership' => 'course_basic-group_membership',
-                    'course_advanced-group_membership' => 'course_advanced-group_membership',
-                  ],
-                ],
-              ],
-            ],
-          ],
-        ],
-      ];
-    }
-
     $config_name = 'block.block.views_block__group_managers_block_list_managers';
 
     if (in_array($config_name, $names)) {
