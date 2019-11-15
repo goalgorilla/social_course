@@ -1,5 +1,5 @@
 services:
   social_course_advanced.overrider:
-    class: Drupal\social_course_basic\SocialCourseAdvancedOverrides
+    class: Drupal\social_course_advanced\SocialCourseAdvancedOverrides
     tags:
       - { name: config.factory.override, priority: 5 }
