@@ -2,7 +2,7 @@
 
   Drupal.behaviors.socialCourseNav = {
     attach: function attach(context) {
-      var toggleNav = $('.course_nav-toggle');
+      var toggleNav = $('.course_nav-toggle', context);
 
       toggleNav.each(function () {
         var el = $(this);

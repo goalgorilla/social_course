@@ -149,7 +149,6 @@ function social_course_post_update_0003_clean_up_material_references(&$sandbox) 
   $sandbox['#finished'] = empty($sandbox['section_count']) ? 1 : ($sandbox['progress'] / $sandbox['section_count']);
 }
 
-
 /**
  * Clean up enrollments that exist for the anonymous user.
  */

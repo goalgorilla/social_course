@@ -209,7 +209,7 @@ function template_preprocess_course_material_hero(array &$variables) {
 
     if (!in_array($route, [
       'entity.node.edit_form',
-      'entity.node.delete_form'
+      'entity.node.delete_form',
     ])) {
       if ($node->access('update', $account)) {
         $variables['node_edit_url'] = $node->toUrl('edit-form')->toString();
@@ -375,14 +375,14 @@ function social_course_social_user_account_header_create_links(array $context) {
 
   return [
     'add_course' => [
-        '#type' => 'link',
-        '#attributes' => [
-          'title' => t('Create New Course'),
-        ],
-        '#title' => t('New Course'),
-        // Put this after 'Create Topic'.
-        '#weight' => 250,
-      ] + Url::fromRoute('social_course.course_add')->toRenderArray(),
+      '#type' => 'link',
+      '#attributes' => [
+        'title' => t('Create New Course'),
+      ],
+      '#title' => t('New Course'),
+      // Put this after 'Create Topic'.
+      '#weight' => 250,
+    ] + Url::fromRoute('social_course.course_add')->toRenderArray(),
   ];
 }
 
@@ -397,16 +397,16 @@ function social_course_social_user_account_header_account_links(array $context) 
 
   return [
     'my_courses' => [
-        '#type' => 'link',
-        '#attributes' => [
-          'title' => t('View my courses'),
-        ],
-        '#title' => t('My courses'),
-        // Put this after "My Topics".
-        '#weight' => 750,
-      ] + Url::fromRoute('view.courses_user.page', [
-        'user' => $context['user']->id(),
-      ])->toRenderArray(),
+      '#type' => 'link',
+      '#attributes' => [
+        'title' => t('View my courses'),
+      ],
+      '#title' => t('My courses'),
+      // Put this after "My Topics".
+      '#weight' => 750,
+    ] + Url::fromRoute('view.courses_user.page', [
+      'user' => $context['user']->id(),
+    ])->toRenderArray(),
   ];
 }
 
@@ -784,9 +784,9 @@ function social_course_form_node_form_alter(&$form, FormStateInterface $form_sta
   if (isset($form['groups']['widget']['#options'])) {
     $group = _social_group_get_current_group();
     if ($group instanceof GroupInterface && in_array($group->bundle(), [
-        'course_basic',
-        'course_advanced'
-      ])) {
+      'course_basic',
+      'course_advanced',
+    ])) {
       foreach ($form['groups']['widget']['#options'] as $key => $option) {
         if (!in_array($key, ['Basic Course', 'Advanced Course'])) {
           unset($form['groups']['widget']['#options'][$key]);
@@ -1049,9 +1049,9 @@ function social_course_preprocess_html(&$variables) {
   $group = _social_group_get_current_group();
 
   if (!$group || !in_array($group->bundle(), [
-      'course_basic',
-      'course_advanced'
-    ])) {
+    'course_basic',
+    'course_advanced',
+  ])) {
     return;
   }
 
@@ -1077,7 +1077,7 @@ function social_course_preprocess_html(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_page_title().
+ * Implements hook_preprocess_page().
  */
 function social_course_preprocess_page(&$variables) {
   $nid = \Drupal::routeMatch()->getRawParameter('node');
@@ -1086,6 +1086,10 @@ function social_course_preprocess_page(&$variables) {
   if (!is_null($nid) && !is_object($nid)) {
     $node = Node::load($nid);
   }
+  else {
+    return NULL;
+  }
+
   // Display navigation block on the left side of course pages.
   $material_types = social_course_get_material_types();
   if (isset($variables['node']) && in_array($node->bundle(), $material_types)) {
@@ -1103,9 +1107,9 @@ function social_course_preprocess_page_title(&$variables) {
   $group = _social_group_get_current_group();
 
   if (!$group || !in_array($group->bundle(), [
-      'course_basic',
-      'course_advanced'
-    ])) {
+    'course_basic',
+    'course_advanced',
+  ])) {
     return;
   }
 
@@ -1141,9 +1145,9 @@ function social_course_preprocess_block(&$variables) {
       $group = _social_group_get_current_group();
 
       if (!$group || !in_array($group->bundle(), [
-          'course_basic',
-          'course_advanced'
-        ])) {
+        'course_basic',
+        'course_advanced',
+      ])) {
         return;
       }
 
@@ -1171,9 +1175,9 @@ function social_course_preprocess_block(&$variables) {
     case 'views_block:group_managers-block_list_managers':
       $group = _social_group_get_current_group();
       if ($group instanceof GroupInterface && in_array($group->bundle(), [
-          'course_basic',
-          'course_advanced'
-        ])) {
+        'course_basic',
+        'course_advanced',
+      ])) {
         $variables['label']['#markup'] = t('Course Leaders');
       }
       break;
@@ -1382,8 +1386,7 @@ function social_course_preprocess_node(&$variables) {
       }
     }
 
-    if (isset($variables['url']) && !$course_wrapper->sectionAccess($node, $account, 'view')
-        ->isAllowed()) {
+    if (isset($variables['url']) && !$course_wrapper->sectionAccess($node, $account, 'view')->isAllowed()) {
       unset($variables['url']);
     }
 
@@ -1423,15 +1426,11 @@ function social_course_node_access(NodeInterface $node, $op, AccountInterface $a
     /** @var \Drupal\social_course\CourseWrapperInterface $course_wrapper */
     $course_wrapper = \Drupal::service('social_course.course_wrapper');
 
-    if ($node->bundle() == 'course_section' && $course_wrapper->setCourseFromSection($node)
-        ->getCourse()) {
-      return AccessResult::forbiddenIf(!$course_wrapper->sectionAccess($node, $account, 'view')
-        ->isAllowed());
+    if ($node->bundle() == 'course_section' && $course_wrapper->setCourseFromSection($node)->getCourse()) {
+      return AccessResult::forbiddenIf(!$course_wrapper->sectionAccess($node, $account, 'view')->isAllowed());
     }
-    elseif (($section = $course_wrapper->getSectionFromMaterial($node)) && $course_wrapper->setCourseFromSection($section)
-        ->getCourse()) {
-      return AccessResult::forbiddenIf(!$course_wrapper->materialAccess($node, $account, 'view')
-        ->isAllowed());
+    elseif (($section = $course_wrapper->getSectionFromMaterial($node)) && $course_wrapper->setCourseFromSection($section)->getCourse()) {
+      return AccessResult::forbiddenIf(!$course_wrapper->materialAccess($node, $account, 'view')->isAllowed());
     }
   }
 
@@ -1470,7 +1469,7 @@ function social_course_entity_delete(EntityInterface $entity) {
         }
       }
 
-      // If this was a section then also remove the materials
+      // If this was a section then also remove the materials.
       $is_section = $entity->bundle() === 'course_section';
       // Guard against breaking of the section node type.
       $has_materials = $entity->hasField('field_course_section_content');
