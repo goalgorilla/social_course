@@ -62,15 +62,7 @@
                 </span>
 
                 <span class="list-item__text">
-                  {% if item.url %}
-                    <a href="{{ item.url }}">
-                  {% endif %}
-
-                    {{ item.label }}
-
-                  {% if item.url %}
-                    </a>
-                  {% endif %}
+                  {{ link(item.label, item.url) }}
                 </span>
               </span>
           {% endfor %}
