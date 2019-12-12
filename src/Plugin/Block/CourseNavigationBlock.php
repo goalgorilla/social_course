@@ -223,9 +223,6 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
       'sid' => $section->id(),
     ]);
 
-    if (!$entities) {
-      return [];
-    }
     return $entities;
   }
 
