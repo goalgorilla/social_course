@@ -215,7 +215,7 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  private function getCourseEnrollmentEntities(CourseWrapperInterface $course_wrapper, NodeInterface $section) {
+  protected function getCourseEnrollmentEntities(CourseWrapperInterface $course_wrapper, NodeInterface $section) {
     $storage = $this->entityTypeManager->getStorage('course_enrollment');
     $entities = $storage->loadByProperties([
       'uid' => $this->currentUser->id(),
@@ -223,10 +223,10 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
       'sid' => $section->id(),
     ]);
 
-    if ($entities) {
-      return $entities;
+    if (!$entities) {
+      return [];
     }
-    return NULL;
+    return $entities;
   }
 
   /**
@@ -241,7 +241,7 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
    * @param array $section_item
    *   An array of section items.
    */
-  private function addStatusLabelForSections($entities, CourseWrapperInterface $course_wrapper, NodeInterface $section, array &$section_item) {
+  protected  function addStatusLabelForSections($entities, CourseWrapperInterface $course_wrapper, NodeInterface $section, array &$section_item) {
     if (!$entities) {
       $section_item['section_status'] = 'not-started';
       $section_item['allowed_start'] = $course_wrapper->sectionAccess($section, $this->currentUser, 'start')->isAllowed();
@@ -274,7 +274,7 @@ class CourseNavigationBlock extends BlockBase implements ContainerFactoryPluginI
    *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
-  private function addAccessLabelForSections(NodeInterface $section, array &$section_item, $parent_section) {
+  protected function addAccessLabelForSections(NodeInterface $section, array &$section_item, $parent_section) {
     $access = $this->courseWrapper->sectionAccess($section, $this->currentUser, 'view');
     if ($access->isAllowed()) {
       $section_item['label'] = $section->toLink()->toRenderable();
