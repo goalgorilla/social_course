@@ -61,9 +61,11 @@
                   {% endif %}
                 </span>
 
-                <span class="list-item__text">
-                  {{ link(item.label, item.url) }}
-                </span>
+                {% if item.url %}
+                  <span class="list-item__text">
+                    {{ link(item.label, item.url) }}
+                  </span>
+                {% endif %}
               </span>
           {% endfor %}
         </div>

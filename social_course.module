@@ -1080,11 +1080,11 @@ function social_course_preprocess_html(&$variables) {
  * Implements hook_preprocess_page().
  */
 function social_course_preprocess_page(&$variables) {
+  if (!isset($variables['node']) || !($variables['node'] instanceof NodeInterface)) {
+    return;
+  }
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['node'];
-  if (!$node) {
-    return NULL;
-  }
 
   // Display navigation block on the left side of course pages.
   $material_types = social_course_get_material_types();
