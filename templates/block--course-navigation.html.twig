@@ -1,0 +1,50 @@
+{%
+  set classes = [
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    card ? 'card brand-border-radius' : '',
+    'course__navigation',
+  ]
+%}
+
+{%
+  set title_classes = [
+    card ? 'card__title' : 'block-title',
+  ]
+%}
+
+{{ attach_library('social_course/social_course_nav') }}
+
+{% if not bare %}
+  <section{{ attributes.addClass(classes) }}>
+
+    {{ title_prefix }}
+    <header{{ title_attributes.addClass('complementary-title') }}>
+      <a class="course_nav-title" href="{{ course_url }}">
+        <span class="icon">
+          <svg class="icon-small icon-nav-group">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-navigate_before"></use>
+          </svg>
+        </span>
+        {% trans %}Course information{% endtrans %}
+      </a>
+
+      <span class="course_dividing-line">|</span>
+
+      <a href="#" class="course_nav-toggle is-active">
+        {% trans %}Navigate{% endtrans %}
+        <svg class="icon-small">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow_drop_up"></use>
+        </svg>
+      </a>
+    </header>
+    {{ title_suffix }}
+{% endif %}
+
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+
+{% if not bare %}
+  </section>
+{% endif %}
