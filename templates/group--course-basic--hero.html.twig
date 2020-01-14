@@ -10,11 +10,6 @@ group_hero_styled_image_url ? 'cover-img cover-img-gradient',
 ]
 %}
 
-{% set cover_classes = [
-  'cover hero__group',
-  group_hero_styled_image_url ? 'cover-img cover-img-gradient',
-] %}
-
 <div{{ attributes.addClass(cover_classes) }} {% if group_hero_styled_image_url %} style="background-image: url('{{ group_hero_styled_image_url }}');" {% endif %}>
     {% if group_edit_url %}
         <div class="hero-action-button">
