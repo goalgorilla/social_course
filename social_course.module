@@ -56,6 +56,9 @@ function social_course_theme($existing, $type, $theme, $path) {
     'group__course_basic__hero' => [
       'base hook' => 'group',
     ],
+    'group__course_basic__hero__sky' => [
+      'base hook' => 'group',
+    ],
     'group__course_advanced__teaser' => [
       'base hook' => 'group',
     ],
@@ -63,6 +66,9 @@ function social_course_theme($existing, $type, $theme, $path) {
       'base hook' => 'group',
     ],
     'group__course_advanced__hero' => [
+      'base hook' => 'group',
+    ],
+    'group__course_advanced__hero__sky' => [
       'base hook' => 'group',
     ],
     'course_material_hero' => [
@@ -848,6 +854,10 @@ function social_course_preprocess_group(&$variables) {
           break;
       }
     }
+    // Add teaser tag variable.
+    $variables['title_prefix']['teaser_tag'] = [
+      '#markup' => '<div class="teaser__tag">' . t('Course') . '</div>',
+    ];
   }
 }
 
