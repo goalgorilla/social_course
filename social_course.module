@@ -1673,6 +1673,8 @@ function social_course_search_api_query_alter(QueryInterface &$query) {
       }
     }
 
+    // Allow seeing only the published group when the search index does not
+    // contain a field for the owner of the group.
     if (!$found) {
       return;
     }
@@ -1682,6 +1684,8 @@ function social_course_search_api_query_alter(QueryInterface &$query) {
     ->addCondition('search_api_datasource', 'entity:group');
 
   if (isset($user_field)) {
+    // Add own unpublished groups to search results when the search index
+    // contains a field for the owner of the group.
     $condition_group->addConditionGroup(
       $query->createConditionGroup('OR')
         ->addCondition($status_field, TRUE)
@@ -1689,6 +1693,9 @@ function social_course_search_api_query_alter(QueryInterface &$query) {
     );
   }
   else {
+    // Select only published groups because the search index does not contain a
+    // field for the owner of the group so own groups can not be linked to the
+    // current user.
     $condition_group->addCondition($status_field, TRUE);
   }
 
