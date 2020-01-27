@@ -1548,7 +1548,7 @@ function social_course_remove_material_from_courses(int $material_id): void {
     /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $section_content */
     $materials = $section_content->getValue();
     // Find the index of the material in this field.
-    $idx = array_search($material_id, array_column($materials, 'target_id'), TRUE);
+    $idx = array_search($material_id, array_column($materials, 'target_id'));
     $section_content->removeItem($idx);
 
     $section->save();
