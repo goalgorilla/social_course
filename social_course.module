@@ -1720,20 +1720,47 @@ function social_course_search_api_query_alter(QueryInterface &$query) {
   }
 
   if ($account->hasPermission('view own unpublished groups')) {
+    $found = FALSE;
+
     // Search of field for group owner ID.
     foreach ($fields as $user_field => $field) {
       if ($field->getPropertyPath() === 'uid' && $field->getDatasourceId() === 'entity:group') {
-        $query->addConditionGroup(
-          $query->createConditionGroup('OR')
-            ->addCondition($status_field, TRUE)
-            ->addCondition($user_field, $account->id())
-        );
+        $found = TRUE;
+        break;
       }
     }
+
+    // Allow seeing only the published group when the search index does not
+    // contain a field for the owner of the group.
+    if (!$found) {
+      return;
+    }
+  }
+
+  $condition_group = $query->createConditionGroup('AND')
+    ->addCondition('search_api_datasource', 'entity:group');
+
+  if (isset($user_field)) {
+    // Add own unpublished groups to search results when the search index
+    // contains a field for the owner of the group.
+    $condition_group->addConditionGroup(
+      $query->createConditionGroup('OR')
+        ->addCondition($status_field, TRUE)
+        ->addCondition($user_field, $account->id())
+    );
   }
   else {
-    $query->addCondition($status_field, TRUE);
+    // Select only published groups because the search index does not contain a
+    // field for the owner of the group so own groups can not be linked to the
+    // current user.
+    $condition_group->addCondition($status_field, TRUE);
   }
+
+  $query->addConditionGroup(
+    $query->createConditionGroup('OR')
+      ->addConditionGroup($condition_group)
+      ->addCondition('search_api_datasource', 'entity:group', '<>')
+  );
 }
 
 /**
