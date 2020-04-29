@@ -1,0 +1,22 @@
+{% extends 'group--course-basic--hero.html.twig' %}
+
+{% block hero_title %}
+  <header class="page-title">
+    {% if group_type %}
+      <div class="teaser__tag">
+        {{ group_type }}
+      </div>
+    {% endif %}
+    {% if content.field_course_type|render %}
+      <div class="badge badge-accent">
+        {{ content.field_course_type }}
+      </div>
+    {% endif %}
+    <div class="group-hero--wrapper">
+      <h1>{{ content.label }}</h1>
+    </div>
+  </header>
+{% endblock %}
+
+{% block hero_footer_cta %}
+{% endblock %}
