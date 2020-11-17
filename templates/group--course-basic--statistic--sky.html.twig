@@ -1,28 +1,20 @@
-<div class="card__counter">
-  <ul>
-    <li>
-      <span class="card__counter-quantity">{{ course_sections }}</span>
-      <span class="card__counter-text">{% trans %}idea{% plural course_sections %}sections{% endtrans %}</span>
-    </li>
-    <li>
-      <span class="card__counter-quantity">{{ finished_sections }}</span>
-      <span class="card__counter-text">{% trans %}participant{% plural finished_sections %}finished{% endtrans %}</span>
-    </li>
-    <li>
-      {# Empty li for styling #}
-    </li>
+{% extends "group--statistic.html.twig" %}
 
-  </ul>
-</div>
-{% if group_operations_url %}
-  <div class="hero-footer__cta">
-    <div class="btn-group btn-group__chellange">
-      {% if group_operations_url %}
-        <button type="button" autocomplete="off" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-accent btn-lg btn-raised dropdown-toggle"><span class="caret"></span></button>
-        <ul class="dropdown-menu dropdown-menu-right">
-          <li><a href="{{ group_operations_url }}">Enroll</a></li>
-        </ul>
-      {% endif %}
-    </div>
+{% block group_statistics %}
+  <div class="card__counter">
+    <ul>
+      <li>
+        <span class="card__counter-quantity">{{ course_sections }}</span>
+        <span class="card__counter-text">{% trans %}idea{% plural course_sections %}sections{% endtrans %}</span>
+      </li>
+      <li>
+        <span class="card__counter-quantity">{{ finished_sections }}</span>
+        <span class="card__counter-text">{% trans %}participant{% plural finished_sections %}finished{% endtrans %}</span>
+      </li>
+      <li>
+        {# Empty li for styling #}
+      </li>
+
+    </ul>
   </div>
-{% endif %}
+{% endblock %}
