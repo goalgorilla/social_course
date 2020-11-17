@@ -5,11 +5,11 @@
     <ul>
       <li>
         <span class="card__counter-quantity">{{ course_sections }}</span>
-        <span class="card__counter-text">{% trans %}idea{% plural course_sections %}sections{% endtrans %}</span>
+        <span class="card__counter-text">{% trans %}section{% plural course_sections %}sections{% endtrans %}</span>
       </li>
       <li>
         <span class="card__counter-quantity">{{ finished_sections }}</span>
-        <span class="card__counter-text">{% trans %}participant{% plural finished_sections %}finished{% endtrans %}</span>
+        <span class="card__counter-text">{% trans %}finished{% plural finished_sections %}finished{% endtrans %}</span>
       </li>
       <li>
         {# Empty li for styling #}
@@ -17,4 +17,6 @@
 
     </ul>
   </div>
+{% endblock %}
+{% block group_statistics_footer %}
 {% endblock %}
