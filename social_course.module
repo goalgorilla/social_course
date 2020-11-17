@@ -738,6 +738,15 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 }
 
 /**
+ * Implements hook_social_group_types_alter().
+ */
+function social_course_social_group_types_alter(&$social_group_types) {
+  $social_group_types[] = 'course_basic';
+  $social_group_types[] = 'course_advanced';
+}
+
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function social_course_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
