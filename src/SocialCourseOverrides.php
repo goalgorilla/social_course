@@ -166,10 +166,10 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
               'filters' => [
                 'type' => [
                   'value' => [
-                    'open_group-group_node-event' => 'open_group-group_node-event',
-                    'public_group-group_node-event' => 'public_group-group_node-event',
-                    'closed_group-group_node-event' => 'closed_group-group_node-event',
-                    'course_advanced-group_node-event' => 'course_advanced-group_node-event',
+                    'open_group-group_node-topic' => 'open_group-group_node-topic',
+                    'public_group-group_node-topic' => 'public_group-group_node-topic',
+                    'closed_group-group_node-topic' => 'closed_group-group_node-topic',
+                    'course_advanced-group_node-topic' => 'course_advanced-group_node-topic',
                   ],
                 ],
               ],
