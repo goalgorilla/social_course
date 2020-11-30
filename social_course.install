@@ -345,26 +345,18 @@ function social_course_update_8008() {
  * Hide page title block from the user courses profile.
  */
 function social_course_update_8009() {
-  $config_name = 'block.block.socialblue_pagetitleblock_content';
-  $config = \Drupal::service('config.factory')->getEditable($config_name);
-  if (!empty($config->getRawData())) {
-    $pages = $config->get('visibility.request_path.pages');
-    $pages .= "\r\n/user/*/courses";
-    $config->set('visibility.request_path.pages', $pages);
-    $config->save();
+  $configFactory = \Drupal::service('config.factory');
+  $config_names = [
+    'block.block.socialblue_pagetitleblock_content',
+    'block.block.socialblue_profile_statistic_block',
+  ];
+  foreach ($config_names as $config_name) {
+    $config = $configFactory->getEditable($config_name);
+    if (!empty($config->getRawData())) {
+      $pages = sprintf("%s\r\n/user/*/courses", $config->get('visibility.request_path.pages'));
+      $config->set('visibility.request_path.pages', $pages);
+      $config->save();
+    }
   }
 }
 
-/**
- * Configuration update: set profile block on course profile page.
- */
-function social_course_update_8010() {
-  $config_name = 'block.block.socialblue_profile_statistic_block';
-  $config = \Drupal::service('config.factory')->getEditable($config_name);
-  if (!empty($config->getRawData())) {
-    $pages = $config->get('visibility.request_path.pages');
-    $pages .= "\r\n/user/*/courses";
-    $config->set('visibility.request_path.pages', $pages);
-    $config->save();
-  }
-}
