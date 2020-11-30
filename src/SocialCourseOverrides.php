@@ -530,22 +530,6 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
       ];
     }
 
-    // Show profile hero block on My Courses page.
-    $config_name = 'block.block.socialblue_profile_hero_block';
-
-    if (in_array($config_name, $names)) {
-      $config = \Drupal::service('config.factory')->getEditable($config_name);
-      $pages = $config->get('visibility.request_path.pages');
-      $pages .= "\r\n/user/*/courses";
-      $overrides[$config_name] = [
-        'visibility' => [
-          'request_path' => [
-            'pages' => $pages,
-          ],
-        ],
-      ];
-    }
-
     // Add Basic and Advanced Courses to related courses field settings.
     $config_names = [
       'field.field.group.course_advanced.field_course_related_courses',
