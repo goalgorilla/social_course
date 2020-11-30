@@ -328,7 +328,7 @@ function social_course_update_8007() {
 }
 
 /**
- * Show profile hero block on My discussions page
+ * Show profile hero block on My courses page
  */
 function social_course_update_8008() {
   $config_name = 'block.block.socialblue_profile_hero_block';
