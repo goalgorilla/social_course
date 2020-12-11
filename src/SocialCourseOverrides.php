@@ -5,11 +5,29 @@ namespace Drupal\social_course;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**
  * Class SocialCourseOverrides.
  */
 class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
+
+  /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * SocialCourseOverrides constructor.
+   *
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
+   */
+  public function __construct(ModuleHandlerInterface $module_handler) {
+    $this->moduleHandler = $module_handler;
+  }
 
   /**
    * {@inheritdoc}
@@ -442,15 +460,19 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
 
     foreach ($config_names as $config_name) {
       if (in_array($config_name, $names)) {
+        $content_types = [
+          'course_article',
+          'course_section',
+          'course_video',
+        ];
+
+        // Alter content type list that needs to be excluded from search.
+        $this->moduleHandler->alter('social_course_materials_excluded_from_search', $content_types);
         $overrides[$config_name] = [
           'datasource_settings' => [
             'entity:node' => [
               'bundles' => [
-                'selected' => [
-                  'course_article',
-                  'course_section',
-                  'course_video',
-                ],
+                'selected' => $content_types,
               ],
             ],
           ],
