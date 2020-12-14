@@ -8,10 +8,10 @@ dependencies:
   - drupal:text
   - inline_entity_form:inline_entity_form
   - paragraphs:paragraphs
-  - social_core
-  - social_event
-  - social_group
-  - social_topic
+  - social:social_core
+  - social:social_event
+  - social:social_group
+  - social:social_topic
   - video_embed_field:video_embed_field
   - weight:weight
 package: Social
