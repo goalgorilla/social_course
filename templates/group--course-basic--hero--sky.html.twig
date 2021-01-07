@@ -12,6 +12,14 @@
         {{ content.field_course_type }}
       </div>
     {% endif %}
+    {% if course_status == 'finished' %}
+      <div class="badge badge-success">
+        {{ 'You have finished.'|t }}
+        {% if certificate_link %}
+          {{ certificate_link }}
+        {% endif %}
+      </div>
+    {% endif %}
     <div class="group-hero--wrapper">
       <h1>{{ content.label }}</h1>
     </div>
