@@ -1248,6 +1248,15 @@ function social_course_block_access(Block $block, $operation, AccountInterface $
     case 'system_breadcrumb_block':
       return social_course_system_breadcrumb_block_access($block, $operation, $account);
 
+    case 'profile_hero_block':
+    case 'profile_statistic_block':
+      if ($operation === 'view') {
+        $request_path = $block->getVisibility()['request_path'];
+        $request_path['pages'] .= "\r\n/user/*/courses";
+        $block->setVisibilityConfig('request_path', $request_path);
+      }
+      break;
+
     default:
       return AccessResult::neutral();
   }
