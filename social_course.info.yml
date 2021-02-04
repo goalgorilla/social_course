@@ -14,6 +14,7 @@ dependencies:
   - social:social_topic
   - video_embed_field:video_embed_field
   - weight:weight
+  - views_infinite_scroll:views_infinite_scroll
 package: Social
 project: 'social_course'
 hidden: true
