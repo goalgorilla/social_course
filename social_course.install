@@ -8,7 +8,6 @@
 use Drupal\user\Entity\Role;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Implements hook_install().
