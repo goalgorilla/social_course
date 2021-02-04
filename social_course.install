@@ -8,6 +8,7 @@
 use Drupal\user\Entity\Role;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Implements hook_install().
@@ -360,3 +361,24 @@ function social_course_update_8009() {
   }
 }
 
+/**
+ * Add infinite scroll to show all sections on one page when visiting courses.
+ */
+function social_course_update_8010() {
+  $view = \Drupal::configFactory()
+    ->getEditable('views.view.course');
+  // Get the config of the filters.
+  $display_options = $view->get('display.default.display_options');
+  $display_options['pager'] = [
+    'type' => 'infinite_scroll',
+    'options' => [
+      'views_infinite_scroll' => [
+        'button_text' => 'Load more',
+        'automatically_load_content' => FALSE,
+      ],
+    ]
+  ];
+  $display_options['use_ajax'] = TRUE;
+  // Set the display options in the config.
+  $view->set('display.default.display_options', $display_options)->save();
+}
