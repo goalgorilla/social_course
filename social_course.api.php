@@ -37,5 +37,17 @@ function hook_social_course_materials_alter(array &$node_ids) {
 }
 
 /**
+ * Provide a method to alter content types than need to be excluded from search.
+ *
+ * @param array $content_types
+ *   List of machine names of content types.
+ *
+ * @ingroup social_course_api
+ */
+function hook_social_course_materials_excluded_from_search_alter(array &$content_types) {
+  $content_types[] = 'course_article';
+}
+
+/**
  * @} End of "addtogroup hooks".
  */

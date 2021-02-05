@@ -17,5 +17,6 @@ services:
     arguments: ['@entity.manager', '@current_user', '@module_handler']
   social_course.overrider:
     class: Drupal\social_course\SocialCourseOverrides
+    arguments: ['@module_handler']
     tags:
       - { name: config.factory.override, priority: 5 }

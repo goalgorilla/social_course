@@ -5,11 +5,29 @@ namespace Drupal\social_course;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 
 /**
  * Class SocialCourseOverrides.
  */
 class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
+
+  /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * SocialCourseOverrides constructor.
+   *
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
+   */
+  public function __construct(ModuleHandlerInterface $module_handler) {
+    $this->moduleHandler = $module_handler;
+  }
 
   /**
    * {@inheritdoc}
@@ -111,6 +129,8 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
                       'open_group' => 'open_group',
                       'closed_group' => 'closed_group',
                       'public_group' => 'public_group',
+                      'secret_group' => 'secret_group',
+                      'flexible_group' => 'flexible_group',
                     ],
                     'multiple' => FALSE,
                     'operation' => 'view',
@@ -124,6 +144,8 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
                     'public_group-group_membership' => 'public_group-group_membership',
                     'closed_group-group_membership' => 'closed_group-group_membership',
                     'course_advanced-group_membership' => 'course_advanced-group_membership',
+                    'secret_group-group_membership' => 'secret_group-group_membership',
+                    'flexible_group-group_membership' => 'flexible_group-group_membership',
                   ],
                 ],
               ],
@@ -162,10 +184,10 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
               'filters' => [
                 'type' => [
                   'value' => [
-                    'open_group-group_node-event' => 'open_group-group_node-event',
-                    'public_group-group_node-event' => 'public_group-group_node-event',
-                    'closed_group-group_node-event' => 'closed_group-group_node-event',
-                    'course_advanced-group_node-event' => 'course_advanced-group_node-event',
+                    'open_group-group_node-topic' => 'open_group-group_node-topic',
+                    'public_group-group_node-topic' => 'public_group-group_node-topic',
+                    'closed_group-group_node-topic' => 'closed_group-group_node-topic',
+                    'course_advanced-group_node-topic' => 'course_advanced-group_node-topic',
                   ],
                 ],
               ],
@@ -438,15 +460,19 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
 
     foreach ($config_names as $config_name) {
       if (in_array($config_name, $names)) {
+        $content_types = [
+          'course_article',
+          'course_section',
+          'course_video',
+        ];
+
+        // Alter content type list that needs to be excluded from search.
+        $this->moduleHandler->alter('social_course_materials_excluded_from_search', $content_types);
         $overrides[$config_name] = [
           'datasource_settings' => [
             'entity:node' => [
               'bundles' => [
-                'selected' => [
-                  'course_article',
-                  'course_section',
-                  'course_video',
-                ],
+                'selected' => $content_types,
               ],
             ],
           ],
@@ -521,22 +547,6 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
         'visibility' => [
           'group_type' => [
             'group_types' => $group_types,
-          ],
-        ],
-      ];
-    }
-
-    // Show profile hero block on My Courses page.
-    $config_name = 'block.block.socialblue_profile_hero_block';
-
-    if (in_array($config_name, $names)) {
-      $config = \Drupal::service('config.factory')->getEditable($config_name);
-      $pages = $config->get('visibility.request_path.pages');
-      $pages .= "\r\n/user/*/courses";
-      $overrides[$config_name] = [
-        'visibility' => [
-          'request_path' => [
-            'pages' => $pages,
           ],
         ],
       ];

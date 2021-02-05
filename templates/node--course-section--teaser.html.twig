@@ -75,7 +75,7 @@
 
     </header>
 
-    {{ title_prefix }}
+  {{ title_prefix|without('teaser_tag') }}
     {% if not page %}
       <h4{{ title_attributes }} class="section__title">
         {% if section_status == "not-started" and allowed_start %}

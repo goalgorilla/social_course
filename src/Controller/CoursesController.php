@@ -237,6 +237,15 @@ class CoursesController extends ControllerBase {
         // Redirect to the next section when it exists and not marked as
         // completed.
         elseif ($finish_section) {
+          // Cleanup related entity of "next section".
+          $course_enrollment = $storage->loadByProperties([
+            'gid' => $group->id(),
+            'sid' => $next_section->id(),
+            'uid' => $account->id(),
+          ]);
+          if ($course_enrollment) {
+            $storage->delete($course_enrollment);
+          }
           $response = self::nextMaterial($group, $next_section);
         }
         // Redirect to next step even if the next step was completed but current

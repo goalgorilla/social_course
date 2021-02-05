@@ -40,12 +40,9 @@ $gray-lighter: #e6e6e6;
       }
     }
   }
-  &.not-allowed {
-    p,
-    .exist-parts,
-    .section__title {
-      color: #e0e0e0;
-    }
+  &.not-allowed,
+  &.not-allowed * {
+    color: #e0e0e0;
   }
 }
 
@@ -130,4 +127,8 @@ $gray-lighter: #e6e6e6;
     color: #e0e0e0;
     fill: #e0e0e0;
   }
+}
+
+.course-full {
+  overflow: hidden;
 }

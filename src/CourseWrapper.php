@@ -194,6 +194,8 @@ class CourseWrapper implements CourseWrapperInterface {
         // Allow start first section if user has not started course yet.
         $section = current($sections);
         $access = $access->orIf(AccessResult::allowedIf($section->id() == $node->id() && !$section->get('field_course_section_content')->isEmpty()));
+        // Allow starting sections for a non-sequential course.
+        $access = $access->orIf(AccessResult::allowedIf(!$this->courseIsSequential()));
         break;
 
       case 'bypass':

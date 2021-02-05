@@ -7,15 +7,15 @@ dependencies:
     - system
   theme:
     - socialbase
-id: course_material_navigation
+id: course_navigation
 theme: socialbase
 region: complementary_top
 weight: 0
 provider: null
-plugin: course_material_navigation
+plugin: course_navigation
 settings:
-  id: course_material_navigation
-  label: 'Course material navigation block'
+  id: course_navigation
+  label: 'Course navigation block'
   provider: social_course
   label_display: '0'
   context_mapping:
@@ -25,6 +25,8 @@ visibility:
     id: node_type
     bundles:
       course_article: course_article
+      course_quiz: course_quiz
+      course_scorm: course_scorm
       course_video: course_video
     negate: false
     context_mapping:

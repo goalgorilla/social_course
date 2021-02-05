@@ -9,6 +9,7 @@ use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Cache\Cache;
@@ -55,6 +56,12 @@ function social_course_theme($existing, $type, $theme, $path) {
     'group__course_basic__hero' => [
       'base hook' => 'group',
     ],
+    'group__course_basic__hero__sky' => [
+      'base hook' => 'group',
+    ],
+    'group__course_basic__statistic__sky' => [
+      'base hook' => 'group',
+    ],
     'group__course_advanced__teaser' => [
       'base hook' => 'group',
     ],
@@ -62,6 +69,12 @@ function social_course_theme($existing, $type, $theme, $path) {
       'base hook' => 'group',
     ],
     'group__course_advanced__hero' => [
+      'base hook' => 'group',
+    ],
+    'group__course_advanced__hero__sky' => [
+      'base hook' => 'group',
+    ],
+    'group__course_advanced__statistic__sky' => [
       'base hook' => 'group',
     ],
     'course_material_hero' => [
@@ -85,6 +98,14 @@ function social_course_theme($existing, $type, $theme, $path) {
     'course_material_navigation' => [
       'variables' => [
         'items' => [],
+        'parent_course' => NULL,
+        'parent_section' => NULL,
+      ],
+    ],
+    'course_navigation' => [
+      'variables' => [
+        'items' => [],
+        'course_sections' => [],
         'parent_course' => NULL,
         'parent_section' => NULL,
       ],
@@ -118,6 +139,9 @@ function social_course_theme($existing, $type, $theme, $path) {
       'base hook' => 'node',
     ],
     'block__course_material_navigation' => [
+      'base hook' => 'block',
+    ],
+    'block__course_navigation' => [
       'base hook' => 'block',
     ],
     'field__group__field_course_opening_date' => [
@@ -156,7 +180,8 @@ function social_course_get_material_types() {
   ];
 
   // Allow other modules to register their own types.
-  \Drupal::moduleHandler()->alter('social_course_material_types', $material_types);
+  \Drupal::moduleHandler()
+    ->alter('social_course_material_types', $material_types);
 
   return $material_types;
 }
@@ -194,7 +219,10 @@ function template_preprocess_course_material_hero(array &$variables) {
     // Get the current route name to check if the user is on the edit page.
     $route = \Drupal::routeMatch()->getRouteName();
 
-    if (!in_array($route, ['entity.node.edit_form', 'entity.node.delete_form'])) {
+    if (!in_array($route, [
+      'entity.node.edit_form',
+      'entity.node.delete_form',
+    ])) {
       if ($node->access('update', $account)) {
         $variables['node_edit_url'] = $node->toUrl('edit-form')->toString();
       }
@@ -494,7 +522,8 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     $group = $form_state->getFormObject()->getEntity();
 
     if ($group->id()) {
-      $group_content_storage = \Drupal::entityTypeManager()->getStorage('group_content');
+      $group_content_storage = \Drupal::entityTypeManager()
+        ->getStorage('group_content');
       $content = $group_content_storage->loadByGroup($group, 'group_node:course_section');
 
       $form['sections'] = [
@@ -579,7 +608,10 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
         ],
       ];
 
-      $form['#group_children']['field_course_opening_date_status'] = 'group_date_and_time';
+      // Set correct field group 'date_and_time'.
+      $form['field_course_opening_date_status']['#group'] = 'group_date_and_time';
+      $form['#group_children']['field_course_opening_date_status'] = $form['field_course_opening_date_status'];
+
       // Remove extra fieldset from datetime field.
       unset($form['field_course_opening_date']['widget'][0]['#theme_wrappers']);
     }
@@ -606,7 +638,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 
     if (isset($form['actions']['cancel'])) {
       // Some `cancel` buttons are not inputs but links.
-      if (isset($form['actions']['cancel']['#type']) &&  $form['actions']['cancel']['#type'] == 'link') {
+      if (isset($form['actions']['cancel']['#type']) && $form['actions']['cancel']['#type'] == 'link') {
         $form['actions']['cancel']['#attributes']['class'][] = 'btn btn-flat';
       }
       else {
@@ -684,6 +716,15 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
 }
 
 /**
+ * Implements hook_social_group_types_alter().
+ */
+function social_course_social_group_types_alter(&$social_group_types) {
+  $social_group_types[] = 'course_basic';
+  $social_group_types[] = 'course_advanced';
+}
+
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function social_course_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -703,7 +744,10 @@ function social_course_form_node_form_alter(&$form, FormStateInterface $form_sta
   // @TODO: Fix it in social_group module.
   if (isset($form['groups']['widget']['#options'])) {
     $group = _social_group_get_current_group();
-    if ($group instanceof GroupInterface && in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+    if ($group instanceof GroupInterface && in_array($group->bundle(), [
+      'course_basic',
+      'course_advanced',
+    ])) {
       foreach ($form['groups']['widget']['#options'] as $key => $option) {
         if (!in_array($key, ['Basic Course', 'Advanced Course'])) {
           unset($form['groups']['widget']['#options'][$key]);
@@ -765,6 +809,10 @@ function social_course_preprocess_group(&$variables) {
           break;
       }
     }
+    // Add teaser tag variable.
+    $variables['title_prefix']['teaser_tag'] = [
+      '#markup' => '<div class="teaser__tag">' . t('Course') . '</div>',
+    ];
   }
 }
 
@@ -960,7 +1008,10 @@ function social_course_node_grants(AccountInterface $account, $op) {
 function social_course_preprocess_html(&$variables) {
   $group = _social_group_get_current_group();
 
-  if (!$group || !in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+  if (!$group || !in_array($group->bundle(), [
+    'course_basic',
+    'course_advanced',
+  ])) {
     return;
   }
 
@@ -986,12 +1037,35 @@ function social_course_preprocess_html(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_page().
+ */
+function social_course_preprocess_page(&$variables) {
+  if (!isset($variables['node']) || !($variables['node'] instanceof NodeInterface)) {
+    return;
+  }
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+
+  // Display navigation block on the left side of course pages.
+  $material_types = social_course_get_material_types();
+  if (in_array($node->bundle(), $material_types)) {
+    if (!$variables['content_attributes'] instanceof Attribute) {
+      $variables['content_attributes'] = new Attribute();
+    }
+    $variables['content_attributes']->addClass('sidebar-left');
+  }
+}
+
+/**
  * Implements hook_preprocess_page_title().
  */
 function social_course_preprocess_page_title(&$variables) {
   $group = _social_group_get_current_group();
 
-  if (!$group || !in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+  if (!$group || !in_array($group->bundle(), [
+    'course_basic',
+    'course_advanced',
+  ])) {
     return;
   }
 
@@ -1026,7 +1100,10 @@ function social_course_preprocess_block(&$variables) {
     case 'views_block:group_members-block_newest_members':
       $group = _social_group_get_current_group();
 
-      if (!$group || !in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+      if (!$group || !in_array($group->bundle(), [
+        'course_basic',
+        'course_advanced',
+      ])) {
         return;
       }
 
@@ -1034,6 +1111,7 @@ function social_course_preprocess_block(&$variables) {
       break;
 
     case 'course_material_navigation':
+    case 'course_navigation':
       $nid = \Drupal::routeMatch()->getRawParameter('node');
       $storage = \Drupal::entityTypeManager()->getStorage('node');
 
@@ -1052,7 +1130,10 @@ function social_course_preprocess_block(&$variables) {
 
     case 'views_block:group_managers-block_list_managers':
       $group = _social_group_get_current_group();
-      if ($group instanceof GroupInterface && in_array($group->bundle(), ['course_basic', 'course_advanced'])) {
+      if ($group instanceof GroupInterface && in_array($group->bundle(), [
+        'course_basic',
+        'course_advanced',
+      ])) {
         $variables['label']['#markup'] = t('Course Leaders');
       }
       break;
@@ -1110,11 +1191,21 @@ function social_course_block_access(Block $block, $operation, AccountInterface $
 
     case 'course_material_hero':
     case 'course_material_navigation':
+    case 'course_navigation':
     case 'course_material_pager':
       return social_course_course_navigation_block_access($block, $operation, $account);
 
     case 'system_breadcrumb_block':
       return social_course_system_breadcrumb_block_access($block, $operation, $account);
+
+    case 'profile_hero_block':
+    case 'profile_statistic_block':
+      if ($operation === 'view') {
+        $request_path = $block->getVisibility()['request_path'];
+        $request_path['pages'] .= "\r\n/user/*/courses";
+        $block->setVisibilityConfig('request_path', $request_path);
+      }
+      break;
 
     default:
       return AccessResult::neutral();
@@ -1242,7 +1333,8 @@ function social_course_preprocess_node(&$variables) {
 
     if (!$entities) {
       $variables['section_status'] = 'not-started';
-      $variables['allowed_start'] = $course_wrapper->sectionAccess($node, \Drupal::currentUser(), 'start')->isAllowed();
+      $variables['allowed_start'] = $course_wrapper->sectionAccess($node, \Drupal::currentUser(), 'start')
+        ->isAllowed();
     }
     else {
       foreach ($entities as $entity) {
@@ -1342,7 +1434,7 @@ function social_course_entity_delete(EntityInterface $entity) {
         }
       }
 
-      // If this was a section then also remove the materials
+      // If this was a section then also remove the materials.
       $is_section = $entity->bundle() === 'course_section';
       // Guard against breaking of the section node type.
       $has_materials = $entity->hasField('field_course_section_content');
@@ -1392,7 +1484,7 @@ function social_course_entity_delete(EntityInterface $entity) {
  *   An array of node ids corresponding to the course section nodes that
  *   reference the material as part of their content.
  */
-function social_course_find_sections_with_material(int $material_id) : array {
+function social_course_find_sections_with_material(int $material_id): array {
   // Find all course sections that reference this material.
   // Stolen from: https://drupal.stackexchange.com/a/248054/2166
   $sections = \Drupal::entityQueryAggregate('node')
@@ -1410,7 +1502,7 @@ function social_course_find_sections_with_material(int $material_id) : array {
  * @param int $material_id
  *   The id of the material that should be removed from the sections.
  */
-function social_course_remove_material_from_courses(int $material_id) : void {
+function social_course_remove_material_from_courses(int $material_id): void {
   $section_ids = social_course_find_sections_with_material($material_id);
 
   $sections = Node::loadMultiple($section_ids);
@@ -1425,7 +1517,7 @@ function social_course_remove_material_from_courses(int $material_id) : void {
     /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $section_content */
     $materials = $section_content->getValue();
     // Find the index of the material in this field.
-    $idx = array_search($material_id, array_column($materials, 'target_id'), TRUE);
+    $idx = array_search($material_id, array_column($materials, 'target_id'));
     $section_content->removeItem($idx);
 
     $section->save();
@@ -1452,7 +1544,8 @@ function social_course_entity_view(array &$build, EntityInterface $entity, Entit
 
       if ($course_wrapper->getCourse() && !$course_wrapper->courseIsSequential() && $material) {
         // Join user to course.
-        $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
+        $storage = \Drupal::entityTypeManager()
+          ->getStorage('course_enrollment');
         $entities = $storage->loadByProperties([
           'gid' => $course_wrapper->getCourse()->id(),
           'sid' => $entity->id(),
@@ -1475,7 +1568,8 @@ function social_course_entity_view(array &$build, EntityInterface $entity, Entit
 
       if ($course_wrapper->getCourse() && !$course_wrapper->courseIsSequential()) {
         // Join user to course.
-        $storage = \Drupal::entityTypeManager()->getStorage('course_enrollment');
+        $storage = \Drupal::entityTypeManager()
+          ->getStorage('course_enrollment');
         $entities = $storage->loadByProperties([
           'gid' => $course_wrapper->getCourse()->id(),
           'sid' => $section->id(),
@@ -1595,20 +1689,47 @@ function social_course_search_api_query_alter(QueryInterface &$query) {
   }
 
   if ($account->hasPermission('view own unpublished groups')) {
+    $found = FALSE;
+
     // Search of field for group owner ID.
     foreach ($fields as $user_field => $field) {
       if ($field->getPropertyPath() === 'uid' && $field->getDatasourceId() === 'entity:group') {
-        $query->addConditionGroup(
-          $query->createConditionGroup('OR')
-            ->addCondition($status_field, TRUE)
-            ->addCondition($user_field, $account->id())
-        );
+        $found = TRUE;
+        break;
       }
     }
+
+    // Allow seeing only the published group when the search index does not
+    // contain a field for the owner of the group.
+    if (!$found) {
+      return;
+    }
+  }
+
+  $condition_group = $query->createConditionGroup('AND')
+    ->addCondition('search_api_datasource', 'entity:group');
+
+  if (isset($user_field)) {
+    // Add own unpublished groups to search results when the search index
+    // contains a field for the owner of the group.
+    $condition_group->addConditionGroup(
+      $query->createConditionGroup('OR')
+        ->addCondition($status_field, TRUE)
+        ->addCondition($user_field, $account->id())
+    );
   }
   else {
-    $query->addCondition($status_field, TRUE);
+    // Select only published groups because the search index does not contain a
+    // field for the owner of the group so own groups can not be linked to the
+    // current user.
+    $condition_group->addCondition($status_field, TRUE);
   }
+
+  $query->addConditionGroup(
+    $query->createConditionGroup('OR')
+      ->addConditionGroup($condition_group)
+      ->addCondition('search_api_datasource', 'entity:group', '<>')
+  );
 }
 
 /**

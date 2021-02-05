@@ -307,3 +307,56 @@ function social_course_update_8005(&$sandbox) {
 function social_course_update_8006() {
   user_role_grant_permissions('authenticated', ['use courses feature']);
 }
+
+/**
+ * Delete course_section_navigation and course_material_navigation blocks.
+ */
+function social_course_update_8007() {
+  $block_ids = [
+    'course_section_navigation',
+    'course_material_navigation',
+    'course_material_hero',
+  ];
+  $entity_type_manager = \Drupal::entityTypeManager();
+  if ($entity_type_manager->hasDefinition('block')) {
+    $blocks = $entity_type_manager->getStorage('block')->loadByProperties(['plugin' => $block_ids]);
+    foreach ($blocks as $block) {
+      /** @var \Drupal\block\Entity\Block $block */
+      $block->delete();
+    }
+  }
+}
+
+/**
+ * Show profile hero block on My courses page
+ */
+function social_course_update_8008() {
+  $config_name = 'block.block.socialblue_profile_hero_block';
+  $config = \Drupal::service('config.factory')->getEditable($config_name);
+  if (!empty($config->getRawData())) {
+    $pages = $config->get('visibility.request_path.pages');
+    $pages .= "\r\n/user/*/courses";
+    $config->set('visibility.request_path.pages', $pages);
+    $config->save();
+  }
+}
+
+/**
+ * Hide page title block from the user courses profile.
+ */
+function social_course_update_8009() {
+  $configFactory = \Drupal::service('config.factory');
+  $config_names = [
+    'block.block.socialblue_pagetitleblock_content',
+    'block.block.socialblue_profile_statistic_block',
+  ];
+  foreach ($config_names as $config_name) {
+    $config = $configFactory->getEditable($config_name);
+    if (!empty($config->getRawData())) {
+      $pages = sprintf("%s\r\n/user/*/courses", $config->get('visibility.request_path.pages'));
+      $config->set('visibility.request_path.pages', $pages);
+      $config->save();
+    }
+  }
+}
+
