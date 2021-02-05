@@ -608,7 +608,10 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
         ],
       ];
 
-      $form['#group_children']['field_course_opening_date_status'] = 'group_date_and_time';
+      // Set correct field group 'date_and_time'.
+      $form['field_course_opening_date_status']['#group'] = 'group_date_and_time';
+      $form['#group_children']['field_course_opening_date_status'] = $form['field_course_opening_date_status'];
+
       // Remove extra fieldset from datetime field.
       unset($form['field_course_opening_date']['widget'][0]['#theme_wrappers']);
     }
@@ -742,6 +745,15 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     }
   }
 }
+
+/**
+ * Implements hook_social_group_types_alter().
+ */
+function social_course_social_group_types_alter(&$social_group_types) {
+  $social_group_types[] = 'course_basic';
+  $social_group_types[] = 'course_advanced';
+}
+
 
 /**
  * Implements hook_form_FORM_ID_alter().
