@@ -384,6 +384,9 @@ function social_course_update_8010() {
   $view->set('display.default.display_options', $display_options)->save();
 }
 
+/**
+ * Set the amount of items in the courses block to 25.
+ */
 function social_course_update_8011() {
   $config_files = [
     'block.block.socialblue_views_block__course_sections_block' => drupal_get_path('module', 'social_course') . '/config/static/block.block.socialblue_views_block__course_sections_block_8011.yml',
