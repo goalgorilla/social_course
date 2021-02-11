@@ -8,6 +8,7 @@
 use Drupal\user\Entity\Role;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Implements hook_install().
@@ -381,4 +382,21 @@ function social_course_update_8010() {
   $display_options['use_ajax'] = TRUE;
   // Set the display options in the config.
   $view->set('display.default.display_options', $display_options)->save();
+}
+
+function social_course_update_8011() {
+  $config_files = [
+    'block.block.socialblue_views_block__course_sections_block' => drupal_get_path('module', 'social_course') . '/config/static/block.block.socialblue_views_block__course_sections_block_8011.yml',
+  ];
+
+  foreach ($config_files as $key => $config_file) {
+    if (is_file($config_file)) {
+      $settings = Yaml::parse(file_get_contents($config_file));
+      if (is_array($settings)) {
+        $config = \Drupal::configFactory()
+          ->getEditable($key);
+        $config->setData($settings)->save(TRUE);
+      }
+    }
+  }
 }
