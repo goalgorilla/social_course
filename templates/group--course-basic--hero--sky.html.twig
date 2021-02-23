@@ -22,6 +22,11 @@
     {% endif %}
     <div class="group-hero--wrapper">
       <h1>{{ content.label }}</h1>
+      {% if group_settings_help %}
+        <span>
+          {{ group_settings_help }}
+        </span>
+      {% endif %}
     </div>
   </header>
 {% endblock %}
