@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the social_course_advanced
+ * module.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Add the field_flexible_group_visibility field to the course_advanced group.
+ */
+function social_course_advanced_update_8001() {
+  $config_name = 'field.field.group.course_advanced.field_flexible_group_visibility';
+  $config_path = drupal_get_path('module', 'social_course_advanced') . '/config/install';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write($config_name, $source->read($config_name));
+}
