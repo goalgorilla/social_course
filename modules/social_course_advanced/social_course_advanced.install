@@ -64,3 +64,15 @@ function social_course_advanced_update_8003() {
     }
   }
 }
+
+/**
+ * Add view group permission for the anonymous users.
+ */
+function social_course_advanced_update_8004() {
+  $config_name = 'group.role.course_advanced-anonymous';
+  $config = \Drupal::configFactory()->getEditable($config_name);
+  $permissions = $config->get('permissions');
+  $permissions[] = 'view group';
+
+  $config->set('permissions', $permissions)->save();
+}
