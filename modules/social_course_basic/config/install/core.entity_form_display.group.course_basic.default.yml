@@ -34,27 +34,29 @@ third_party_settings:
         classes: ''
         description: ''
         required_fields: true
-      label: Information
+      label: 'Basic information'
       region: content
     group_settings:
       children:
+        - group_date_and_time
         - field_course_order
         - status
         - field_course_redirect_url
       parent_name: ''
       weight: 3
-      format_type: fieldset
+      format_type: details
       format_settings:
-        id: ''
-        classes: ''
         description: ''
         required_fields: true
+        id: ''
+        classes: social-collapsible-fieldset
+        open: false
       label: Settings
       region: content
     group_related_courses:
       children:
         - field_course_related_courses
-      parent_name: ''
+      parent_name: group_additional_details
       weight: 4
       format_type: fieldset
       format_settings:
@@ -67,7 +69,7 @@ third_party_settings:
     group_date_and_time:
       children:
         - field_course_opening_date
-      parent_name: ''
+      parent_name: group_settings
       weight: 1
       format_type: fieldset
       format_settings:
@@ -77,6 +79,20 @@ third_party_settings:
         required_fields: true
       label: 'Date and Time'
       region: content
+    group_additional_details:
+      children:
+        - group_related_courses
+      parent_name: ''
+      weight: 2
+      format_type: details
+      region: content
+      format_settings:
+        id: ''
+        classes: social-collapsible-fieldset
+        description: ''
+        open: false
+        required_fields: true
+      label: 'Additional information'
 id: group.course_basic.default
 targetEntityType: group
 bundle: course_basic
@@ -115,10 +131,10 @@ content:
     weight: 4
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: options_buttons
     region: content
   field_group_description:
-    weight: 6
+    weight: 7
     settings:
       rows: 5
       placeholder: ''
@@ -126,7 +142,7 @@ content:
     type: text_textarea
     region: content
   field_group_image:
-    weight: 7
+    weight: 6
     settings:
       show_crop_area: true
       show_default_crop: true

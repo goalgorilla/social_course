@@ -816,6 +816,11 @@ function social_course_form_node_form_alter(&$form, FormStateInterface $form_sta
           unset($form['groups']['widget']['#options'][$key]);
         }
       }
+
+      // Change field groups title for course section node.
+      if (isset($form['groups']['widget']['#options'])) {
+        $form['groups']['widget']['#title'] = t('Course');
+      }
     }
   }
 }
@@ -1864,3 +1869,12 @@ function social_course_cron() {
     }
   }
 }
+
+/**
+ * Implements hook_social_core_compatible_content_forms_alter().
+ */
+function social_course_social_core_compatible_content_forms_alter(&$compatible_content_type_forms) {
+  $compatible_content_type_forms[] = 'node_course_section_form';
+  $compatible_content_type_forms[] = 'node_course_section_edit_form';
+}
+
