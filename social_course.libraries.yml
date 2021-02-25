@@ -32,3 +32,8 @@ social_course_nav:
   dependencies:
     - core/jquery
     - core/drupal
+
+social_course_hero:
+  css:
+    theme:
+      assets/css/social_course_hero.css: {}
