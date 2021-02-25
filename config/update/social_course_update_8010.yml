@@ -1,7 +1,9 @@
 core.entity_form_display.node.course_section.default:
   expected_config: { }
   update_actions:
-    delete: {}
+    delete:
+      hidden:
+        uid: true
     add:
       third_party_settings:
         field_group:
