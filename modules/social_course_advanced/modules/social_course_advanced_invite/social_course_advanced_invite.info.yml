@@ -1,0 +1,8 @@
+name: 'Social Advanced Course Invite'
+description: 'Adds "Group Invitation" feature to advanced course'
+type: module
+core: 8.x
+dependencies:
+  - social_course_advanced:social_course_advanced
+  - social:social_group_invite
+package: Social
