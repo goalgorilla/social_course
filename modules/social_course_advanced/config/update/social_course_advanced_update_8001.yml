@@ -1,8 +1,24 @@
 core.entity_form_display.group.course_advanced.default:
   expected_config: {}
   update_actions:
-    delete: {}
+    delete:
+      hidden:
+        field_flexible_group_visibility: true
+        field_group_allowed_visibility: true
     add:
+      content:
+        field_flexible_group_visibility:
+          region: content
+          settings: { }
+          third_party_settings: { }
+          type: options_buttons
+          weight: 100
+        field_group_allowed_visibility:
+          weight: 101
+          settings: { }
+          third_party_settings: { }
+          type: options_buttons
+          region: content
       third_party_settings:
         field_group:
           group_additional_details:
@@ -19,6 +35,20 @@ core.entity_form_display.group.course_advanced.default:
             parent_name: ''
             region: content
             weight: 2
+          group_access_permissions:
+            children:
+              - field_flexible_group_visibility
+              - field_group_allowed_visibility
+            format_settings:
+              classes: ''
+              description: ''
+              id: ''
+              required_fields: true
+            format_type: fieldset
+            label: 'Access permissions'
+            parent_name: ''
+            region: content
+            weight: 1
           group_settings:
             children:
               - group_date_and_time
