@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for social_course_basic_request module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_social_group_request_alter().
+ *
+ * @param array $group_types
+ */
+function social_course_basic_request_social_group_request_alter(array &$group_types) {
+  $group_types[] = 'course_basic';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function social_course_basic_request_form_social_group_request_membership_request_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#submit'][]= 'social_course_basic_request_redirect';
+}
+
+/**
+ * Submit callback for redirect on course about page after request to join.
+ */
+function social_course_basic_request_redirect(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\group\Entity\GroupInterface $group */
+  $group = \Drupal::routeMatch()->getParameter('group');
+  return $form_state->setRedirect('view.group_information.page_group_about', ['group' => $group->id()]);
+}
