@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * The social_course_basic_invite install file.
+ */
+
+use Drupal\group\Entity\GroupType;
+use Drupal\group\Entity\GroupTypeInterface;
+
+/**
+ * Implements hook_install().
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function social_course_basic_invite_install() {
+  $group_type = GroupType::load('course_basic');
+
+  if ($group_type instanceof GroupTypeInterface) {
+    social_group_invite_set_default_permissions_for_group_type($group_type);
+  }
+}

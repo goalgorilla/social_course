@@ -1,0 +1,11 @@
+social_course_basic_request.cancel_request:
+  path: '/group/{group}/cancel-request'
+  defaults:
+    _controller: '\Drupal\social_course_basic_request\Controller\BasicCourseRequestController::cancelRequest'
+  requirements:
+    _group_permission: 'request group membership'
+    _group_member: 'FALSE'
+  options:
+    parameters:
+      group:
+        type: 'entity:group'
