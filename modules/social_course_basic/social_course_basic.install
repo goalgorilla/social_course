@@ -75,3 +75,17 @@ function social_course_basic_update_8004() {
 
   $config->set('permissions', $permissions)->save();
 }
+
+/**
+ * Configuration update: change form display.
+ */
+function social_course_basic_update_8005() {
+  /** @var \Drupal\update_helper\Updater $updateHelper */
+  $updateHelper = \Drupal::service('update_helper.updater');
+
+  // Execute configuration update definitions with logging of success.
+  $updateHelper->executeUpdate('social_course_basic', 'social_course_basic_update_8001');
+
+  // Output logged messages to related channel of update execution.
+  return $updateHelper->logger()->output();
+}

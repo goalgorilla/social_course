@@ -10,7 +10,7 @@ id: group.course_advanced.field_course_redirect_url
 field_name: field_course_redirect_url
 entity_type: group
 bundle: course_advanced
-label: 'Redirect URL'
+label: 'Course completion page'
 description: 'The URL where user will be redirected when he finished the course.'
 required: false
 translatable: false

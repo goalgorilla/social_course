@@ -1,0 +1,8 @@
+name: 'Social Basic Course Request'
+description: 'Extend Group Request feature.'
+type: module
+core: 8.x
+dependencies:
+  - social_course_basic:social_course_basic
+  - social:social_group_request
+package: Social

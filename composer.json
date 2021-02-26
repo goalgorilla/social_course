@@ -6,5 +6,9 @@
         "drupal/inline_entity_form": "^1.0@beta",
         "drupal/video_embed_field": "^1.5",
         "drupal/weight": "^3.0"
+    },
+    "conflict": {
+        "goalgorilla/open_social": "<10.1",
+        "drupal/social": "<10.1"
     }
 }

@@ -596,7 +596,7 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
       $form['field_course_opening_date_status'] = [
         '#type' => 'checkbox',
         '#weight' => -1,
-        '#title' => t('Enable open date and time'),
+        '#title' => t('Set starting date and time'),
         '#description' => t("When enabled, course sections and other information can only be accessed by members after the course starts. Enrolment can only take place before the course has started.
 <br>When not enabled, course sections and other information can be accessed right after enrolment."),
         '#default_value' => !empty($form['field_course_opening_date']['widget'][0]['value']['#default_value']),
@@ -815,6 +815,11 @@ function social_course_form_node_form_alter(&$form, FormStateInterface $form_sta
         if (!in_array($key, ['Basic Course', 'Advanced Course'])) {
           unset($form['groups']['widget']['#options'][$key]);
         }
+      }
+
+      // Change field groups title for course section node.
+      if (isset($form['groups']['widget']['#options'])) {
+        $form['groups']['widget']['#title'] = t('Course');
       }
     }
   }
@@ -1864,3 +1869,12 @@ function social_course_cron() {
     }
   }
 }
+
+/**
+ * Implements hook_social_core_compatible_content_forms_alter().
+ */
+function social_course_social_core_compatible_content_forms_alter(&$compatible_content_type_forms) {
+  $compatible_content_type_forms[] = 'node_course_section_form';
+  $compatible_content_type_forms[] = 'node_course_section_edit_form';
+}
+
