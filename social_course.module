@@ -617,6 +617,11 @@ function social_course_form_alter(&$form, FormStateInterface $form_state, $form_
     }
 
     $form['actions']['submit']['#value'] = t('Save');
+
+    // Remove field 'group_type' for courses forms.
+    if (isset($form['group_type'])) {
+      unset($form['group_type']);
+    }
   }
 
   // Action forms.
@@ -1878,3 +1883,13 @@ function social_course_social_core_compatible_content_forms_alter(&$compatible_c
   $compatible_content_type_forms[] = 'node_course_section_edit_form';
 }
 
+/**
+ * Implements hook_module_implements_alter().
+ */
+function social_course_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'form_alter') {
+    $group = $implementations['social_course'];
+    unset($implementations['social_course']);
+    $implementations['social_course'] = $group;
+  }
+}
