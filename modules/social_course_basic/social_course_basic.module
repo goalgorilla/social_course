@@ -24,3 +24,12 @@ function social_course_basic_form_group_course_advanced_edit_form_alter(&$form, 
 
   $form['actions']['submit']['#submit'][] = '_social_flexible_group_edit_submit';
 }
+
+/**
+ * Implements hook_social_group_settings_alter().
+ *
+ * @param array $group_types
+ */
+function social_course_basic_social_group_settings_alter(array &$group_types) {
+  $group_types[] = 'course_basic';
+}
