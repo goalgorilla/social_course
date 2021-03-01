@@ -26,46 +26,6 @@ function social_course_advanced_update_8001() {
 }
 
 /**
- * Set field_flexible_group_visibility as public by default.
- */
-function social_course_advanced_update_8002() {
-  $group_storage = \Drupal::entityTypeManager()->getStorage('group');
-  $course_ids = $group_storage
-    ->getQuery()
-    ->condition('type', 'course_advanced')
-    ->execute();
-
-  foreach ($course_ids as $course_id) {
-    /** @var \Drupal\group\Entity\GroupInterface $course */
-    $course = $group_storage->load($course_id);
-    if ($course->hasField('field_flexible_group_visibility')) {
-      $course->set('field_flexible_group_visibility', ['public']);
-      $course->save();
-    }
-  }
-}
-
-/**
- * Set field_group_allowed_visibility as community by default.
- */
-function social_course_advanced_update_8003() {
-  $group_storage = \Drupal::entityTypeManager()->getStorage('group');
-  $course_ids = $group_storage
-    ->getQuery()
-    ->condition('type', 'course_advanced')
-    ->execute();
-
-  foreach ($course_ids as $course_id) {
-    /** @var \Drupal\group\Entity\GroupInterface $course */
-    $course = $group_storage->load($course_id);
-    if ($course->hasField('field_group_allowed_visibility')) {
-      $course->set('field_group_allowed_visibility', ['community']);
-      $course->save();
-    }
-  }
-}
-
-/**
  * Add view group permission for the anonymous users.
  */
 function social_course_advanced_update_8004() {
@@ -89,4 +49,44 @@ function social_course_advanced_update_8005() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Set field_flexible_group_visibility as public by default.
+ */
+function social_course_advanced_update_8006() {
+  $group_storage = \Drupal::entityTypeManager()->getStorage('group');
+  $course_ids = $group_storage
+    ->getQuery()
+    ->condition('type', 'course_advanced')
+    ->execute();
+
+  foreach ($course_ids as $course_id) {
+    /** @var \Drupal\group\Entity\GroupInterface $course */
+    $course = $group_storage->load($course_id);
+    if ($course->hasField('field_flexible_group_visibility')) {
+      $course->set('field_flexible_group_visibility', 'public');
+      $course->save();
+    }
+  }
+}
+
+/**
+ * Set field_group_allowed_visibility as community by default.
+ */
+function social_course_advanced_update_8007() {
+  $group_storage = \Drupal::entityTypeManager()->getStorage('group');
+  $course_ids = $group_storage
+    ->getQuery()
+    ->condition('type', 'course_advanced')
+    ->execute();
+
+  foreach ($course_ids as $course_id) {
+    /** @var \Drupal\group\Entity\GroupInterface $course */
+    $course = $group_storage->load($course_id);
+    if ($course->hasField('field_group_allowed_visibility')) {
+      $course->set('field_group_allowed_visibility', ['community']);
+      $course->save();
+    }
+  }
 }
