@@ -20,6 +20,10 @@ class ContentAccessCheck extends NodeAddAccessCheck {
   public function access(AccountInterface $account, NodeTypeInterface $node_type = NULL) {
     $forbidden = ['course_article', 'course_section', 'course_video'];
 
+    // Allow other modules to register their own types.
+    \Drupal::moduleHandler()
+      ->alter('social_course_material_types', $forbidden);
+
     if (in_array($node_type->id(), $forbidden)) {
       return AccessResult::forbidden();
     }
