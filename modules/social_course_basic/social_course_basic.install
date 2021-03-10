@@ -2,13 +2,44 @@
 
 /**
  * @file
- * The Social Course Basic (de)installation file.
+ * Install, update and uninstall functions for the social_course_basic module.
  */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Add the field_flexible_group_visibility field to the course_basic group.
+ */
+function social_course_basic_update_8001() {
+  $config_names = [
+    'field.field.group.course_basic.field_flexible_group_visibility',
+    'field.field.group.course_basic.field_group_allowed_visibility'
+  ];
+
+  foreach ($config_names as $config_name) {
+    $config_path = drupal_get_path('module', 'social_course_basic') . '/config/install';
+    $source = new FileStorage($config_path);
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write($config_name, $source->read($config_name));
+  }
+}
+
+/**
+ * Add view group permission for the anonymous users.
+ */
+function social_course_basic_update_8004() {
+  $config_name = 'group.role.course_basic-anonymous';
+  $config = \Drupal::configFactory()->getEditable($config_name);
+  $permissions = $config->get('permissions');
+  $permissions[] = 'view group';
+
+  $config->set('permissions', $permissions)->save();
+}
 
 /**
  * Configuration update: change form display.
  */
-function social_course_basic_update_8001() {
+function social_course_basic_update_8005() {
   /** @var \Drupal\update_helper\Updater $updateHelper */
   $updateHelper = \Drupal::service('update_helper.updater');
 
@@ -17,4 +48,44 @@ function social_course_basic_update_8001() {
 
   // Output logged messages to related channel of update execution.
   return $updateHelper->logger()->output();
+}
+
+/**
+ * Set field_flexible_group_visibility as public by default.
+ */
+function social_course_basic_update_8006() {
+  $group_storage = \Drupal::entityTypeManager()->getStorage('group');
+  $course_ids = $group_storage
+    ->getQuery()
+    ->condition('type', 'course_basic')
+    ->execute();
+
+  foreach ($course_ids as $course_id) {
+    /** @var \Drupal\group\Entity\GroupInterface $course */
+    $course = $group_storage->load($course_id);
+    if ($course->hasField('field_flexible_group_visibility')) {
+      $course->set('field_flexible_group_visibility', 'public');
+      $course->save();
+    }
+  }
+}
+
+/**
+ * Set field_group_allowed_visibility as community by default.
+ */
+function social_course_basic_update_8007() {
+  $group_storage = \Drupal::entityTypeManager()->getStorage('group');
+  $course_ids = $group_storage
+    ->getQuery()
+    ->condition('type', 'course_basic')
+    ->execute();
+
+  foreach ($course_ids as $course_id) {
+    /** @var \Drupal\group\Entity\GroupInterface $course */
+    $course = $group_storage->load($course_id);
+    if ($course->hasField('field_group_allowed_visibility')) {
+      $course->set('field_group_allowed_visibility', ['community']);
+      $course->save();
+    }
+  }
 }
