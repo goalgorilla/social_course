@@ -22,22 +22,19 @@ third_party_settings:
       children:
         - title
         - field_course_section_description
-        - groups
       parent_name: ''
       weight: 0
       format_type: fieldset
       format_settings:
-        label: Information
         description: ''
         required_fields: true
         id: ''
         classes: ''
-      label: 'Basic information'
+      label: 'Basic Information'
       region: content
     group_settings:
       children:
         - field_course_section_redirect
-        - status
       format_settings:
         classes: social-collapsible-fieldset
         description: ''
@@ -47,9 +44,9 @@ third_party_settings:
       format_type: details
       label: Settings
       parent_name: ''
-      region: hidden
-      weight: 20
-    group_access_permissions:
+      weight: 3
+      region: content
+    group_visibility:
       children:
         - groups
       format_settings:
@@ -61,14 +58,14 @@ third_party_settings:
       label: 'Access permissions'
       parent_name: ''
       region: content
-      weight: 0
+      weight: 1
 id: node.course_section.default
 targetEntityType: node
 bundle: course_section
 mode: default
 content:
   field_course_section_content:
-    weight: 1
+    weight: 2
     settings:
       form_mode: course
       override_labels: true
@@ -89,7 +86,7 @@ content:
     type: text_textarea
     region: content
   field_course_section_redirect:
-    weight: 26
+    weight: 6
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -124,3 +121,4 @@ hidden:
   promote: true
   social_tagging: true
   sticky: true
+  uid: true

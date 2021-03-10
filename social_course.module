@@ -1878,7 +1878,7 @@ function social_course_cron() {
 /**
  * Implements hook_social_core_compatible_content_forms_alter().
  */
-function social_course_social_core_compatible_content_forms_alter(&$compatible_content_type_forms) {
+function social_course_social_core_compatible_content_forms_alter(array &$compatible_content_type_forms) {
   $compatible_content_type_forms[] = 'node_course_section_form';
   $compatible_content_type_forms[] = 'node_course_section_edit_form';
 }
