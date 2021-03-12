@@ -31,3 +31,13 @@ social_course.next_material:
         type: entity:group
       node:
         type: entity:node
+social_course.join.anonymous:
+  path: '/course/{group}/join-anonymous'
+  defaults:
+    _controller: '\Drupal\social_course\Controller\CourseJoinController::anonymousRequestMembership'
+  requirements:
+    _access: 'TRUE'
+  options:
+    parameters:
+      group:
+        type: 'entity:group'

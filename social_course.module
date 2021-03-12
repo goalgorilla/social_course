@@ -886,6 +886,21 @@ function social_course_preprocess_group(&$variables) {
     $variables['title_prefix']['teaser_tag'] = [
       '#markup' => '<div class="teaser__tag">' . t('Course') . '</div>',
     ];
+
+    if (
+      $group->hasField('field_flexible_group_visibility') &&
+      $group->hasField('field_group_allowed_join_method')
+    ) {
+      $visibility_values = $group->getFieldValue('field_flexible_group_visibility', 'value');
+      $allowed_options = $group->getFieldValue('field_group_allowed_join_method', 'value');
+
+      if ($visibility_values === 'public' && $allowed_options === 'direct' && $account->isAnonymous()) {
+        $variables['anonymous_join'] = TRUE;
+        $variables['group_operations_url'] = Url::fromRoute('social_course.join.anonymous', ['group' => $group->id()]);
+        $variables['#attached']['library'][] = 'core/drupal.dialog.ajax';
+        $variables['#attached']['library'][] = 'social_group_request/social_group_popup';
+      }
+    }
   }
 }
 
@@ -1892,4 +1907,60 @@ function social_course_module_implements_alter(&$implementations, $hook) {
     unset($implementations['social_course']);
     $implementations['social_course'] = $group;
   }
+}
+/**
+ * Implements hook_token_info_alter().
+ */
+function social_course_token_info_alter(&$info) {
+  $info['tokens']['user']['destination-url'] = [
+    'name' => t('Destination URL'),
+    'description' => t('The destination url of the requested course page.'),
+    'restricted' => TRUE,
+  ];
+}
+
+/**
+ * Implements hook_tokens_alter().
+ */
+function social_course_tokens_alter(&$replacements, $context, $bubbleable_metadata) {
+  $options = $context['options'];
+  if (
+    isset($context['data']['user']) &&
+    isset($context["tokens"]["one-time-login-url"]) &&
+    $context["tokens"]["one-time-login-url"] === '[user:one-time-login-url]'
+  ) {
+    if ($url = social_course_get_destination()) {
+      $replacements['[user:destination-url]'] = $url;
+    }
+  }
+}
+
+/**
+ * Get destination url of the requested course.
+ *
+ * @return string
+ *  The destination url which will be used in one-time-login-url.
+ */
+function social_course_get_destination() {
+  $url = '';
+  $request = \Drupal::request();
+
+  if ($request->query->has('destination')) {
+    $destination = $request->query->get('destination');
+
+    if (strpos($destination, 'requested-membership') !== FALSE) {
+      $options = ['query' => ['destination' => $destination]];
+      $url = '/login' . Url::fromUri('internal:', $options)
+          ->toString();
+    }
+    if (strpos($destination, 'quickjoin') !== FALSE) {
+      // Get's the last value of the destination.
+      $destination = explode('?', $destination);
+      $destination = array_pop($destination);
+      $options = ['query' => ['destination' => trim($destination)]];
+      $url = '/login' . Url::fromUri('internal:', $options)
+          ->toString();
+    }
+  }
+  return $url;
 }

@@ -573,6 +573,27 @@ class SocialCourseOverrides implements ConfigFactoryOverrideInterface {
       }
     }
 
+    $config_name = 'user.mail';
+
+    // Add destination to requested course page.
+    if (in_array($config_name, $names)) {
+      $module_handler = \Drupal::moduleHandler();
+
+      if (
+        $module_handler->moduleExists('social_course_basic') ||
+        $module_handler->moduleExists('social_course_advanced_request')
+      ) {
+        $config = \Drupal::service('config.factory')->getEditable($config_name);
+        $body = $config->get('register_no_approval_required.body');
+        $body = str_replace('[user:one-time-login-url]', '[user:one-time-login-url][user:destination-url]', $body);
+
+        $overrides[$config_name] = [
+          'register_no_approval_required' => [
+            'body' => $body,
+          ],
+        ];
+      }
+    }
     return $overrides;
   }
 
