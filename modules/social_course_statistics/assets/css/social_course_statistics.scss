@@ -1,0 +1,316 @@
+// Hero banner
+.socialblue--sky.path-group,
+.path-group {
+  .hero__banner--course_statistic {
+    margin-bottom: 14px;
+
+    @media(min-width: 900px) {
+      padding-top: 105px;
+    }
+
+    @media(max-width: 599px) {
+      padding-top: 1.25rem;
+    }
+
+    .cover-wrap {
+      .back-link {
+        margin-bottom: 1.25rem;
+
+        @media(min-width: 900px) {
+          margin-bottom: 38px;
+        }
+      }
+
+      .teaser__tag {
+        margin-bottom: 10px;
+
+        @media(max-width: 899px) {
+          font-size: 18px;
+          line-height: 27px;
+        }
+      }
+
+      .teaser__title {
+        @media(min-width: 900px) {
+          margin-bottom: 1.25rem;
+        }
+
+        @media(max-width: 899px) {
+          font-size: 2rem;
+          line-height: 38px;
+        }
+
+        .field--label {
+          display: none;
+        }
+
+        .field--item {
+          color: #4a4a4a;
+          font-weight: 700;
+          line-height: 44px;
+        }
+      }
+
+      .hero-footer {
+        padding-top: 1.25rem;
+        padding-bottom: 2rem;
+
+        @media(max-width: 599px) {
+          padding-bottom: 1.5rem;
+        }
+      }
+
+      .hero-footer__list {
+        width: 100%;
+        color: #4d4d4d;
+
+        .hero-footer__list-item:first-child {
+          @media(max-width: 599px) {
+            margin-bottom: 1.25rem;
+          }
+        }
+
+        .meta-engage {
+          display: flex;
+          justify-content: flex-start;
+          flex-direction: row;
+
+          > .hero-footer__list-item {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            margin-bottom: 0;
+
+            &:before {
+              display: none;
+            }
+
+            &:not(:last-child) {
+              position: relative;
+              padding-right: 1.5rem;
+              margin-right: 1.5rem;
+
+              @media(max-width: 599px) {
+                padding-right: 1rem;
+                margin-right: 1rem;
+              }
+
+              &:before {
+                display: block;
+                content: '';
+                position: absolute;
+                width: 1px;
+                height: 36px;
+                right: 0;
+                bottom: 5px;
+                background: #000;
+              }
+
+              &.hero-footer__list-user {
+                @media(min-width: 900px) {
+                  padding-right: 40px;
+                  margin-right: 40px;
+                }
+
+                @media(max-width: 599px) {
+                  flex: 0 0 100%;
+                  max-width: 100%;
+                  margin-bottom: 1rem;
+                  margin-right: 0;
+                  padding-right: 0;
+
+                  .hero-footer__list-label {
+                    margin-bottom: .5rem;
+                  }
+                }
+
+                &:before {
+                  display: none;
+
+                  @media(min-width: 600px) {
+                    display: block;
+                    height: 24px;
+                  }
+                }
+              }
+            }
+          }
+
+          .hero-footer__list-label {
+            font-size: .875rem;
+            line-height: 21px;
+            margin-bottom: .75rem;
+            padding-right: 0;
+          }
+
+          .hero-footer__list-content {
+            font-size: 2.25rem;
+            line-height: 44px;
+            font-weight: 700;
+
+            display: flex;
+            align-items: center;
+
+            @media(max-width: 599px) {
+              font-size: 2rem;
+              line-height: 38px;
+            }
+
+            &--user {
+              font-size: 1.25rem;
+              line-height: 30px;
+
+              @media(max-width: 599px) {
+                font-size: 1.5rem;
+                line-height: 30px;
+              }
+            }
+          }
+        }
+      }
+
+      .cover-wrap--course-statistic-profile {
+        .teaser__tag {
+          margin-bottom: 1.375rem;
+
+          @media(max-width: 899px) {
+            margin-bottom: 1.125rem;
+          }
+        }
+      }
+
+      .card__info-user {
+        position: relative;
+        min-height: 120px;
+        margin-bottom: 1.25rem;
+        padding: 0;
+        text-align: left;
+
+        @media(min-width: 600px) {
+          padding-left: 150px;
+        }
+
+        &:after {
+          display: none;
+        }
+
+        .card__info-user--name {
+          margin-bottom: 0;
+          font-weight: 700;
+
+          @media(max-width: 899px) {
+            font-size: 2rem;
+            line-height: 38px;
+          }
+        }
+
+        .hero-avatar {
+          width: 120px;
+          height: 120px;
+          border: none;
+          margin: 0 0 1rem;
+          box-shadow: none;
+          border-radius: 50%;
+
+          @media(min-width: 600px) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      .card__info-user--about {
+        margin-top: .5rem;
+
+        .card__info-user--about-job,
+        .card__info-user--about-organization {
+          margin: 0;
+          font-size: 1rem;
+          line-height: 1.5rem;
+
+          @media(max-width: 599px) {
+            font-size: .875rem;
+            line-height: 21px;
+          }
+        }
+
+        .card__info-user--about-organization {
+          margin-top: .5rem;
+        }
+
+        .card__info-user--about-address {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.view-course-statistics {
+  table.table {
+    tbody {
+      td {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .view-header {
+    margin: 0 0 20px;
+
+    @media(max-width: 599px) {
+      text-align: center;
+    }
+
+    h4 {
+      margin: 0;
+      font-weight: 700;
+      line-height: 30px;
+
+      @media(max-width: 599px) {
+        font-size: 18px;
+        line-height: 27px;
+      }
+    }
+  }
+}
+
+.view-course-sections-statistics,
+.view-course-statistics {
+  @media(max-width: 599px) {
+    margin: 0 -14px;
+
+    .card {
+      border-radius: 0 !important;
+      box-shadow: none;
+    }
+  }
+
+  table.table {
+    tbody {
+      td {
+        &.views-field-status {
+          font-weight: 700;
+          white-space: nowrap;
+
+          svg {
+            width: 21px;
+            height: 21px;
+            margin-right: 5px;
+            vertical-align: top;
+          }
+        }
+      }
+    }
+  }
+}
+
+.layout--full,
+.layout--full.layout--with-complementary {
+  .region--content {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
